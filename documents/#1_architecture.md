@@ -1,4 +1,4 @@
-# Itération #1 : Architecture
+# #1 : Architecture
 
 ## Côté client
 
@@ -15,7 +15,7 @@ Nous utiliseront les services Firebase suivants pour gérer nos données :
 - **Cloud Firestore:** Store and sync data between users and devices - at global scale - using a cloud-hosted, NoSQL database. Cloud Firestore gives you live synchronization and offline support along with efficient data queries.
 - **Cloud Storage:** Store and share user-generated content like images, audio, and video with powerful, simple, and cost-effective object storage built for Google scale. The Firebase SDKs for Cloud Storage add Google security to file uploads and downloads for your Firebase apps, regardless of network quality.
 
-Note: nous avons uniquement besoin de **Firebase Authentication** pour le itération #1, nous définirons donc la structure de nos données NoSQL lors d'une prochain itération.
+Note: nous avons uniquement besoin de **Firebase Authentication** pour le itération #1, nous définirons donc la structure de nos données (de la BDD Cloud Firestore et des fichiers de Cloud Storage) lors d'une prochain itération.
 
 
 ## Références
