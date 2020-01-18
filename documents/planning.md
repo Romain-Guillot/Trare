@@ -1,6 +1,6 @@
 # Planning
 
-## Sprint 1
+## Itération 1
 ### Planning
 **Durée​ :** 1ère semaine (du 20 au 26 janvier)
 **Objectifs​ :**
