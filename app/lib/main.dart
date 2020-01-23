@@ -1,7 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/repositories/authentication_repository.dart';
+import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
-import 'package:app/ui/authentication/widgets/authentication_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
