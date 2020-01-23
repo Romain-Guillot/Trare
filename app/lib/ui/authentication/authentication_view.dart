@@ -7,6 +7,44 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 
+/// Root widget for the authentication (==> authentication screen)
+/// 
+/// It's simply a [Scaffold] with only a body (not app bar, floating action
+/// button, etc.). As UI description in Flutter favors composition over 
+/// inheritance, the widget tree is deep !! So the tree is split into simple
+/// widget (it also improve the reusability as the widget have a single
+/// responsability).
+/// 
+/// So this [AuthenticationView] has the following widget tree :
+///   - [AuthenticationView] (root)
+///   |---- [AuthenticationHeader] (some information as the app logo)
+///   |---- [AuthenticationButtonList] (the list of buttons to log in)
+/// 
+/// Note: widgets for controls, positioning, styles, ... are not representing 
+///       in this documentation as they have no semantic meaning 
+///       (e.g. : Stack, Padding, Positionned)
+/// 
+/// The AuthenticationHeader and the AuthenticationButtonList are put inside a 
+/// [Stack] widget. 
+/// The AuthenticationHeader is put inside a [SingleScrollView], it can be seen
+/// as the main content of this widget, if there are a lot of information, the
+/// user can scroll to display all the information (or if the devices screen is
+/// small).
+/// The AuthenticationButtonList is put inside a [Positioned] widget and above
+/// the AuthenticationHeader (as it is the second on the Stack list). It is 
+/// positionned at the bottom-center of the widget.
+/// 
+/// Why this structure ?
+/// With this structure, the AuthenticationButtonList is always visible by the 
+/// user (as it is always positionned at the bottom-center of the screen). It 
+/// makes sense as it is the main purpose of this widget to provide an 
+/// authentication system. The AuthenticationHeader is behind the 
+/// AuthenticationButtonList and it can be scrolled if needed to see all the 
+/// information (note that some information can be hide by the 
+/// AuthenticationButtonList, but it can be resolve by adding a padding of the
+/// size of the AuthenticationButtonList, but we want to keep this widget as 
+/// simple as possible so for now I think it's best to keep this behavior).
+/// 
 class AuthenticationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,7 +55,6 @@ class AuthenticationView extends StatelessWidget {
           padding: const EdgeInsets.all(Values.screenMargin),
           child: Stack(
             children: [
-
               SingleChildScrollView(child: AuthenticationHeader()),
 
               Positioned(
@@ -33,6 +70,10 @@ class AuthenticationView extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class AuthenticationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -44,15 +85,25 @@ class AuthenticationHeader extends StatelessWidget {
           height: 100, 
           color: Theme.of(context).colorScheme.primary,
         ),
-
-        Text("Welcome,"),
-        Text("Ready to share activities with travellers arround you ?"),
+        SizedBox(height: 20),
+        Text(
+          Strings.authenticationTitle,
+          style: TextStyle(fontSize: 35, fontWeight: Values.weightBold)
+        ),
+        Text(
+          Strings.authenticationDescription,
+          style: TextStyle(fontSize: 20, color: Colors.black.withOpacity(0.5))
+        ),
       ],
     );
   }
 }
 
 
+
+///
+///
+///
 class AuthenticationButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
