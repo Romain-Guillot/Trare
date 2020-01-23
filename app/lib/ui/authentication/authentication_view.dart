@@ -34,10 +34,10 @@ import 'package:provider/provider.dart';
 /// the AuthenticationHeader (as it is the second on the Stack list). It is 
 /// positionned at the bottom-center of the widget.
 /// 
-/// Why this structure ?
-/// With this structure, the AuthenticationButtonList is always visible by the 
-/// user (as it is always positionned at the bottom-center of the screen). It 
-/// makes sense as it is the main purpose of this widget to provide an 
+/// Q: Why this structure ?
+/// A: With this structure, the AuthenticationButtonList is always visible by 
+/// the user (as it is always positionned at the bottom-center of the screen). 
+/// It makes sense as it is the main purpose of this widget to provide an 
 /// authentication system. The AuthenticationHeader is behind the 
 /// AuthenticationButtonList and it can be scrolled if needed to see all the 
 /// information (note that some information can be hide by the 
@@ -86,17 +86,17 @@ class AuthenticationHeader extends StatelessWidget {
       children: <Widget>[
         SvgPicture.asset(
           Assets.logo, 
-          height: 100, 
+          height: Values.authLogoSize, 
           color: Theme.of(context).colorScheme.primary,
         ),
         SizedBox(height: Values.screenMargin),
         Text(
           Strings.authenticationTitle,
-          style: TextStyle(fontSize: 35, fontWeight: Values.weightBold)
+          style: TextStyle(fontSize: Values.authTitleSize, fontWeight: Values.weightBold)
         ),
         Text(
           Strings.authenticationDescription,
-          style: TextStyle(fontSize: 20, color: Colors.black.withOpacity(0.5))
+          style: TextStyle(fontSize: Values.authDescriptionSize, color: Colors.black.withOpacity(0.5))
         ),
       ],
     );
@@ -105,9 +105,15 @@ class AuthenticationHeader extends StatelessWidget {
 
 
 
-///
-///
-///
+/// List of all buttons to authenticate the user.
+/// 
+/// It reflect the 3 methods supporting by our repository :
+///  - with Google
+///  - with Facebook
+///  - with email / password
+/// 
+/// So it's a [Column] of three [AuthenticationButton] that reprensents the 3
+/// authentication methods listed above.
 class AuthenticationButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -144,7 +150,7 @@ class AuthenticationButtonList extends StatelessWidget {
 
 
 
-/// A Widget to build button for the authentication.
+/// A Widget that represents a button for the authentication.
 /// 
 /// It displays a suffix sentences (e.g. "Continue with") followed by the 
 /// authentication provider method (e.g. "Google" / "Facebook" / etc.).

@@ -6,6 +6,8 @@ import 'package:flutter/painting.dart';
 class Values {
   Values._();
 
+  // General values
+
   static const double screenMargin = 17;
 
   static const FontWeight weightLight = FontWeight.w300;
@@ -19,5 +21,13 @@ class Values {
     blurRadius: 5, // gaussian attenuation
     spreadRadius: 2 // shadow size
   );
+
+
+
+  // Authentication (prefix with "auth")
+  
+  static const double authLogoSize = 100;
+  static const double authTitleSize = 35;
+  static const double authDescriptionSize = 20;
 
 }
