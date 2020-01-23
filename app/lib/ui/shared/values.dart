@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 /// Useful constant values share across the app (e.g. padding, font size,
 /// font weight, margin, etc.)
 class Values {
+  Values._();
 
   static const double screenMargin = 17;
 

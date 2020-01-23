@@ -1,7 +1,9 @@
 import 'package:app/logic/authentication_provider.dart';
+import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 
@@ -10,49 +12,78 @@ class AuthenticationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: Container(
+          height: double.infinity,
           padding: const EdgeInsets.all(Values.screenMargin),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+          child: Stack(
+            children: [
 
-                Icon(Icons.ac_unit, size: 60, color: Colors.blue,),
+              SingleChildScrollView(child: AuthenticationHeader()),
 
-                Text("Welcome,"),
-                Text("Ready to share activities with travellers arround you ?"),
-
-                Expanded(child: Container()),
-
-                AuthenticationButton(
-                  providerMethod: Strings.googleProvider,
-                  leadingIcon: null,
-                  onPressed: () => handleGoogle(context),
-                ),
-                SizedBox(height: 15),
-                AuthenticationButton(
-                  providerMethod: Strings.facebookProvider,
-                  leadingIcon: null,
-                  onPressed: () => handleGoogle(context),
-                ),
-                SizedBox(height: 15),
-                AuthenticationButton(
-                  providerMethod: Strings.emailProvider,
-                  leadingIcon: null,
-                  onPressed: () => handleGoogle(context),
-                ),
-              ],
-            ),
+              Positioned(
+                bottom: 0, left: 0, right: 0, // bottom centered
+                child: Center(child: AuthenticationButtonList())
+              )
+            ]
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class AuthenticationHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SvgPicture.asset(
+          Assets.logo, 
+          height: 100, 
+          color: Theme.of(context).colorScheme.primary,
+        ),
+
+        Text("Welcome,"),
+        Text("Ready to share activities with travellers arround you ?"),
+      ],
+    );
+  }
+}
+
+
+class AuthenticationButtonList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        AuthenticationButton(
+          providerMethod: Strings.googleProvider,
+          leadingIcon: SvgPicture.asset(Assets.google),
+          onPressed: () => handleGoogle(context),
+        ),
+        SizedBox(height: 15),
+        AuthenticationButton(
+          providerMethod: Strings.facebookProvider,
+          leadingIcon: SvgPicture.asset(Assets.facebook),
+          onPressed: () => null,
+        ),
+        SizedBox(height: 15),
+        Text("OR"),
+        SizedBox(height: 15),
+        AuthenticationButton(
+          providerMethod: Strings.emailProvider,
+          leadingIcon: SvgPicture.asset(Assets.mail),
+          onPressed: () => null,
+        ),
+      ],
     );
   }
 
   handleGoogle(context) {
     Provider.of<AuthenticationProvider>(context, listen: false).handleGoogleConnexion();
   }
-
 }
 
 
@@ -78,42 +109,47 @@ class AuthenticationView extends StatelessWidget {
 class AuthenticationButton extends StatelessWidget {
 
   final Function onPressed;
-  final Icon leadingIcon;
+  final Widget leadingIcon;
   final String providerMethod;
 
   AuthenticationButton({Key key, @required this.onPressed, @required this.providerMethod, @required this.leadingIcon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(999),
+        color: Colors.white,
+        boxShadow: [Values.shadow]
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
           borderRadius: BorderRadius.circular(999),
-          color: Colors.white,
-          boxShadow: [Values.shadow]
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(999),
-            onTap: onPressed,
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              child: DefaultTextStyle(
-                style: Theme.of(context).textTheme.button,
-                child: RichText(
-                  text: TextSpan(
-                    text: Strings.buttonProviderSuffixText,
-                    style: Theme.of(context).textTheme.button.copyWith(fontWeight: Values.weightRegular),
-                    children: [
-                      TextSpan(
-                        text: " " + providerMethod,
-                        style: TextStyle(fontWeight: Values.weightBold)
-                      )
-                    ]
+          onTap: onPressed,
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            child: Wrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 24, width: 24, child: leadingIcon),
+                DefaultTextStyle(
+                  style: Theme.of(context).textTheme.button,
+                  child: RichText(
+                    text: TextSpan(
+                      text: Strings.buttonProviderSuffixText,
+                      style: Theme.of(context).textTheme.button.copyWith(fontWeight: Values.weightRegular),
+                      children: [
+                        TextSpan(
+                          text: " " + providerMethod,
+                          style: TextStyle(fontWeight: Values.weightBold)
+                        )
+                      ]
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
