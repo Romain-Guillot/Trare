@@ -12,9 +12,9 @@ class Values {
   static const FontWeight weightRegular = FontWeight.normal;
   static const FontWeight weightBold = FontWeight.w700;
 
+  static BorderRadius rounedBorderRadius = BorderRadius.circular(999);
 
-
-  static const shadow = BoxShadow(
+  static const BoxShadow shadow = BoxShadow(
     color: Color(0x22000000), // color of the shadow
     blurRadius: 5, // gaussian attenuation
     spreadRadius: 2 // shadow size

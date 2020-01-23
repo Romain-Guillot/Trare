@@ -12,4 +12,5 @@ class Strings {
   static const String googleProvider = "Google";
   static const String facebookProvider = "Facebook";
   static const String emailProvider = "Email";
+  static const String alternativeAuthenticationMethodeSeparotor = "OR";
 }

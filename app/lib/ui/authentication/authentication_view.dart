@@ -55,8 +55,9 @@ class AuthenticationView extends StatelessWidget {
           padding: const EdgeInsets.all(Values.screenMargin),
           child: Stack(
             children: [
-              SingleChildScrollView(child: AuthenticationHeader()),
-
+              SingleChildScrollView(
+                child: AuthenticationHeader()
+              ),
               Positioned(
                 bottom: 0, left: 0, right: 0, // bottom centered
                 child: Center(child: AuthenticationButtonList())
@@ -88,7 +89,7 @@ class AuthenticationHeader extends StatelessWidget {
           height: 100, 
           color: Theme.of(context).colorScheme.primary,
         ),
-        SizedBox(height: 20),
+        SizedBox(height: Values.screenMargin),
         Text(
           Strings.authenticationTitle,
           style: TextStyle(fontSize: 35, fontWeight: Values.weightBold)
@@ -124,7 +125,7 @@ class AuthenticationButtonList extends StatelessWidget {
           onPressed: () => null,
         ),
         SizedBox(height: 15),
-        Text("OR"),
+        Text(Strings.alternativeAuthenticationMethodeSeparotor),
         SizedBox(height: 15),
         AuthenticationButton(
           providerMethod: Strings.emailProvider,
@@ -136,7 +137,8 @@ class AuthenticationButtonList extends StatelessWidget {
   }
 
   handleGoogle(context) {
-    Provider.of<AuthenticationProvider>(context, listen: false).handleGoogleConnexion();
+    Provider.of<AuthenticationProvider>(context, listen: false)
+      .handleGoogleConnexion();
   }
 }
 
@@ -162,29 +164,36 @@ class AuthenticationButtonList extends StatelessWidget {
 /// about this behavior.
 class AuthenticationButton extends StatelessWidget {
 
+  static const double _padding = 15;
+
   final Function onPressed;
   final Widget leadingIcon;
   final String providerMethod;
 
-  AuthenticationButton({Key key, @required this.onPressed, @required this.providerMethod, @required this.leadingIcon}) : super(key: key);
+  AuthenticationButton({
+    Key key, 
+    @required this.onPressed, 
+    @required this.providerMethod, 
+    @required this.leadingIcon
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: Values.rounedBorderRadius,
         color: Colors.white,
         boxShadow: [Values.shadow]
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: Values.rounedBorderRadius,
           onTap: onPressed,
           child: Container(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(_padding),
             child: Wrap(
-              spacing: 10,
+              spacing: _padding,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
                 SizedBox(height: 24, width: 24, child: leadingIcon),
