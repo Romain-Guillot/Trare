@@ -71,9 +71,12 @@ class AuthenticationView extends StatelessWidget {
 
 
 
+/// Simple widget to show some "start up" information about our app.
 ///
-///
-///
+/// This widget displays the following elements :
+/// - our app logo
+/// - a title
+/// - a description
 class AuthenticationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
