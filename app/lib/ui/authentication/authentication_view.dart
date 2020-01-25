@@ -121,7 +121,7 @@ class AuthenticationButtonList extends StatelessWidget {
         AuthenticationButton(
           providerMethod: Strings.facebookProvider,
           leadingIcon: SvgPicture.asset(Assets.facebook),
-          onPressed: () => null,
+          onPressed: () => handleFacebook(context),
         ),
         SizedBox(height: 15),
         Text("OR"),
@@ -137,6 +137,10 @@ class AuthenticationButtonList extends StatelessWidget {
 
   handleGoogle(context) {
     Provider.of<AuthenticationProvider>(context, listen: false).handleGoogleConnexion();
+  }
+
+  handleFacebook(context){
+    Provider.of<AuthenticationProvider>(context, listen: false).handleFacebookConnexion();
   }
 }
 
