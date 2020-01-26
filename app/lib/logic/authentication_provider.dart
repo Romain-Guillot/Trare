@@ -2,6 +2,9 @@
 import 'package:app/models/user.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
 
 class AuthenticationProvider extends ChangeNotifier {
@@ -26,6 +29,11 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> handleGoogleConnexion() async {
     user = await _authenticationRepository.handleGoogleConnexion();
+    notifyListeners();
+  }
+
+  Future<void> handleFacebookConnexion() async {
+    user = await _authenticationRepository.handleFacebookConnexion();
     notifyListeners();
   }
 

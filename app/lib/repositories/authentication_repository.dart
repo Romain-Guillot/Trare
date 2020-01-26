@@ -1,7 +1,11 @@
 
+import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
 
 abstract class AuthenticationRepository {
 
@@ -21,6 +25,7 @@ abstract class AuthenticationRepository {
 
 class FirebaseAuthenticationRepository implements AuthenticationRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FacebookLogin facebookLogin=FacebookLogin();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -41,8 +46,26 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
   }
 
   @override
-  Future<User> handleFacebookConnexion() {
-    throw UnimplementedError();
+  Future<User> handleFacebookConnexion() async {
+    final facebookLogin=FacebookLogin();
+    final result = await facebookLogin.logIn(['email']);
+
+    switch(result.status){
+      case FacebookLoginStatus.loggedIn:
+          print("Connexion reussie");
+          //isInitialized=tue
+          
+        break;
+      case FacebookLoginStatus.error:
+          print("Erreur de connexion");
+          //isInitialized=false
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+          print("Connexion annulée par l'user");
+    }
+
+    //final FirebaseUser user = authResult.user;
+    //return _firebaseUserToUser(user);
   }
 
   @override
