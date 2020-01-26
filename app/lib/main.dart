@@ -8,14 +8,22 @@ import 'package:provider/provider.dart';
 
 
 
-////
-///
-///
-void main() async {
+/// Entry point for the app.
+/// 
+/// First, we create our repositories that will be used by our providers. So
+/// our providers will only deal with interfaces instead of concreate 
+/// implementations. And normally repositories have to be instantiated only
+/// here acconrding to the app architecture (see documentation) as there
+/// are only the providers that deal with the repositories.
+/// 
+/// Then, we inflate out main widget app and attach it to the screen thanks to
+/// the [runApp] method (framework method). Our root widget is a 
+/// [MultiProvider] that contains all our providers that can be used in the app
+/// to deal with the business logic.
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   FirebaseAuthenticationRepository authRepo = FirebaseAuthenticationRepository();
-  await authRepo.signOut();
 
   runApp(MultiProvider(
     providers: [
@@ -31,9 +39,19 @@ void main() async {
 
 
 
-///
-///
-///
+/// Main widget for our app (if we don't consider the [MultiProvider] widget 
+/// that wrapped our app).
+/// 
+/// It builds a [MaterialApp] to defines our app (with title, theme, and so on)
+/// 
+/// The content of our app is defined according to the [AuthenticationProvider]
+/// state. So a [Consumer] widget is used to listen the [AuthenticationProvider]
+/// state changes : 
+///   - if the authentication provider is not initialized we display a loading
+///     screen ([LoadingView])
+///   - if the authentication provider is initialized and no user is logged, we
+///     build the [AuthenticationView] widget
+///   - if the user is logged, we go to the homepage
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,7 +67,10 @@ class MyApp extends StatelessWidget {
           if (authenticationProvider.user == null)
             return AuthenticationView();
           else
-            return Text("Connected"); // TODO : sprint 2
+            return RaisedButton(
+              child: Text("Connected"), 
+              onPressed: () async {authenticationProvider.signOut();},
+            ); // TODO : sprint 2
         }
       ),
     );
@@ -58,7 +79,13 @@ class MyApp extends StatelessWidget {
 
 
 
+/// Theme defined for our app (color, text style, etc)
+/// We can use this constants anywhere in our app by using
+/// [Theme.of(context)...], for example to know what is our error color :
+/// [Theme.of(context).colorScheme.error]
 /// 
+/// See https://api.flutter.dev/flutter/material/ThemeData-class.html to know
+/// more about all theme values.
 final appTheme = ThemeData(
   primaryColor: Color(0xff1FD59F),
 

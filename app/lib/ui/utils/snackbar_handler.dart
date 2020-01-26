@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 /// 
 /// It is a single function (not wrapped in a class) as [showBottomSheet()] or
 /// [showDialog()] for example.
-showSnackbar({BuildContext context, Widget content, bool critical = false}) {
+showSnackbar({@required BuildContext context, @required Widget content, bool critical = false}) {
   final _colorScheme = Theme.of(context).colorScheme;
   final backgroundColor = critical ? _colorScheme.error : _colorScheme.primaryVariant;
   final textColor = critical ? _colorScheme.onError : _colorScheme.onPrimary;

@@ -140,7 +140,7 @@ class AuthenticationButtonList extends StatelessWidget {
         AuthenticationButton(
           providerMethod: Strings.emailProvider,
           leadingIcon: SvgPicture.asset(Assets.mail),
-          onPressed: () => null,
+          onPressed: () => _handleEmail(context),
         ),
       ],
     );
@@ -156,6 +156,10 @@ class AuthenticationButtonList extends StatelessWidget {
     Provider.of<AuthenticationProvider>(context, listen: false)
       .handleFacebookLogin()
       .catchError((e) => _showError(context));
+  }
+
+  _handleEmail(context) {
+    _showError(context);
   }
 
   _showError(context) {
