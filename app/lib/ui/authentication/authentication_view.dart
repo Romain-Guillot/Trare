@@ -148,13 +148,13 @@ class AuthenticationButtonList extends StatelessWidget {
 
   _handleGoogle(context) {
     Provider.of<AuthenticationProvider>(context, listen: false)
-      .handleGoogleConnexion()
+      .handleGoogleLogin()
       .catchError((e) => _showError(context));
   }
 
   _handleFacebook(context){
     Provider.of<AuthenticationProvider>(context, listen: false)
-      .handleFacebookConnexion()
+      .handleFacebookLogin()
       .catchError((e) => _showError(context));
   }
 

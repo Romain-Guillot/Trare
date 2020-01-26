@@ -21,8 +21,8 @@ import 'package:flutter/widgets.dart';
 /// method.
 /// 
 /// The following methods can be used to authenticate an user :
-///   - [handleGoogleConnexion()]
-///   - [handleFacebookConnexion()]
+///   - [handleGoogleLogin()]
+///   - [handleFacebookLogin()]
 /// If an error occured, it can be catched thanks to [Future.catchError()] 
 /// method.
 /// 
@@ -46,7 +46,7 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+
   AuthenticationProvider({
     @required AuthenticationRepository authRepo
   }) : this._authRepo = authRepo;
@@ -62,17 +62,17 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
 
-  /// Handle the Google connexion
+  /// Handle the Google login
   /// Please see the class level documentation to know more about its behavior
-  Future<void> handleGoogleConnexion() async {
-    return _handleConnexion(_authRepo.handleGoogleConnexion);
+  Future<void> handleGoogleLogin() async {
+    return _handleLogin(_authRepo.handleGoogleLogin);
   }
 
 
-  /// Handle Facebook connexion
+  /// Handle Facebook login
   /// Please see the class level documentation to know more about its behavior
-  Future<void> handleFacebookConnexion() async {
-    return _handleConnexion(_authRepo.handleFacebookConnexion);
+  Future<void> handleFacebookLogin() async {
+    return _handleLogin(_authRepo.handleFacebookLogin);
   }
 
 
@@ -81,7 +81,7 @@ class AuthenticationProvider extends ChangeNotifier {
   /// This method ensures that only ONE auhtentication process can be executed
   /// simultaneously ([_inProgress]).
   /// Return a [Future.error] if an error occured.
-  Future _handleConnexion(Future<User> Function() function) async {
+  Future _handleLogin(Future<User> Function() function) async {
     if (_inProcess) return ;
     bool error = false;
     _inProcess = true;
