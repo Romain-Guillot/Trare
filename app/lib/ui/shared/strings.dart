@@ -4,6 +4,9 @@
 /// as it makes no sense to create an instance of this class.
 class Strings {
   Strings._();
+
+  // General
+  static const String appName = "TBD";
   
   // Constants related to authentication
   static const String authenticationTitle = "Welcome,";

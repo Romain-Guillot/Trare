@@ -2,10 +2,15 @@ import 'package:app/logic/authentication_provider.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
+
+////
+///
+///
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -14,19 +19,26 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<AuthenticationProvider>(create: (context) => AuthenticationProvider(
-        authenticationRepository: authRepo
-      ))
+      ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
+        AuthenticationProvider(
+          authenticationRepository: authRepo
+        )
+      ),
     ],
     child: MyApp())
   );
-} 
+}
 
+
+
+///
+///
+///
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: Strings.appName,
 
       theme: appTheme,
 
@@ -44,6 +56,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+
+/// 
 final appTheme = ThemeData(
   primaryColor: Color(0xff1FD59F),
 

@@ -7,6 +7,9 @@
 /// With this class we can change the asset name or the asset location without
 /// change our implementation 
 /// (it avoids hard-coding the names of the assets in our widgets in essence)
+/// 
+/// Everything is constant, so the constructor is private
+/// as it makes no sense to create an instance of this class.
 class Assets {
   Assets._();
 

@@ -185,6 +185,8 @@ class AuthenticationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = Theme.of(context).textTheme.button;
+    final iconSize = buttonStyle.fontSize * 1.5; //  icons are 1.5 times bigger than the text
     return Container(
       decoration: BoxDecoration(
         borderRadius: Values.rounedBorderRadius,
@@ -202,9 +204,9 @@ class AuthenticationButton extends StatelessWidget {
               spacing: _padding,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
-                SizedBox(height: 24, width: 24, child: leadingIcon),
+                SizedBox(height: iconSize, width: iconSize, child: leadingIcon),
                 DefaultTextStyle(
-                  style: Theme.of(context).textTheme.button,
+                  style: buttonStyle,
                   child: RichText(
                     text: TextSpan(
                       text: Strings.buttonProviderSuffixText,
