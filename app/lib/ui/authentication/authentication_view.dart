@@ -122,13 +122,13 @@ class AuthenticationButtonList extends StatelessWidget {
         AuthenticationButton(
           providerMethod: Strings.googleProvider,
           leadingIcon: SvgPicture.asset(Assets.google),
-          onPressed: () => handleGoogle(context),
+          onPressed: () => _handleGoogle(context),
         ),
         SizedBox(height: 15),
         AuthenticationButton(
           providerMethod: Strings.facebookProvider,
           leadingIcon: SvgPicture.asset(Assets.facebook),
-          onPressed: () => handleFacebook(context),
+          onPressed: () => _handleFacebook(context),
         ),
         SizedBox(height: 15),
         Text(Strings.alternativeAuthenticationMethodeSeparotor),
@@ -142,14 +142,22 @@ class AuthenticationButtonList extends StatelessWidget {
     );
   }
 
-  handleGoogle(context) {
+  _handleGoogle(context) {
     Provider.of<AuthenticationProvider>(context, listen: false)
-      .handleGoogleConnexion();
+      .handleGoogleConnexion()
+      .catchError((e) => _showError(context));
   }
 
-  handleFacebook(context){
+  _handleFacebook(context){
     Provider.of<AuthenticationProvider>(context, listen: false)
-      .handleFacebookConnexion();
+      .handleFacebookConnexion()
+      .catchError((e) => _showError(context));
+  }
+
+  _showError(context) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(content: Text("An error occurred."),)
+    );
   }
 }
 

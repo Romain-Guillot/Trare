@@ -17,32 +17,44 @@ import 'package:flutter/widgets.dart';
 /// [user] is null is the user is not connected (or if the provider is not yet
 /// initialized).
 /// 
+/// To init the provider (so to check if an user is connected) call the [init()]
+/// method.
+/// 
+/// The following methods can be used to authenticate an user :
+///   - [handleGoogleConnexion()]
+///   - [handleFacebookConnexion()]
+/// If an error occured, it can be catched thanks to [Future.catchError()] 
+/// method.
+/// 
 /// When these variables change, clients are notified.
 class AuthenticationProvider extends ChangeNotifier {
 
   final AuthenticationRepository _authRepo;
-
+  bool _inProcess = false;
   User _user;
+  bool _isInitialized;
+
   User get user => _user;
   set user(User user) {
     _user = user;
     notifyListeners();
   }
   
-  bool _isInitialized;
   bool get isInitialized => _isInitialized??false;
   set isInitialized(bool b) {
     _isInitialized = b;
     notifyListeners();
   }
 
-  
 
   AuthenticationProvider({
     @required AuthenticationRepository authRepo
   }) : this._authRepo = authRepo;
 
 
+
+  /// Check is an user is logged in the app
+  /// When the init process is done, the flag [isInitialized] is set to true
   init() async {
     user = await _authRepo.getCurrentUser();
     await Future.delayed(Duration(seconds: 1)); // TODO
@@ -50,14 +62,41 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
 
+  /// Handle the Google connexion
+  /// Please see the class level documentation to know more about its behavior
   Future<void> handleGoogleConnexion() async {
-    user = await _authRepo.handleGoogleConnexion();
+    return _handleConnexion(_authRepo.handleGoogleConnexion);
   }
 
+
+  /// Handle Facebook connexion
+  /// Please see the class level documentation to know more about its behavior
   Future<void> handleFacebookConnexion() async {
-    user = await _authRepo.handleFacebookConnexion();
+    return _handleConnexion(_authRepo.handleFacebookConnexion);
   }
 
+
+  /// Method to start an authentication process.
+  /// 
+  /// This method ensures that only ONE auhtentication process can be executed
+  /// simultaneously ([_inProgress]).
+  /// Return a [Future.error] if an error occured.
+  Future _handleConnexion(Future<User> Function() function) async {
+    if (_inProcess) return ;
+    bool error = false;
+    _inProcess = true;
+    try {
+      user = await function();
+    } catch (e) {
+      error = true;
+    }
+    _inProcess = false;
+    if (error) return Future.error(null);
+  }
+
+
+  /// Sign out the user, after the completion, the [user] propertie is set to 
+  /// null pointer.
   Future<void> signOut() async {
     await _authRepo.signOut();
     user = null;

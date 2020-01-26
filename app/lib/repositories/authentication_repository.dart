@@ -23,9 +23,11 @@ abstract class AuthenticationRepository {
 
 
 class FirebaseAuthenticationRepository implements AuthenticationRepository {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FacebookLogin facebookLogin=FacebookLogin();
+  
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FacebookLogin facebookLogin = FacebookLogin();
+
 
   @override
   Future<User> getCurrentUser() async {
@@ -46,8 +48,7 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
 
   @override
   Future<User> handleFacebookConnexion() async {
-    final facebookLogin=FacebookLogin();
-    final facebookAuth = await facebookLogin.logIn(['email']);
+    FacebookLoginResult facebookAuth = await facebookLogin.logIn(['email']);
 
     switch(facebookAuth.status){
       case FacebookLoginStatus.loggedIn:
@@ -68,22 +69,25 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
     print(user.displayName);
     return _firebaseUserToUser(user);
   }
-  
+
 
   @override
   Future<User> handleGoogleConnexion() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
     
-    return _firebaseUserToUser(user);
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: "googleAuth.accessToken",
+        idToken: "googleAuth.idToken",
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+      
+      return _firebaseUserToUser(user);
+
+
   }
 
   User _firebaseUserToUser(FirebaseUser fbUser) {
@@ -94,5 +98,9 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+}
+
+
+class AuthenticationException implements Exception {
 
 }
