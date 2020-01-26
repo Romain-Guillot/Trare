@@ -148,7 +148,8 @@ class AuthenticationButtonList extends StatelessWidget {
   }
 
   handleFacebook(context){
-    Provider.of<AuthenticationProvider>(context, listen: false).handleFacebookConnexion();
+    Provider.of<AuthenticationProvider>(context, listen: false)
+      .handleFacebookConnexion();
   }
 }
 

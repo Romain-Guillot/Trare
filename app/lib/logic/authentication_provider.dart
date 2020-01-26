@@ -2,42 +2,64 @@
 import 'package:app/models/user.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as JSON;
 
 
+
+/// Provider used to handle the authentication business logic of the app.
+/// 
+/// It is a [ChangeNotifier] so it can notify client when changment occured.
+/// In particular this provider holds 2 public variables (the state) :
+///   - [isInitialized]: false until the provider is initialized (==> until
+///     the provider has checked is the user is logged or not) ;
+///   - [user]: the connected user
+/// 
+/// [isInitialized] cannot be null.
+/// [user] is null is the user is not connected (or if the provider is not yet
+/// initialized).
+/// 
+/// When these variables change, clients are notified.
 class AuthenticationProvider extends ChangeNotifier {
 
-  User user;
-  bool isInitialized = false;
+  final AuthenticationRepository _authRepo;
 
-  AuthenticationRepository _authenticationRepository;
-
-  AuthenticationProvider({@required AuthenticationRepository authenticationRepository}) {
-    this._authenticationRepository = authenticationRepository;
-    _checkIfUserLogged();
+  User _user;
+  User get user => _user;
+  set user(User user) {
+    _user = user;
+    notifyListeners();
+  }
+  
+  bool _isInitialized;
+  bool get isInitialized => _isInitialized??false;
+  set isInitialized(bool b) {
+    _isInitialized = b;
+    notifyListeners();
   }
 
-  _checkIfUserLogged() async {
-    user = await _authenticationRepository.getCurrentUser();
+  
+
+  AuthenticationProvider({
+    @required AuthenticationRepository authRepo
+  }) : this._authRepo = authRepo;
+
+
+  init() async {
+    user = await _authRepo.getCurrentUser();
     await Future.delayed(Duration(seconds: 1)); // TODO
     isInitialized = true;
-    notifyListeners();
   }
 
 
   Future<void> handleGoogleConnexion() async {
-    user = await _authenticationRepository.handleGoogleConnexion();
-    notifyListeners();
+    user = await _authRepo.handleGoogleConnexion();
   }
 
   Future<void> handleFacebookConnexion() async {
-    user = await _authenticationRepository.handleFacebookConnexion();
-    notifyListeners();
+    user = await _authRepo.handleFacebookConnexion();
   }
 
   Future<void> signOut() async {
-    await _authenticationRepository.signOut();
+    await _authRepo.signOut();
+    user = null;
   }
 }

@@ -1,11 +1,10 @@
 
-import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as JSON;
+
+
 
 abstract class AuthenticationRepository {
 
@@ -48,25 +47,28 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
   @override
   Future<User> handleFacebookConnexion() async {
     final facebookLogin=FacebookLogin();
-    final result = await facebookLogin.logIn(['email']);
+    final facebookAuth = await facebookLogin.logIn(['email']);
 
-    switch(result.status){
+    switch(facebookAuth.status){
       case FacebookLoginStatus.loggedIn:
-          print("Connexion reussie");
-          //isInitialized=tue
-          
         break;
       case FacebookLoginStatus.error:
-          print("Erreur de connexion");
-          //isInitialized=false
-        break;
+        print(facebookAuth.errorMessage);
+        return null;
       case FacebookLoginStatus.cancelledByUser:
-          print("Connexion annulée par l'user");
+        return null;
     }
 
-    //final FirebaseUser user = authResult.user;
-    //return _firebaseUserToUser(user);
+    final AuthCredential credential = FacebookAuthProvider.getCredential(
+      accessToken: facebookAuth.accessToken.token,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+    print(user.displayName);
+    return _firebaseUserToUser(user);
   }
+  
 
   @override
   Future<User> handleGoogleConnexion() async {

@@ -5,9 +5,6 @@ import 'package:app/ui/authentication/loading_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import com;.facebook.FacebookSdk;
-import com;.facebook.appevents.AppEventsLogger;
-
 
 
 
@@ -24,8 +21,8 @@ void main() async {
     providers: [
       ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
         AuthenticationProvider(
-          authenticationRepository: authRepo
-        )
+          authRepo: authRepo
+        )..init()
       ),
     ],
     child: MyApp())
