@@ -1,6 +1,7 @@
 
 import 'package:app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -32,8 +33,7 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
   @override
   Future<User> getCurrentUser() async {
     FirebaseUser fbUser = await _auth.currentUser();
-    if (fbUser == null) return null;
-    else return _firebaseUserToUser(fbUser);
+    return fbUser == null ? null :  _FirebaseUserAdapter(user: fbUser);
   }
 
   @override
@@ -65,9 +65,8 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
     );
 
     final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-    print(user.displayName);
-    return _firebaseUserToUser(user);
+    final FirebaseUser fbUser = authResult.user;
+    return _FirebaseUserAdapter(user: fbUser);
   }
 
 
@@ -78,21 +77,16 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: "googleAuth.accessToken",
-        idToken: "googleAuth.idToken",
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
       final AuthResult authResult = await _auth.signInWithCredential(credential);
-      final FirebaseUser user = authResult.user;
+      final FirebaseUser fbUser = authResult.user;
       
-      return _firebaseUserToUser(user);
-
-
+      return _FirebaseUserAdapter(user: fbUser);
   }
 
-  User _firebaseUserToUser(FirebaseUser fbUser) {
-    return User(name: fbUser.displayName);
-  }
 
   @override
   Future<void> signOut() async {
@@ -101,6 +95,18 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
 }
 
 
-class AuthenticationException implements Exception {
+/// Adapter use to adapt [FirebaseUser] to [User].
+/// 
+/// So it implements User, and take a FirebaseUser as constructor paramater
+/// to build out User from the FirebaseUser. It allows to hide the complexity
+/// of transformation.
+/// 
+/// See https://refactoring.guru/design-patterns/adapter to know more about the
+/// adapter pattern.
+class _FirebaseUserAdapter implements User {
+  String name;
 
+  _FirebaseUserAdapter({@required FirebaseUser user}) {
+    this.name = user.displayName;
+  }
 }
