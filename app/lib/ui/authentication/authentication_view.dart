@@ -2,6 +2,7 @@ import 'package:app/logic/authentication_provider.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +115,9 @@ class AuthenticationHeader extends StatelessWidget {
 /// 
 /// So it's a [Column] of three [AuthenticationButton] that reprensents the 3
 /// authentication methods listed above.
+/// 
+/// If an error occured during the authentication process, a [Snackbar] is
+/// displayed.
 class AuthenticationButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -155,8 +159,10 @@ class AuthenticationButtonList extends StatelessWidget {
   }
 
   _showError(context) {
-    Scaffold.of(context).showSnackBar(
-      SnackBar(content: Text("An error occurred."),)
+    showSnackbar(
+      context: context,
+      content: Text(Strings.authenticationError),
+      critical: true
     );
   }
 }

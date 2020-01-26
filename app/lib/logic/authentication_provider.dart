@@ -46,7 +46,7 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
+  
   AuthenticationProvider({
     @required AuthenticationRepository authRepo
   }) : this._authRepo = authRepo;

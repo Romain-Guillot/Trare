@@ -74,8 +74,8 @@ final appTheme = ThemeData(
     surface: Color(0xff),
     onSurface: Color(0xff),
 
-    error: Color(0xff),
-    onError: Color(0xff),
+    error: Color(0xfffc3d46),
+    onError: Colors.white,
 
     background: Color(0xff),
     onBackground: Color(0xff),

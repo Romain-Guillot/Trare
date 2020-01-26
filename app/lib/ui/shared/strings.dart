@@ -7,6 +7,7 @@ class Strings {
 
   // General
   static const String appName = "TBD";
+  static const String snakbarActionDismissed = "Ok";
   
   // Constants related to authentication
   static const String authenticationTitle = "Welcome,";
@@ -16,4 +17,5 @@ class Strings {
   static const String facebookProvider = "Facebook";
   static const String emailProvider = "Email";
   static const String alternativeAuthenticationMethodeSeparotor = "OR";
+  static const String authenticationError = "An error occured. Please try again";
 }
