@@ -1,9 +1,106 @@
+import 'package:app/models/user.dart';
+import 'package:flutter/widgets.dart';
 
+
+/// Repository used to get and edit the connected [User]
+/// 
+/// It's a very basic inteface with two actions :
+///   - Get the user : [getUser()]
+///   - Edit the user information : [editUser()]
+/// 
+/// So the goal of this repository if to get or insert data belonging to users 
+/// in a remote database.
 abstract class IProfileRepository {
 
+  /// Returns the [User] currently connected to the application
+  /// 
+  /// The returned instance contains all information about the user (e.g : 
+  /// [User.name], [User.description], etc.).
+  /// If their are no connected user, the function returned null.
+  Future<User> getUser();
+
+
+  /// Update the connected user information with the data contained in [user]
+  /// 
+  /// Nothing returned if the update succeed.
+  /// The function returned an exception if an error occured (Note: it can
+  /// be catch it with [Future.catchError()] when you called this function)
+  Future<void> editUser(User user);
 }
 
 
-class FiresoreProfileRepository implements IProfileRepository {
 
+/// Implementation of [IProfileRepository] that used Cloud Firestore (Firebase)
+///
+/// See interface-level documentation to know more. 
+/// See the corresponding specification `sprint2 > bdd_archi.md` (french)
+/// 
+/// Note:
+/// This repository used the pattern Adapter :
+/// - to adapt noSQL data ([Map]) to [User] (to get the user)
+/// - to adapt [User] to noSQL data ([Map]) (to insert the user information)
+/// See [_FirestoreUserAdapter]
+class FiresoreProfileRepository implements IProfileRepository {
+  
+  ///
+  @override
+  Future<User> getUser() {
+    throw _FirestoreUserAdapter(userData: null);
+  }
+
+
+  ///
+  @override
+  Future<void> editUser(User user) {
+    throw UnimplementedError();
+  }
+}
+
+
+
+///
+///
+///
+class _FirestoreUserAdapter implements User {
+  String country;
+  String description;
+  String name;
+  String spokenLanguages;
+  String urlPhoto;
+  int age;
+
+  _FirestoreUserAdapter({@required Map<String, Object> userData}) {
+    this.name = userData[_Identifiers.USER_NAME];
+    this.description = userData[_Identifiers.USER_DESCRIPTION];
+    this.age = userData[_Identifiers.USER_AGE];
+    this.country = userData[_Identifiers.USER_LOCATION];
+    this.spokenLanguages = userData[_Identifiers.USER_LOCATION];
+    this.urlPhoto = userData[_Identifiers.USER_PHOTO];
+  }
+
+  static Map<String, Object> toMap(User user) => {
+    _Identifiers.USER_NAME: user.name,
+    _Identifiers.USER_DESCRIPTION: user.description,
+    _Identifiers.USER_LOCATION: user.country,
+    _Identifiers.USER_AGE: user.age,
+    _Identifiers.USER_LANGUAGES: user.spokenLanguages,
+    _Identifiers.USER_PHOTO: user.urlPhoto
+  };
+}
+
+
+
+/// Identifiers (name of collections / fields) used in the Cloud Firestore
+/// noSQL database.
+/// 
+/// See the corresponding specification `sprint2 > bdd_archi.md` (french)
+class _Identifiers {
+  static const USERS_COL = "users";
+
+  static const USER_NAME = "name";
+  static const USER_DESCRIPTION = "description";
+  static const USER_AGE = "age";
+  static const USER_LOCATION = "country";
+  static const USER_LANGUAGES = "languages";
+  static const USER_PHOTO = "photoURL";
 }
