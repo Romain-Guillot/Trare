@@ -22,10 +22,10 @@ abstract class IProfileRepository {
 
   /// Update the connected user information with the data contained in [user]
   /// 
-  /// Nothing returned if the update succeed.
+  /// The new updated [User] is returned
   /// The function returned an exception if an error occured (Note: it can
   /// be catch it with [Future.catchError()] when you called this function)
-  Future<void> editUser(User user);
+  Future<User> editUser(User user);
 }
 
 
@@ -49,9 +49,16 @@ class FiresoreProfileRepository implements IProfileRepository {
   }
 
 
-  ///
+  /// This function is the Adapter for the two-ways adapting
+  /// The [user] paramater is first transform thanks to the 
+  /// [_FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
+  /// data is inserted into the Cloud Firestore database.
+  /// If the updating succeed, the inserted map is adapt to [User] thanks to the
+  /// [_FirestoreUserAdapter] adapter and returned.
+  /// If the updating failed an error is returned thanks to 
+  /// [Future.error(error)]
   @override
-  Future<void> editUser(User user) {
+  Future<User> editUser(User user) {
     throw UnimplementedError();
   }
 }

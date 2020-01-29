@@ -1,5 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
+import 'package:app/logic/profile_provider.dart';
 import 'package:app/repositories/authentication_repository.dart';
+import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -23,14 +25,20 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FirebaseAuthenticationRepository authRepo = FirebaseAuthenticationRepository();
+  final authRepo = FirebaseAuthenticationRepository();
+  final profileRepo = FiresoreProfileRepository();
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
         AuthenticationProvider(
           authRepo: authRepo
-        )..init()
+        )..init(),
+      ),
+      ChangeNotifierProvider<ProfileProvider>(create: (context) => 
+        ProfileProvider(
+          profileRepo: profileRepo
+        )
       ),
     ],
     child: MyApp())
