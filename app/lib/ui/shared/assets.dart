@@ -18,4 +18,6 @@ class Assets {
   static const String google = "assets/google.svg";
   static const String facebook = "assets/facebook.svg";
   static const String mail = "assets/mail.svg";
+
+  static const String startup = "assets/startup_image.svg";
 }

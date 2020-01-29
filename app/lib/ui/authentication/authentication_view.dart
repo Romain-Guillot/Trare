@@ -25,12 +25,31 @@ import 'package:provider/provider.dart';
 ///       in this documentation as they have no semantic meaning 
 ///       (e.g. : Stack, Padding, Positionned)
 /// 
+/// The widget tree is wrapped inside a [LayoutBuilder] to render two different
+/// layout depending on the actual [Orientation].
+class AuthenticationView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraint) => Container(
+            height: constraint.maxHeight,
+            padding: const EdgeInsets.all(Values.screenMargin),
+            child: OrientationBuilder(
+              builder: (context, orientation) =>
+              orientation == Orientation.portrait
+              ? portraitLayout(constraint)
+              : landscapeLayout()
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 /// The AuthenticationHeader and the AuthenticationButtonList are put inside a 
 /// [Stack] widget. 
-/// The AuthenticationHeader is put inside a [SingleScrollView], it can be seen
-/// as the main content of this widget, if there are a lot of information, the
-/// user can scroll to display all the information (or if the devices screen is
-/// small).
 /// The AuthenticationButtonList is put inside a [Positioned] widget and above
 /// the AuthenticationHeader (as it is the second on the Stack list). It is 
 /// positionned at the bottom-center of the widget.
@@ -39,34 +58,40 @@ import 'package:provider/provider.dart';
 /// A: With this structure, the AuthenticationButtonList is always visible by 
 /// the user (as it is always positionned at the bottom-center of the screen). 
 /// It makes sense as it is the main purpose of this widget to provide an 
-/// authentication system. The AuthenticationHeader is behind the 
-/// AuthenticationButtonList and it can be scrolled if needed to see all the 
-/// information (note that some information can be hide by the 
-/// AuthenticationButtonList, but it can be resolve by adding a padding of the
-/// size of the AuthenticationButtonList, but we want to keep this widget as 
-/// simple as possible so for now I think it's best to keep this behavior).
-/// 
-class AuthenticationView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: double.infinity,
-          padding: const EdgeInsets.all(Values.screenMargin),
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: AuthenticationHeader()
+/// authentication system. 
+  Widget portraitLayout(constraint) {
+    return Stack(
+      children: [
+        AuthenticationHeader(),
+        Positioned(
+            bottom: 0, left: 0, right: 0,
+            child: LayoutBuilder(
+              builder: (context, constraints) => Container(
+                height: constraint.maxHeight / 2,
+                child: SvgPicture.asset(Assets.startup, fit: BoxFit.fitHeight)
               ),
-              Positioned(
-                bottom: 0, left: 0, right: 0, // bottom centered
-                child: Center(child: AuthenticationButtonList())
-              )
-            ]
-          ),
+            ),
         ),
-      ),
+        Positioned(
+          bottom: 0, left: 0, right: 0, // bottom centered
+          child: Center(child: AuthenticationButtonList())
+        )
+      ]
+    );
+  }
+
+  /// The AuthenticationHeader and the AuthenticationButtonList are put inside
+  /// a row, both element expands in the row (so same width)
+  Widget landscapeLayout() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: AuthenticationHeader(),
+        ),
+        Expanded(
+          child: AuthenticationButtonList(),
+        )
+      ],
     );
   }
 }
@@ -122,6 +147,7 @@ class AuthenticationButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         AuthenticationButton(
           providerMethod: Strings.googleProvider,
