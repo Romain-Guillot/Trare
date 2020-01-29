@@ -6,6 +6,9 @@ import 'package:flutter/widgets.dart';
 /// [ChangeNotifier] used to handle the current connected [user] 
 /// 
 /// [user] is the current connected user.
+/// You need to initialized the provide to retreive the user. Call [loadUser()]
+/// method to initialized the provider.
+/// 
 /// To edit the current connected user used the method [editUser].
 /// The listeners will be automatically notify with the new connected [user].
 /// 
@@ -20,33 +23,37 @@ class ProfileProvider extends ChangeNotifier {
   /// Repository used to perform action on the user (get, edit)
   final IProfileRepository _profileRepository;
 
-  bool isInit = false;
-  bool error = false;
+  /// Flag to indicate whether the provider has been initialized or not
+  /// Use [loadUser()] to initialize the provider
+  bool _isInit = false;
+  bool get isInit => _isInit;
+  
+  /// Flag to indicate that an error occured to retrieve the current connected
+  /// user
+  bool _error = false;
+  bool get error => _error;
 
-  /// When we modify the current user, we notify listener
+  /// The current connected user. Can be null for many reason (you can check the
+  /// current state with the flags [isInit] and [error])
   User _user;
   User get user => _user;
-  set user(User user) {
-    _user = user;
-    notifyListeners();
-  }
+
 
   ProfileProvider({
     @required IProfileRepository profileRepo
   }) : this._profileRepository = profileRepo;
 
-
+  /// 
+  ///
   Future loadUser() async {
-    error = false;
-    isInit = false;
+    _error = false;
+    _isInit = false;
     try {
       _user = await _profileRepository.getUser();
-      print("SUCCESS");
     } catch (e) {
-      print("ERROR");
-      error = true;
+      _error = true;
     }
-    isInit = true;
+    _isInit = true;
     notifyListeners();
   }
 

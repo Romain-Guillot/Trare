@@ -76,7 +76,6 @@ class MyApp extends StatelessWidget {
           if (authenticationProvider.user == null)
             return AuthenticationView();
           else {
-            Provider.of<ProfileProvider>(context, listen: false).loadUser();
             return ProfileVisualisationView();
           }
         }
@@ -126,5 +125,6 @@ final appTheme = ThemeData(
 
   buttonTheme: ButtonThemeData(
     minWidth: 0,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))
   )
 );
