@@ -45,7 +45,7 @@ class FiresoreProfileRepository implements IProfileRepository {
   ///
   @override
   Future<User> getUser() async {
-    return User(name: "Romain", description: "Bla bla bla");
+    return User(name: "Romain", description: "Bla bla bla", spokenLanguages: "French, english.");
   }
 
 

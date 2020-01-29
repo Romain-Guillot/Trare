@@ -1,3 +1,4 @@
+import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/ui/shared/values.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,17 @@ class ProfileVisualisationView extends StatelessWidget {
                         ProfileItem(label: "Description", content: user.description),
                         ProfileItem(label: "Country", content: user.country),
                         ProfileItem(label: "Spoken languages", content: user.spokenLanguages),
+                        SizedBox(height: 40),
+                        Center(
+                          child: FlatButton(
+                            child: Text("Sign out"),
+                            color: Theme.of(context).colorScheme.error,
+                            textColor: Theme.of(context).colorScheme.onError,
+                            onPressed: () {
+                              Provider.of<AuthenticationProvider>(context, listen: false).signOut();
+                            },
+                          ),
+                        )
                       ],
                     )
                   )
@@ -69,12 +81,15 @@ class ProfileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return content == null || content.isEmpty
     ? Container()
-    : Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(label, style: Theme.of(context).textTheme.subtitle),
-        Text(content)
-      ],
+    : Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(label, style: Theme.of(context).textTheme.subtitle),
+          Text(content)
+        ],
+      ),
     );
   }
 

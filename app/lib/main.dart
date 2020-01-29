@@ -120,8 +120,8 @@ final appTheme = ThemeData(
 
   textTheme: TextTheme(
     title: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-    subtitle: TextStyle(color: Colors.black.withOpacity(0.5), fontSize: 16),
-    body1: TextStyle(fontSize: 14) 
+    subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
+    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)) 
   ),
 
   buttonTheme: ButtonThemeData(
