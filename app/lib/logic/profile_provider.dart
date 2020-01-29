@@ -3,8 +3,12 @@ import 'package:app/repositories/profile_repository.dart';
 import 'package:flutter/widgets.dart';
 
 
-///
-///
+/// [ChangeNotifier] used to handle the current connected [user] 
+/// 
+/// [user] is the current connected user.
+/// To edit the current connected user used the method [editUser].
+/// The listeners will be automatically notify with the new connected [user].
+/// 
 /// The pattern Observer is used to define a subscription mecanisme to notify
 /// objects when a new [user] is available.
 /// The method [notfifListeners()] has to be used to notify listeners
@@ -13,6 +17,7 @@ import 'package:flutter/widgets.dart';
 /// Observer pattern
 class ProfileProvider extends ChangeNotifier {
 
+  /// Repository used to perform action on the user (get, edit)
   final IProfileRepository _profileRepository;
 
   /// When we modify the current user, we notify listener
@@ -28,7 +33,10 @@ class ProfileProvider extends ChangeNotifier {
   }) : this._profileRepository = profileRepo;
 
 
-  editUser(User newUser) {
+  ///
+  ///
+  ///
+  Future editUser(User newUser) {
 
   }
 }
