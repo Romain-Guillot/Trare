@@ -52,7 +52,7 @@ class ProfileView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ProfilePicture(),
+        ProfilePicture(url: user.urlPhoto),
         Container(
           padding: Values.screenPadding,
           child: Column(
@@ -102,13 +102,20 @@ class ProfileHeader extends StatelessWidget {
 
 
 class ProfilePicture extends StatelessWidget {
+  final String url;
+  
+  ProfilePicture({@required this.url});
+  
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-        builder: (_, constraints) => Placeholder(
-        fallbackHeight: constraints.maxWidth,
-        fallbackWidth: constraints.maxWidth,
-      ),
+        builder: (_, constraints) => Image.network(
+          url,
+          width: constraints.maxWidth,
+          height: constraints.maxWidth,
+          fit: BoxFit.fitWidth,
+          cacheHeight: 720,
+        )
     );
   }
 }
