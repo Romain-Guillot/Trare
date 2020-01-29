@@ -11,7 +11,7 @@ class ProfileVisualisationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-              child: Consumer<ProfileProvider>(
+        child: Consumer<ProfileProvider>(
           builder: (context, profileProvider, _) {
             final user = profileProvider.user;
 
@@ -36,7 +36,7 @@ class ProfileVisualisationView extends StatelessWidget {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text(user.name, style: Theme.of(context).textTheme.title,),
+                            Text(user.name??"Unknown", style: Theme.of(context).textTheme.title,),
                             Expanded(child: Container()),
                             FlatButton(
                               child: Text("Edit"),

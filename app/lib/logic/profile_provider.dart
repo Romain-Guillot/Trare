@@ -40,13 +40,14 @@ class ProfileProvider extends ChangeNotifier {
     error = false;
     isInit = false;
     try {
-      user = await _profileRepository.getUser();
+      _user = await _profileRepository.getUser();
       print("SUCCESS");
     } catch (e) {
       print("ERROR");
       error = true;
     }
     isInit = true;
+    notifyListeners();
   }
 
   ///

@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:app/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -42,10 +46,29 @@ abstract class IProfileRepository {
 /// See [_FirestoreUserAdapter]
 class FiresoreProfileRepository implements IProfileRepository {
   
+  final _auth = FirebaseAuth.instance;
+  final _firestore = Firestore.instance;
+
+
   ///
   @override
   Future<User> getUser() async {
-    return User(name: "Romain", description: "Bla bla bla", spokenLanguages: "French, english.");
+    final completer = Completer<User>();
+    final fbUser = await _auth.currentUser();
+    if (fbUser != null) {
+      _firestore.collection(_Identifiers.USERS_COL).document(fbUser.uid).get()
+        .then((userData) {
+          try {
+            final user = _FirestoreUserAdapter(userData: userData?.data??{});
+            completer.complete(user);
+          } catch (_) {
+            completer.completeError(null);
+          }
+        });
+    } else {
+      completer.completeError(null);
+    }
+    return completer.future;
   }
 
 
