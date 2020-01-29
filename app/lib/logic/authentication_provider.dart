@@ -84,15 +84,13 @@ class AuthenticationProvider extends ChangeNotifier {
   /// Return a [Future.error] if an error occured.
   Future _handleLogin(Future<User> Function() function) async {
     if (_inProcess) return ;
-    bool error = false;
     _inProcess = true;
     try {
       user = await function();
     } catch (e) {
-      error = true;
+      return Future.error(null);
     }
     _inProcess = false;
-    if (error) return Future.error(null);
   }
 
 

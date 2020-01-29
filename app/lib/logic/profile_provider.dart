@@ -20,10 +20,13 @@ class ProfileProvider extends ChangeNotifier {
   /// Repository used to perform action on the user (get, edit)
   final IProfileRepository _profileRepository;
 
+  bool isInit = false;
+  bool error = false;
+
   /// When we modify the current user, we notify listener
   User _user;
   User get user => _user;
-  void set user(User user) {
+  set user(User user) {
     _user = user;
     notifyListeners();
   }
@@ -32,6 +35,19 @@ class ProfileProvider extends ChangeNotifier {
     @required IProfileRepository profileRepo
   }) : this._profileRepository = profileRepo;
 
+
+  Future loadUser() async {
+    error = false;
+    isInit = false;
+    try {
+      user = await _profileRepository.getUser();
+      print("SUCCESS");
+    } catch (e) {
+      print("ERROR");
+      error = true;
+    }
+    isInit = true;
+  }
 
   ///
   ///

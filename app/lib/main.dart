@@ -4,6 +4,7 @@ import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,11 +75,10 @@ class MyApp extends StatelessWidget {
             return LoadingView();
           if (authenticationProvider.user == null)
             return AuthenticationView();
-          else
-            return RaisedButton(
-              child: Text("Connected"), 
-              onPressed: () async {authenticationProvider.signOut();},
-            ); // TODO : sprint 2
+          else {
+            Provider.of<ProfileProvider>(context, listen: false).loadUser();
+            return ProfileVisualisationView();
+          }
         }
       ),
     );
@@ -115,6 +115,16 @@ final appTheme = ThemeData(
     background: Color(0xff),
     onBackground: Color(0xff),
 
-    brightness: Brightness.light
+    brightness: Brightness.light,
   ),
+
+  textTheme: TextTheme(
+    title: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+    subtitle: TextStyle(color: Colors.black.withOpacity(0.5), fontSize: 16),
+    body1: TextStyle(fontSize: 14) 
+  ),
+
+  buttonTheme: ButtonThemeData(
+    minWidth: 0,
+  )
 );

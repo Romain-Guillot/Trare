@@ -10,7 +10,8 @@ class Values {
 
   // General values
 
-  static const double screenMargin = 17;
+  static const double screenPaddingValue = 17;
+  static const EdgeInsets screenPadding = const EdgeInsets.all(screenPaddingValue);
 
   static const FontWeight weightLight = FontWeight.w300;
   static const FontWeight weightRegular = FontWeight.normal;

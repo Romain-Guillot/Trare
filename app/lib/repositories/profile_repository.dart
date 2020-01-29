@@ -44,8 +44,8 @@ class FiresoreProfileRepository implements IProfileRepository {
   
   ///
   @override
-  Future<User> getUser() {
-    throw _FirestoreUserAdapter(userData: null);
+  Future<User> getUser() async {
+    return User(name: "Romain", description: "Bla bla bla");
   }
 
 

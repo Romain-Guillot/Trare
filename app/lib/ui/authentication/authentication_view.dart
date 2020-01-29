@@ -37,7 +37,7 @@ class AuthenticationView extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraint) => Container(
             height: constraint.maxHeight,
-            padding: const EdgeInsets.all(Values.screenMargin),
+            padding: Values.screenPadding,
             child: OrientationBuilder(
               builder: (context, orientation) =>
               orientation == Orientation.portrait
@@ -117,7 +117,7 @@ class AuthenticationHeader extends StatelessWidget {
           height: Values.authLogoSize, 
           color: Theme.of(context).colorScheme.primary,
         ),
-        SizedBox(height: Values.screenMargin),
+        SizedBox(height: Values.screenPaddingValue),
         Text(
           Strings.authenticationTitle,
           style: TextStyle(fontSize: Values.authTitleSize, fontWeight: Values.weightBold)
