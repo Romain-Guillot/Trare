@@ -27,6 +27,8 @@ import 'package:provider/provider.dart';
 /// 
 /// The widget tree is wrapped inside a [LayoutBuilder] to render two different
 /// layout depending on the actual [Orientation].
+/// 
+/// Note: the background image is only visible in the portait layout.
 class AuthenticationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
