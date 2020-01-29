@@ -15,15 +15,16 @@ import 'package:flutter/widgets.dart';
 /// [showDialog()] for example.
 showSnackbar({@required BuildContext context, @required Widget content, bool critical = false}) {
   final _colorScheme = Theme.of(context).colorScheme;
-  final backgroundColor = critical ? _colorScheme.error : _colorScheme.primaryVariant;
+  final backColor = critical ? _colorScheme.error : _colorScheme.primaryVariant;
   final textColor = critical ? _colorScheme.onError : _colorScheme.onPrimary;
+  
   Scaffold.of(context).showSnackBar(
     SnackBar(
       content: DefaultTextStyle(
         style: TextStyle(color: textColor),
         child: content
       ),
-      backgroundColor: backgroundColor,
+      backgroundColor: backColor,
       action: SnackBarAction( // remove the snackbar on the action button
         label: Strings.snakbarActionDismissed, 
         textColor: textColor,
