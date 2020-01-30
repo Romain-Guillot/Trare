@@ -20,4 +20,6 @@ class Assets {
   static const String mail = "assets/mail.svg";
 
   static const String startup = "assets/startup_image.svg";
+  
+  static const String defaultProfilePicture = "assets/default_profile_pricture.svg";
 }

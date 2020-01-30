@@ -9,6 +9,12 @@ import 'package:flutter/widgets.dart';
 /// You need to initialized the provide to retreive the user. Call [loadUser()]
 /// method to initialized the provider.
 /// 
+/// [state] is the current state of the provider, it can take the following
+/// values :
+/// - [ProfileProviderState.not_initialized]
+/// - [ProfileProviderState.error]
+/// - [ProfileProviderState.initialized]
+/// 
 /// To edit the current connected user used the method [editUser].
 /// The listeners will be automatically notify with the new connected [user].
 /// 
@@ -23,15 +29,16 @@ class ProfileProvider extends ChangeNotifier {
   /// Repository used to perform action on the user (get, edit)
   final IProfileRepository _profileRepository;
 
-  /// Flag to indicate whether the provider has been initialized or not
-  /// Use [loadUser()] to initialize the provider
-  bool _isInit = false;
-  bool get isInit => _isInit;
+  /// The current provider state (not initialized, error, initialized)
+  /// 
+  /// See [ProfileProviderState]
+  ProfileProviderState _state = ProfileProviderState.not_initialized;
+  ProfileProviderState get state => _state;
+  set state(state) {
+    _state = state;
+    notifyListeners();
+  } 
   
-  /// Flag to indicate that an error occured to retrieve the current connected
-  /// user
-  bool _error = false;
-  bool get error => _error;
 
   /// The current connected user. Can be null for many reason (you can check the
   /// current state with the flags [isInit] and [error])
@@ -43,19 +50,19 @@ class ProfileProvider extends ChangeNotifier {
     @required IProfileRepository profileRepo
   }) : this._profileRepository = profileRepo;
 
+
   /// 
   ///
   Future loadUser() async {
-    _error = false;
-    _isInit = false;
+    state = ProfileProviderState.not_initialized;
     try {
       _user = await _profileRepository.getUser();
     } catch (e) {
-      _error = true;
+      state = ProfileProviderState.error;
     }
-    _isInit = true;
-    notifyListeners();
+    state = ProfileProviderState.initialized;
   }
+
 
   ///
   ///
@@ -63,4 +70,18 @@ class ProfileProvider extends ChangeNotifier {
   Future editUser(User newUser) {
 
   }
+}
+
+
+
+/// State enum used to represent the current state of the [ProfileProvider]
+enum ProfileProviderState {
+  /// Not yet initialized
+  not_initialized,
+
+  /// An error occured
+  error,
+
+  /// The provider is initialized, all processes finished
+  initialized
 }

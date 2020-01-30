@@ -12,6 +12,8 @@ class Values {
 
   static const double screenPaddingValue = 17;
   static const EdgeInsets screenPadding = const EdgeInsets.all(screenPaddingValue);
+  static const double normalSpacing = 15;
+  static const double bigSpacing = 45;
 
   static const FontWeight weightLight = FontWeight.w300;
   static const FontWeight weightRegular = FontWeight.normal;
@@ -28,9 +30,11 @@ class Values {
 
 
   // Authentication (prefix with "auth")
-  
   static const double authLogoSize = 100;
   static const double authTitleSize = 35;
   static const double authDescriptionSize = 20;
+
+  // Profile
+  static const int maxImageResolution = 720;
 
 }

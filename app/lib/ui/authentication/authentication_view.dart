@@ -2,6 +2,7 @@ import 'package:app/logic/authentication_provider.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -156,15 +157,15 @@ class AuthenticationButtonList extends StatelessWidget {
           leadingIcon: SvgPicture.asset(Assets.google),
           onPressed: () => _handleGoogle(context),
         ),
-        SizedBox(height: 15),
+        FlexSpacer(),
         AuthenticationButton(
           providerMethod: Strings.facebookProvider,
           leadingIcon: SvgPicture.asset(Assets.facebook),
           onPressed: () => _handleFacebook(context),
         ),
-        SizedBox(height: 15),
+        FlexSpacer(),
         Text(Strings.alternativeAuthenticationMethodeSeparotor),
-        SizedBox(height: 15),
+        FlexSpacer(),
         AuthenticationButton(
           providerMethod: Strings.emailProvider,
           leadingIcon: SvgPicture.asset(Assets.mail),

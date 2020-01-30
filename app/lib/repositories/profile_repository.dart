@@ -104,7 +104,7 @@ class _FirestoreUserAdapter implements User {
     this.description = userData[_Identifiers.USER_DESCRIPTION];
     this.age = userData[_Identifiers.USER_AGE];
     this.country = userData[_Identifiers.USER_LOCATION];
-    this.spokenLanguages = userData[_Identifiers.USER_LOCATION];
+    this.spokenLanguages = userData[_Identifiers.USER_LANGUAGES];
     this.urlPhoto = userData[_Identifiers.USER_PHOTO];
   }
 

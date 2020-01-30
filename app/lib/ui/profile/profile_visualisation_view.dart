@@ -1,10 +1,14 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
+import 'package:app/ui/shared/assets.dart';
+import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/values.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
+import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 
@@ -19,7 +23,7 @@ class _ProfileVisualisationViewState extends State<ProfileVisualisationView> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ProfileProvider>(context, listen: false).loadUser();
+      Future.microtask(() => loadUser());
   }
 
   @override
@@ -28,15 +32,59 @@ class _ProfileVisualisationViewState extends State<ProfileVisualisationView> {
       body: SafeArea(
         child: Consumer<ProfileProvider>(
           builder: (context, profileProvider, _) {
-            final user = profileProvider.user;
-            if (!profileProvider.isInit)
-              return Text("Loading...");
-            if (profileProvider.error)
-              return Text("An error occured");
-            return ProfileView(user: user);
+            switch (profileProvider.state) {
+              case ProfileProviderState.not_initialized:
+                return ProfileLoading();
+              case ProfileProviderState.error:
+                return ProfileError(onPressed: loadUser);
+              case ProfileProviderState.initialized:
+              default: 
+                return ProfileView(user: profileProvider.user);
+            }
           }
         ),
       )
+    );
+  }
+
+  loadUser() {
+    Provider.of<ProfileProvider>(context, listen: false).loadUser();
+  }
+}
+
+
+class ProfileLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(Strings.profileLoading)
+    );
+  }
+}
+
+
+class ProfileError extends StatelessWidget {
+
+  final Function onPressed;
+  
+  ProfileError({@required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(Strings.profileError),
+          FlexSpacer(),
+          Button(
+            child: Text(Strings.profileErrorRetry),
+            critical: true,
+            onPressed: onPressed,
+          )
+        ],
+      ),
     );
   }
 }
@@ -52,29 +100,48 @@ class ProfileView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ProfilePicture(url: user.urlPhoto),
+        ProfilePicture(
+          url: user.urlPhoto
+        ),
         Container(
           padding: Values.screenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ProfileHeader(user: user, onEdit: () {},),
-              ProfileItemList(user: user,),
-              SizedBox(height: 40),
+              ProfileHeader(
+                user: user, 
+                onEdit: () {},
+              ),
+              ProfileItemList(
+                user: user,
+              ),
+              FlexSpacer(
+                big: true
+              ),
               Center(
-                child: Button(
-                  child: Text("Sign out"),
-                  critical: true,
-                  onPressed: () {
-                    Provider.of<AuthenticationProvider>(context, listen: false).signOut();
-                  },
-                ),
+                child: ProfileSignOutButton()
               )
             ],
           )
         )
       ],
     );
+  }
+}
+
+
+class ProfileSignOutButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+      child: Text(Strings.profileSignOut),
+      critical: true,
+      onPressed: () => onSubmit(context)
+    );
+  }
+
+  onSubmit(context) {
+    Provider.of<AuthenticationProvider>(context, listen: false).signOut();
   }
 }
 
@@ -87,12 +154,13 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final username = user.name??Strings.profileUnknownName;
     return Row(
       children: <Widget>[
-        Text(user.name??"Unknown", style: Theme.of(context).textTheme.title,),
+        Text(username, style: Theme.of(context).textTheme.title,),
         Expanded(child: Container()),
         Button(
-          child: Text("Edit"),
+          child: Text(Strings.profileEdit),
           onPressed: onEdit,
         )
       ],
@@ -108,14 +176,34 @@ class ProfilePicture extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (_, constraints) => Image.network(
-          url,
-          width: constraints.maxWidth,
-          height: constraints.maxWidth,
-          fit: BoxFit.fitWidth,
-          cacheHeight: 720,
-        )
+    return   
+        LayoutBuilder(
+          builder: (_, constraints) { 
+            final size = constraints.maxWidth;
+            return Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.1),
+                boxShadow: [Values.shadow]
+              ),
+              child: url == null
+              ? Center(
+                  child: SvgPicture.asset(
+                    Assets.defaultProfilePicture, 
+                    height: size / 2,
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                )
+              : Image.network(
+                  url,
+                  width: size,
+                  height: size,
+                  fit: BoxFit.fitWidth,
+                  cacheHeight: Values.maxImageResolution,
+                )
+            );
+          }
     );
   }
 }
@@ -130,9 +218,22 @@ class ProfileItemList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ProfileItem(label: "Description", content: user.description),
-        ProfileItem(label: "Country", content: user.country),
-        ProfileItem(label: "Spoken languages", content: user.spokenLanguages),
+        ProfileItem(
+          label: Strings.profileDescription, 
+          content: user.description
+        ),
+        ProfileItem(
+          label: Strings.profileAge,
+          content: user.age.toString(),
+        ),
+        ProfileItem(
+          label: Strings.profileCountry, 
+          content: user.country
+        ),
+        ProfileItem(
+          label: Strings.profileSpokenLanguages, 
+          content: user.spokenLanguages
+        ),
       ],
     );
   }
@@ -149,15 +250,13 @@ class ProfileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return content == null || content.isEmpty
     ? Container()
-    : Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(label, style: Theme.of(context).textTheme.subtitle),
-          Text(content)
-        ],
-      ),
+    : Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(label, style: Theme.of(context).textTheme.subtitle),
+        Text(content),
+        FlexSpacer()
+      ],
     );
   }
 }
