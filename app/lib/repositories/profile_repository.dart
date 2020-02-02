@@ -104,7 +104,7 @@ class FiresoreProfileRepository implements IProfileRepository {
     var userDoc = await _userDocumentRef;
     if (userDoc != null) {
       var userData = _FirestoreUserAdapter.toMap(user);
-      await userDoc.setData(userData).catchError((e) => print(e));
+      await userDoc.setData(userData, merge: true);
       return _FirestoreUserAdapter(userData: userData);
     } 
     return Future.error(null);
