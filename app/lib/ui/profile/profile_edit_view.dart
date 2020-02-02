@@ -6,6 +6,7 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/widgets/app_text_field.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
+import 'package:app/ui/shared/widgets/default_profile_picture.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/cupertino.dart';
@@ -252,14 +253,11 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: Dimens.borderRadius
               ),
-              child: _image == null 
-                ? Icon(
-                    Icons.account_circle,
-                    size: 45.0,
-                  )
-                : ClipRRect(
-                    borderRadius: Dimens.borderRadius,
-                    child: Image.file(
+              child: ClipRRect(
+                borderRadius: Dimens.borderRadius,
+                child: _image == null
+                  ? DefaultProfilePicture()
+                  : Image.file(
                       _image,
                       fit: BoxFit.cover
                     ),

@@ -6,6 +6,7 @@ import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
+import 'package:app/ui/shared/widgets/default_profile_picture.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -197,13 +198,7 @@ class ProfilePicture extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
               ),
               child: url == null
-              ? Center(
-                  child: SvgPicture.asset(
-                    Assets.defaultProfilePicture, 
-                    height: size / 2,
-                    color: Theme.of(context).colorScheme.onSurfaceLight,
-                  ),
-                )
+              ? DefaultProfilePicture()
               : Image.network(
                   url,
                   width: size,
