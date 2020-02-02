@@ -19,8 +19,8 @@
 **TODO:** configuration de la phase de deploiement sur Google Play.
 
 ###### Projet Firebase
-Création du projet Firebase et activation du service **Firebase Authentication** pour implémenter la fonctionnalité. Configuration des nos environnement de travail dessus (pour la signature de l'application mobile)
-Activation mes méthodes d'authentification suivantes : Google, Facebook, et mail / mot de passe.
+Création du projet Firebase et activation du service **Firebase Authentication** pour implémenter la fonctionnalité. Configuration des nos environnement de travail dessus (pour la signature de l'application mobile) 
+Activation des méthodes d'authentification suivantes : Google, Facebook, et mail / mot de passe.
 
 ###### Architecture client
 
@@ -32,7 +32,7 @@ Voir `#1_architecture`.
 Voir `#1_authentication.md`
 
 Presque tout a été réalisé :
-- interface graphique avec les boutons d'authentification (Google, Facebook, Email) ;
+- UI avec les boutons d'authentification (Google, Facebook, Email) ;
 - le provider qui communique entre l'ui et le repository + fourni à l'UI l'utilisateur actuelle;
 - le repository qui permet la communication avec Firebase pour les méthodes d'authentification suivants : Google et Facebook
 
