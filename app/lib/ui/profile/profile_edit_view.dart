@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/shared/widgets/app_text_field.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 
 ///
 /// Stateful widget to not lose form data (as we give a special key)
@@ -48,7 +50,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          padding: Values.screenPadding,
+          padding: Dimens.screenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -70,6 +72,10 @@ class _ProfileEditViewState extends State<ProfileEditView> {
 }
 
 
+
+///
+///
+///
 class SaveButton extends StatefulWidget {
 
   final GlobalKey<_ProfileFormState> profileFormKey;
@@ -87,7 +93,7 @@ class _SaveButtonState extends State<SaveButton> {
   @override
   Widget build(BuildContext context) {
     return Button(
-      child: Text(inProgress ? "Loading..." : "Save"),
+      child: Text(inProgress ? Strings.loading : Strings.profileEditionSave),
       onPressed: inProgress ? null : handleSubmit,
     );
   }
@@ -96,18 +102,32 @@ class _SaveButtonState extends State<SaveButton> {
     var user = widget.profileFormKey.currentState.getUser();
     if (user != null) {
       setState(() => inProgress = true);
-      bool success = await Provider.of<ProfileProvider>(context, listen: false).editUser(user);
+      var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+      bool success = await profileProvider.editUser(user);
       setState(() => inProgress = false);
-      if (!success)
-        showSnackbar(context: context, content: Text("An error occured"), critical: true);
-      else
-        showSnackbar(context: context, content: Text("Profile successufully updated"));
+      success ? _showSuccessSnackbar() : _showErrorSnackbar();
     }
   }
+
+  _showErrorSnackbar() =>
+    showSnackbar(
+      context: context, 
+      content: Text(Strings.profileEditionError), 
+      critical: true
+    );
+  
+  _showSuccessSnackbar() =>
+    showSnackbar(
+      context: context, 
+      content: Text(Strings.profileEditionSuccess)
+    );
 }
 
 
 
+///
+///
+///
 class ProfileForm extends StatefulWidget {
   final User initialUser;
   
@@ -149,32 +169,32 @@ class _ProfileFormState extends State<ProfileForm> {
         children: <Widget>[
           UploadPhotoFormField(),
           FlexSpacer(),
-          EditProfileTextfield(
+          AppTextField(
             controller: userNameController,
             labelText: Strings.profileUsername,
           ),
           FlexSpacer(),
-          EditProfileTextfield(
+          AppTextField(
             controller: descriptionController,
             labelText: Strings.profileDescription,
             keyboardType: TextInputType.multiline,
             optionnal: true,
           ),
           FlexSpacer(),
-          EditProfileTextfield(
+          AppTextField(
             controller: ageController,
             labelText: Strings.profileAge,
             keyboardType: TextInputType.number,
             optionnal: true,
           ),
           FlexSpacer(),
-          EditProfileTextfield(
+          AppTextField(
             controller: languageController,
             labelText: Strings.profileSpokenLanguages,
             optionnal: true,
           ),
           FlexSpacer(),
-          EditProfileTextfield(
+          AppTextField(
             controller: contryController,
             labelText:  Strings.profileCountry,
             optionnal: true,
@@ -186,20 +206,30 @@ class _ProfileFormState extends State<ProfileForm> {
 
   User getUser() {
     if (_formKey.currentState.validate()){
-      var user = User(
+      int age;
+      try {
+        age = int.parse(ageController.text);
+      } catch(_) {}
+      return User(
         name: userNameController.text,
         description: descriptionController.text, 
-        age: int.parse(ageController.text), 
+        age: age, 
         spokenLanguages: languageController.text, 
         country: contryController.text,
       );
-      return user;
     }
     return null;
   }
 }
 
 
+
+/// IN PROGRESS
+///
+/// TBD
+/// 
+/// TODO
+///   - initial photo
 class UploadPhotoFormField extends StatefulWidget {
   @override
   _UploadPhotoFormFieldState createState() => _UploadPhotoFormFieldState();
@@ -220,7 +250,7 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
               width: constraints.maxWidth,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: Values.borderRadius
+                borderRadius: Dimens.borderRadius
               ),
               child: _image == null 
                 ? Icon(
@@ -228,7 +258,7 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
                     size: 45.0,
                   )
                 : ClipRRect(
-                    borderRadius: Values.borderRadius,
+                    borderRadius: Dimens.borderRadius,
                     child: Image.file(
                       _image,
                       fit: BoxFit.cover
@@ -243,12 +273,12 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
           children: <Widget>[
             Button(
               icon: Icon(Icons.add_photo_alternate),
-              child: Text("Add photo"),
+              child: Text(Strings.profileEditionPickPhoto),
               onPressed: getImageFromGall,
             ),
             Button(
               icon: Icon(Icons.add_a_photo),
-              child: Text("Take photo"),
+              child: Text(Strings.profileEditionTakePhoto),
               onPressed: getImageFromCam,
             )
           ],
@@ -267,73 +297,3 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
     setState(() => _image = image);
   }
 }
-
-
-
-
-class EditProfileTextfield extends StatelessWidget{
-
-  final TextEditingController controller;
-  final String labelText;
-  final Function(String) customValidator;
-  final bool optionnal;
-  final TextInputType keyboardType;
-
-  EditProfileTextfield({
-    this.controller, 
-    this.labelText, 
-    this.customValidator,
-    this.keyboardType = TextInputType.text,
-    this.optionnal = false
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final noBorder = OutlineInputBorder(
-      borderRadius: Values.borderRadius,
-      borderSide: BorderSide(color: Colors.transparent)
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          labelText, 
-          style: Theme.of(context).inputDecorationTheme.labelStyle,
-        ),
-        FlexSpacer(small: true),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          maxLines: keyboardType == TextInputType.multiline ? null : 1,
-          minLines: keyboardType == TextInputType.multiline ? 5 : 1,
-          
-          decoration: InputDecoration(
-            hintText: optionnal ? "Optionnal" : "Required",
-            contentPadding: EdgeInsets.all(10),
-            border: noBorder,
-            disabledBorder: noBorder,
-            enabledBorder: noBorder,
-            focusedBorder: noBorder,
-            errorBorder: noBorder,
-            focusedErrorBorder: noBorder,
-            filled: true,
-          ),
-          validator: (val) {
-            String error;
-            if (customValidator != null)
-              error = customValidator(val);
-            if (error == null && !optionnal && val.isEmpty)
-              error = "Cannot be empty";
-            return error;
-          }
-        ),
-      ],
-    );
-  }
-}
-
-
-
-
-
-

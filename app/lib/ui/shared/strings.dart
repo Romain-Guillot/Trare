@@ -8,6 +8,10 @@ class Strings {
   // General
   static const String appName = "TBD";
   static const String snakbarActionDismissed = "Ok";
+  static const String loading = "Loading ...";
+
+
+
   
   // Constants related to authentication
   static const String authenticationTitle = "Welcome,";
@@ -36,5 +40,16 @@ class Strings {
 
   // Profile edition
   static const String profileEditionInfo = "Configure your profile to let users get to know you a little better";
-  
+  static const String profileEditionTakePhoto = "Take photo";
+  static const String profileEditionPickPhoto = "Add photo";
+  static const String profileEditionSave = "Save";
+  static const String profileEditionError = "An error occured";
+  static const String profileEditionSuccess = "Profile successufully updated";
+
+
+  // Form
+  static const String invalidForm = "Cannot be empty";
+  static const String optionnalTextField = "Optionnal";
+  static const String requiredTextField = "Required";
+
 }

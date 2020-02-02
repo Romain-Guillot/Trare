@@ -4,7 +4,7 @@ import 'package:app/models/user.dart';
 import 'package:app/ui/profile/profile_edit_view.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
@@ -99,34 +99,36 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ProfilePicture(
-          url: user.urlPhoto
-        ),
-        Container(
-          padding: Values.screenPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ProfileHeader(
-                user: user, 
-                onEdit: () => editProfile(context),
-              ),
-              ProfileItemList(
-                user: user,
-              ),
-              FlexSpacer(
-                big: true
-              ),
-              Center(
-                child: ProfileSignOutButton()
-              )
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ProfilePicture(
+            url: user.urlPhoto
+          ),
+          Container(
+            padding: Dimens.screenPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ProfileHeader(
+                  user: user, 
+                  onEdit: () => editProfile(context),
+                ),
+                ProfileItemList(
+                  user: user,
+                ),
+                FlexSpacer(
+                  big: true
+                ),
+                Center(
+                  child: ProfileSignOutButton()
+                )
+              ],
+            )
           )
-        )
-      ],
+        ],
+      ),
     );
   }
 
@@ -207,7 +209,7 @@ class ProfilePicture extends StatelessWidget {
                   width: size,
                   height: size,
                   fit: BoxFit.fitWidth,
-                  cacheHeight: Values.maxImageResolution,
+                  cacheHeight: Dimens.maxImageResolution,
                 )
             );
           }
@@ -231,7 +233,7 @@ class ProfileItemList extends StatelessWidget {
         ),
         ProfileItem(
           label: Strings.profileAge,
-          content: user.age.toString(),
+          content: user.age?.toString(),
         ),
         ProfileItem(
           label: Strings.profileCountry, 

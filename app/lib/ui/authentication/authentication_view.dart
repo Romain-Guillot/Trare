@@ -1,7 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class AuthenticationView extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraint) => Container(
             height: constraint.maxHeight,
-            padding: Values.screenPadding,
+            padding: Dimens.screenPadding,
             child: OrientationBuilder(
               builder: (context, orientation) =>
               orientation == Orientation.portrait
@@ -115,10 +115,10 @@ class AuthenticationHeader extends StatelessWidget {
       children: <Widget>[
         SvgPicture.asset(
           Assets.logo, 
-          height: Values.authLogoSize, 
+          height: Dimens.authLogoSize, 
           color: Theme.of(context).colorScheme.primary,
         ),
-        SizedBox(height: Values.screenPaddingValue),
+        SizedBox(height: Dimens.screenPaddingValue),
         Text(
           Strings.authenticationTitle,
           style: Theme.of(context).textTheme.display2
@@ -241,14 +241,14 @@ class AuthenticationButton extends StatelessWidget {
     final iconSize = buttonStyle.fontSize * 1.5; //  icons are 1.5 times bigger than the text
     return Container(
       decoration: BoxDecoration(
-        borderRadius: Values.rounedBorderRadius,
+        borderRadius: Dimens.rounedBorderRadius,
         color: Colors.white,
-        boxShadow: [Values.shadow]
+        boxShadow: [Dimens.shadow]
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: Values.rounedBorderRadius,
+          borderRadius: Dimens.rounedBorderRadius,
           onTap: onPressed,
           child: Container(
             padding: const EdgeInsets.all(_padding),
@@ -262,11 +262,11 @@ class AuthenticationButton extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: Strings.buttonProviderSuffixText,
-                      style: Theme.of(context).textTheme.button.copyWith(fontWeight: Values.weightRegular),
+                      style: Theme.of(context).textTheme.button.copyWith(fontWeight: Dimens.weightRegular),
                       children: [
                         TextSpan(
                           text: " " + providerMethod,
-                          style: TextStyle(fontWeight: Values.weightBold)
+                          style: TextStyle(fontWeight: Dimens.weightBold)
                         )
                       ]
                     ),

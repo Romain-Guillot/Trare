@@ -6,7 +6,7 @@ import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/shared/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -123,7 +123,7 @@ final appTheme = ThemeData(
   ),
 
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: TextStyle(fontSize: 15, fontWeight: Values.weightBold)
+    labelStyle: TextStyle(fontSize: 15, fontWeight: Dimens.weightBold)
   ),
 
   textTheme: TextTheme(
@@ -131,8 +131,8 @@ final appTheme = ThemeData(
     subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
     body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)),
 
-    display2: TextStyle(fontSize: Values.authTitleSize, fontWeight: Values.weightBold, color: Colors.black),
-    display1: TextStyle(fontSize: Values.authDescriptionSize, color: Colors.black.withOpacity(0.5))
+    display2: TextStyle(fontSize: Dimens.authTitleSize, fontWeight: Dimens.weightBold, color: Colors.black),
+    display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
   ),
 
   buttonTheme: ButtonThemeData(
