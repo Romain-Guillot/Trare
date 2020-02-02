@@ -4,6 +4,7 @@ import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/profile/ProfileEditView.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
           if (authenticationProvider.user == null)
             return AuthenticationView();
           else
-          return ProfileVisualisationView();
+          return ProfileEditView();
             /*return RaisedButton(
               child: Text("Connected"), 
               onPressed: () async {authenticationProvider.signOut();},
