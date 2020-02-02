@@ -1,6 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
+import 'package:app/ui/profile/profile_edit_view.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/values.dart';
@@ -110,7 +111,7 @@ class ProfileView extends StatelessWidget {
             children: <Widget>[
               ProfileHeader(
                 user: user, 
-                onEdit: () {},
+                onEdit: () => editProfile(context),
               ),
               ProfileItemList(
                 user: user,
@@ -126,6 +127,12 @@ class ProfileView extends StatelessWidget {
         )
       ],
     );
+  }
+
+  editProfile(context) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => ProfileEditView()
+    ));
   }
 }
 
@@ -258,7 +265,5 @@ class ProfileItem extends StatelessWidget {
         FlexSpacer()
       ],
     );
-
-
   }
 }
