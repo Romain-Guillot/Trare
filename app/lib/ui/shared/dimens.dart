@@ -3,7 +3,6 @@ import 'package:flutter/painting.dart';
 
 /// Useful constant values share across the app 
 /// 
-/// See [Values] for constant used for the UI behavior and not UI theming.
 /// 
 /// (e.g. padding, font size, font weight, margin, etc.)
 /// Everything is constant, so the constructor is private
@@ -33,6 +32,9 @@ class Dimens {
     spreadRadius: 2 // shadow size
   );
 
+  static const formMultiLinesDefaultLinesNumber = 10;
+
+
 
 
   // Authentication (prefix with "auth")
@@ -42,5 +44,6 @@ class Dimens {
 
   // Profile
   static const int maxImageResolution = 720;
+  static const int profileDescriptionFormLineNumber = 10;
 
 }

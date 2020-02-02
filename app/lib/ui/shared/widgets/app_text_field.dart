@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/shared/values.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,7 +23,7 @@ class AppTextField extends StatelessWidget {
     this.customValidator,
     this.keyboardType = TextInputType.text,
     this.optionnal = false,
-    this.maxLines = Values.maxFormLines
+    this.maxLines = Dimens.formMultiLinesDefaultLinesNumber
   });
 
   @override
@@ -44,7 +43,7 @@ class AppTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
-          maxLines: keyboardType == TextInputType.multiline ? maxLines : 1,
+          maxLines: keyboardType == TextInputType.multiline ? null : 1,
           minLines: keyboardType == TextInputType.multiline ? min(maxLines, 5) : 1,
           
           decoration: InputDecoration(

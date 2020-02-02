@@ -179,6 +179,7 @@ class _ProfileFormState extends State<ProfileForm> {
             controller: descriptionController,
             labelText: Strings.profileDescription,
             keyboardType: TextInputType.multiline,
+            maxLines: Dimens.profileDescriptionFormLineNumber,
             optionnal: true,
           ),
           FlexSpacer(),
