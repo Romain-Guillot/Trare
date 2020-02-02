@@ -20,6 +20,7 @@ class Strings {
   static const String authenticationError = "An error occured. Please try again";
 
   // Profile general
+  static const String profileUsername = "Username";
   static const String profileDescription = "Description";
   static const String profileCountry = "Country";
   static const String profileSpokenLanguages = "Spoken languages";
@@ -32,5 +33,8 @@ class Strings {
   static const String profileErrorRetry = "Retry";
   static const String profileSignOut = "Sign out";
   static const String profileEdit = "Edit";
+
+  // Profile edition
+  static const String profileEditionInfo = "Configure your profile to let users get to know you a little better";
   
 }

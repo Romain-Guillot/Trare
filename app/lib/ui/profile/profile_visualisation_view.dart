@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:app/main.dart';
 
 
 class ProfileVisualisationView extends StatefulWidget {
@@ -131,7 +132,7 @@ class ProfileView extends StatelessWidget {
 
   editProfile(context) {
     Navigator.push(context, MaterialPageRoute(
-      builder: (_) => ProfileEditView()
+      builder: (_) => ProfileEditView(user: user)
     ));
   }
 }
@@ -191,15 +192,14 @@ class ProfilePicture extends StatelessWidget {
               width: size,
               height: size,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
-                boxShadow: [Values.shadow]
+                color: Theme.of(context).colorScheme.surface,
               ),
               child: url == null
               ? Center(
                   child: SvgPicture.asset(
                     Assets.defaultProfilePicture, 
                     height: size / 2,
-                    color: Colors.black.withOpacity(0.3),
+                    color: Theme.of(context).colorScheme.onSurfaceLight,
                   ),
                 )
               : Image.network(

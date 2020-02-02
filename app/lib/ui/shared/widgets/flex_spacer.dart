@@ -7,14 +7,21 @@ import 'package:flutter/widgets.dart';
 /// Used typically in [Row] or [Column].
 /// It will create a square widget of [Values.normalSpacing]
 /// If you want a bigger space, set the flag [big] to true
+/// If you want smaller space, set the flag [small] to true
 class FlexSpacer extends StatelessWidget {
   final bool big;
+  final bool small;
 
-  FlexSpacer({this.big = false});
+  FlexSpacer({
+    this.big = false,
+    this.small = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final space = big ? Values.bigSpacing : Values.normalSpacing;
+    var space = Values.normalSpacing;
+    if (big) space = Values.bigSpacing;
+    if (small) space = Values.smallSpacing;
     return SizedBox(
       width: space,
       height: space,

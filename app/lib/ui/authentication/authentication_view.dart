@@ -121,11 +121,11 @@ class AuthenticationHeader extends StatelessWidget {
         SizedBox(height: Values.screenPaddingValue),
         Text(
           Strings.authenticationTitle,
-          style: TextStyle(fontSize: Values.authTitleSize, fontWeight: Values.weightBold)
+          style: Theme.of(context).textTheme.display2
         ),
         Text(
           Strings.authenticationDescription,
-          style: TextStyle(fontSize: Values.authDescriptionSize, color: Colors.black.withOpacity(0.5))
+          style: Theme.of(context).textTheme.display1
         ),
       ],
     );

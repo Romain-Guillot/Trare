@@ -6,6 +6,7 @@ import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
+import 'package:app/ui/shared/values.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,6 +86,10 @@ class MyApp extends StatelessWidget {
 }
 
 
+extension ColorSchemeExt on ColorScheme {
+  Color get onSurfaceLight => Colors.black.withOpacity(0.3);
+}
+
 
 /// Theme defined for our app (color, text style, etc)
 /// We can use this constants anywhere in our app by using
@@ -105,8 +110,8 @@ final appTheme = ThemeData(
     secondaryVariant: Color(0xff),
     onSecondary: Color(0xff),
 
-    surface: Color(0xff),
-    onSurface: Color(0xff),
+    surface: Color(0xffe6e6e6),
+    onSurface: Color(0xff000000),
 
     error: Color(0xfffc3d46),
     onError: Colors.white,
@@ -117,10 +122,17 @@ final appTheme = ThemeData(
     brightness: Brightness.light,
   ),
 
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(fontSize: 15, fontWeight: Values.weightBold)
+  ),
+
   textTheme: TextTheme(
     title: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
     subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
-    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)) 
+    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)),
+
+    display2: TextStyle(fontSize: Values.authTitleSize, fontWeight: Values.weightBold, color: Colors.black),
+    display1: TextStyle(fontSize: Values.authDescriptionSize, color: Colors.black.withOpacity(0.5))
   ),
 
   buttonTheme: ButtonThemeData(

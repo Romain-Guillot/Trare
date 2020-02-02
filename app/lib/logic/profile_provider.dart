@@ -67,9 +67,15 @@ class ProfileProvider extends ChangeNotifier {
   ///
   ///
   ///
-  Future editUser(User newUser) {
-  
-
+  Future<bool> editUser(User newUser) async {
+    await Future.delayed(Duration(seconds: 1));
+    try {
+      _user = await _profileRepository.editUser(newUser);
+      notifyListeners();
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
 

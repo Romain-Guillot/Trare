@@ -17,4 +17,7 @@ class User {
     this.country, 
     this.urlPhoto
   });
+
+  @override
+  String toString() => "Name : $name";
 }

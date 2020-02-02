@@ -54,9 +54,9 @@ class FiresoreProfileRepository implements IProfileRepository {
   @override
   Future<User> getUser() async {
     final completer = Completer<User>();
-    final fbUser = await _auth.currentUser();
-    if (fbUser != null) {
-      _firestore.collection(_Identifiers.USERS_COL).document(fbUser.uid).get()
+    var userDoc = await _userDocumentRef;
+    if (userDoc != null) {
+      userDoc.get()
         .then((userData) {
           try {
             final user = _FirestoreUserAdapter(userData: userData?.data??{});
@@ -72,17 +72,42 @@ class FiresoreProfileRepository implements IProfileRepository {
   }
 
 
-  /// This function is the Adapter for the two-ways adapting
+  /// Update the current connected user with the new [user] information
+  /// 
+  /// This function use the Adapter for the two-ways adapting
+  /// 
   /// The [user] paramater is first transform thanks to the 
   /// [_FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
   /// data is inserted into the Cloud Firestore database.
+  /// 
   /// If the updating succeed, the inserted map is adapt to [User] thanks to the
   /// [_FirestoreUserAdapter] adapter and returned.
+  /// 
   /// If the updating failed an error is returned thanks to 
   /// [Future.error(error)]
+  /// 
+  /// null is never returned (either the user or the error).
   @override
-  Future<User> editUser(User user) {
-    throw UnimplementedError();
+  Future<User> editUser(User user) async {
+    var userDoc = await _userDocumentRef;
+    if (userDoc != null) {
+      var userData = _FirestoreUserAdapter.toMap(user);
+      await userDoc.setData(userData).catchError((e) => print(e));
+      return _FirestoreUserAdapter(userData: userData);
+    } 
+    return Future.error(null);
+  }
+
+
+  /// Get the connected user Firestore document
+  /// 
+  /// Return null is the user is not connected, or if we cannot retreive the 
+  /// user document for any reason
+  Future<DocumentReference> get _userDocumentRef async {
+    final fbUser = await _auth.currentUser();
+    if (fbUser != null)
+      return _firestore.collection(_Identifiers.USERS_COL).document(fbUser.uid);
+    return null;
   }
 }
 
