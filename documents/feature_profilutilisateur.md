@@ -26,3 +26,7 @@ Les champs doivent être pré-remplies avec les informations courantes de l'util
 Selon l'architecture du projet, voici le diagramme de séquence pour mettre à jour le profil de l'utilisateur:
 
 ![](src/edit_user_profile.png)
+
+## Références
+
+Voir `archi_firebase.md` pour les détails *côté serveur* (stockage des données, photo).

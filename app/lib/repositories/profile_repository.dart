@@ -171,7 +171,7 @@ class _FirestoreUserAdapter implements User {
 /// Identifiers (name of collections / fields) used in the Cloud Firestore
 /// noSQL database.
 /// 
-/// See the corresponding specification `sprint2 > bdd_archi.md` (french)
+/// See the corresponding specification `documents > archi_firebase.md` (french)
 class _Identifiers {
   static const USERS_COL = "users";
 
