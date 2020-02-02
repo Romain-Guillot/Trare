@@ -13,7 +13,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final Function(String) customValidator;
-  final bool optionnal;
+  final bool optional;
   final TextInputType keyboardType;
   final int maxLines;
 
@@ -22,7 +22,7 @@ class AppTextField extends StatelessWidget {
     this.labelText, 
     this.customValidator,
     this.keyboardType = TextInputType.text,
-    this.optionnal = false,
+    this.optional = false,
     this.maxLines = Dimens.formMultiLinesDefaultLinesNumber
   });
 
@@ -47,7 +47,7 @@ class AppTextField extends StatelessWidget {
           minLines: keyboardType == TextInputType.multiline ? min(maxLines, 5) : 1,
           
           decoration: InputDecoration(
-            hintText: optionnal ? Strings.optionnalTextField : Strings.requiredTextField,
+            hintText: optional ? Strings.optionalTextField : Strings.requiredTextField,
             contentPadding: EdgeInsets.all(10),
             border: noBorder,
             disabledBorder: noBorder,
@@ -62,7 +62,7 @@ class AppTextField extends StatelessWidget {
             String error;
             if (customValidator != null)
               error = customValidator(val);
-            if (error == null && !optionnal && val.isEmpty)
+            if (error == null && !optional && val.isEmpty)
               error = Strings.invalidForm;
             return error;
           }

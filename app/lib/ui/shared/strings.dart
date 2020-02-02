@@ -49,7 +49,7 @@ class Strings {
 
   // Form
   static const String invalidForm = "Cannot be empty";
-  static const String optionnalTextField = "Optionnal";
+  static const String optionalTextField = "Optional";
   static const String requiredTextField = "Required";
 
 }
