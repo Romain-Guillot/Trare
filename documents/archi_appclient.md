@@ -1,4 +1,4 @@
-# #1 : Architecture
+# Architecture : Architecture application client
 
 ## Côté client
 

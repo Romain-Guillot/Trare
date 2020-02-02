@@ -1,4 +1,4 @@
-# #1 : Authentification
+# Fonctionnalité : Authentification
 
 ## Objectifs
 L'objectif de cette semaine est d'implémenter l'authentification au sein de l'application. Toutes les fonctionnalités sont uniquement accessibles aux utilisateurs connectés sur l'application, cette fonctionnalité est donc primoridiale.
