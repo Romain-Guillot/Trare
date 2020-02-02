@@ -1,4 +1,7 @@
-
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO: review required.
+// Tests: TODO
 import 'package:app/models/user.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:flutter/widgets.dart';

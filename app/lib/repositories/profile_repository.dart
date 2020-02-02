@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: Done.
+// Tests: TODO
 import 'dart:async';
 
 import 'package:app/models/user.dart';
@@ -20,7 +24,10 @@ abstract class IProfileRepository {
   /// 
   /// The returned instance contains all information about the user (e.g : 
   /// [User.name], [User.description], etc.).
-  /// If their are no connected user, the function returned null.
+  /// 
+  /// If their are no connected user, the function returned an [Future.error].
+  /// 
+  /// null is never returned (either the user or the error).
   Future<User> getUser();
 
 
@@ -29,6 +36,8 @@ abstract class IProfileRepository {
   /// The new updated [User] is returned
   /// The function returned an exception if an error occured (Note: it can
   /// be catch it with [Future.catchError()] when you called this function)
+  /// 
+  /// null is never returned (either the user or the error).
   Future<User> editUser(User user);
 }
 
@@ -50,7 +59,15 @@ class FiresoreProfileRepository implements IProfileRepository {
   final _firestore = Firestore.instance;
 
 
-  ///
+  /// See interface-level documentation [IProfileRepository.getUser()] (specs)
+  /// 
+  /// Details about the implementation only :
+  /// - As the cloud_firestore package returns a snapshot to get data, a 
+  ///   [Completer] is used to return a future and complete the future later
+  ///   (when the snapshot gives us the result)
+  /// - If the user is not connected or if an error occured when completer
+  ///   the future with an error
+  /// - Else, we complete the future with the connected user.
   @override
   Future<User> getUser() async {
     final completer = Completer<User>();
@@ -72,21 +89,16 @@ class FiresoreProfileRepository implements IProfileRepository {
   }
 
 
-  /// Update the current connected user with the new [user] information
+  /// See interface-level documentation [IProfileRepository.editUser()] (specs)
   /// 
-  /// This function use the Adapter for the two-ways adapting
+  /// Details about the implementation only :
   /// 
-  /// The [user] paramater is first transform thanks to the 
-  /// [_FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
-  /// data is inserted into the Cloud Firestore database.
-  /// 
-  /// If the updating succeed, the inserted map is adapt to [User] thanks to the
+  /// - This function use the Adapter for the two-ways adapting
+  /// - The [user] paramater is first transform thanks to the 
+  ///   [_FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
+  ///   data is inserted into the Cloud Firestore database.
+  /// - If the updating succeed, the inserted map is adapt to [User] thanks to the
   /// [_FirestoreUserAdapter] adapter and returned.
-  /// 
-  /// If the updating failed an error is returned thanks to 
-  /// [Future.error(error)]
-  /// 
-  /// null is never returned (either the user or the error).
   @override
   Future<User> editUser(User user) async {
     var userDoc = await _userDocumentRef;
@@ -113,9 +125,20 @@ class FiresoreProfileRepository implements IProfileRepository {
 
 
 
+/// Adapter use to adapt [Map] (noSQL data) to [User].
 ///
+/// So it implements User, and take a [Map] as constructor paramater
+/// to build out User from the noSQL data. It allows to hide the complexity
+/// of transformation.
+/// 
+/// It is also used to do the reverse direction transformation ([User] to SQL 
+/// data) but as SQL data is respresented by a [Map<String, dynamic] it is too 
+/// painful to implements [Map] as there are a lot of methods. Instead there is 
+/// simply the static method [toMap] that take a [User] and return the 
+/// [Map].
 ///
-///
+/// See https://refactoring.guru/design-patterns/adapter to know more about the
+/// adapter pattern.
 class _FirestoreUserAdapter implements User {
   String country;
   String description;

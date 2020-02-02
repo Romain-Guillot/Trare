@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO
+// Tests: TODO
 
 ///
 ///

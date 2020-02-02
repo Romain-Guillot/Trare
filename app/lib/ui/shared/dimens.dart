@@ -3,6 +3,8 @@ import 'package:flutter/painting.dart';
 
 /// Useful constant values share across the app 
 /// 
+/// See [Values] for constant used for the UI behavior and not UI theming.
+/// 
 /// (e.g. padding, font size, font weight, margin, etc.)
 /// Everything is constant, so the constructor is private
 /// as it makes no sense to create an instance of this class.

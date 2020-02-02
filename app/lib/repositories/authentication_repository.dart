@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO: review required.
+// Tests: TODO
 import 'package:app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -143,6 +147,7 @@ class FirebaseAuthenticationRepository implements AuthenticationRepository {
     await _auth.signOut();
   }
 }
+
 
 /// Adapter use to adapt [FirebaseUser] to [User].
 ///

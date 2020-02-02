@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: Done.
+// Tests: TODO
 import 'package:app/models/user.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +33,7 @@ class ProfileProvider extends ChangeNotifier {
   /// Repository used to perform action on the user (get, edit)
   final IProfileRepository _profileRepository;
 
+
   /// The current provider state (not initialized, error, initialized)
   /// 
   /// See [ProfileProviderState]
@@ -40,8 +45,10 @@ class ProfileProvider extends ChangeNotifier {
   } 
   
 
-  /// The current connected user. Can be null for many reason (you can check the
-  /// current state with the flags [isInit] and [error])
+  /// The current connected user.
+  /// 
+  /// Can be null for many reason (you can check the current state with the 
+  /// flags [isInit] and [error])
   User _user;
   User get user => _user;
 
@@ -51,8 +58,16 @@ class ProfileProvider extends ChangeNotifier {
   }) : this._profileRepository = profileRepo;
 
 
-  /// 
+  /// Load the current user and update the [state] accordingly
   ///
+  /// It begins the the `not_initialized` state and then ask the repository
+  /// to get the current connectect user.
+  /// 
+  /// The [IProfileRepository.getUser()] method is called to get the current
+  /// connected user. This mehtod returns either the connected user, or 
+  /// return an exception. (never null)
+  /// So the method is surrouned by a try-catch and update the state accordingly
+  /// (`initialized` or `error`)
   Future loadUser() async {
     state = ProfileProviderState.not_initialized;
     try {
@@ -64,11 +79,19 @@ class ProfileProvider extends ChangeNotifier {
   }
 
 
-  ///
-  ///
-  ///
+  /// Edit the current connected user with [newUser] data
+  /// 
+  /// Returns true is the update succeed, false else.
+  /// It update and notify listeners of the new updated user.
+  /// 
+  /// To edit the user the method [IProfileRepository.editUser()] is called.
+  /// This mehtod returns the updated user OR returns an exception. It never 
+  /// retunrs null (if error, ...).
+  /// So the method is simply surrouned with a try-catch. 
+  /// If the operation succeed [true] is returned (try block).
+  /// Else (if an error occured), [flase] is returned (catch block)
   Future<bool> editUser(User newUser) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1)); // TODO TEST
     try {
       _user = await _profileRepository.editUser(newUser);
       notifyListeners();
@@ -86,7 +109,7 @@ enum ProfileProviderState {
   /// Not yet initialized
   not_initialized,
 
-  /// An error occured
+  /// An error occured to load the connected user
   error,
 
   /// The provider is initialized, all processes finished
