@@ -13,7 +13,7 @@ Voici les éléments que composent le profil utilisateur :
 Consiste à créer la visualisation du profil utilisateur avec les éléments ci-dessus.
 
 Doit proposer un bouton pour se deconnecter.  
-Doit proposer un bouton pour se deconnecter.
+Doit proposer un bouton pour supprimer son compte.  
 Doit proposer un bouton pour éditer son profil (voir ci-dessous).
 
 ## Edition
