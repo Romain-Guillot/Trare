@@ -1,8 +1,12 @@
 import 'package:app/logic/authentication_provider.dart';
+import 'package:app/logic/profile_provider.dart';
 import 'package:app/repositories/authentication_repository.dart';
+import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
+import 'package:app/ui/shared/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,14 +27,20 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FirebaseAuthenticationRepository authRepo = FirebaseAuthenticationRepository();
+  final authRepo = FirebaseAuthenticationRepository();
+  final profileRepo = FiresoreProfileRepository();
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
         AuthenticationProvider(
           authRepo: authRepo
-        )..init()
+        )..init(),
+      ),
+      ChangeNotifierProvider<ProfileProvider>(create: (context) => 
+        ProfileProvider(
+          profileRepo: profileRepo
+        )
       ),
     ],
     child: MyApp())
@@ -66,17 +76,19 @@ class MyApp extends StatelessWidget {
             return LoadingView();
           if (authenticationProvider.user == null)
             return AuthenticationView();
-          else
-            return RaisedButton(
-              child: Text("Connected"), 
-              onPressed: () async {authenticationProvider.signOut();},
-            ); // TODO : sprint 2
+          else {
+            return ProfileVisualisationView();
+          }
         }
       ),
     );
   }
 }
 
+
+extension ColorSchemeExt on ColorScheme {
+  Color get onSurfaceLight => Colors.black.withOpacity(0.3);
+}
 
 
 /// Theme defined for our app (color, text style, etc)
@@ -98,8 +110,8 @@ final appTheme = ThemeData(
     secondaryVariant: Color(0xff),
     onSecondary: Color(0xff),
 
-    surface: Color(0xff),
-    onSurface: Color(0xff),
+    surface: Color(0xffe6e6e6),
+    onSurface: Color(0xff000000),
 
     error: Color(0xfffc3d46),
     onError: Colors.white,
@@ -107,6 +119,24 @@ final appTheme = ThemeData(
     background: Color(0xff),
     onBackground: Color(0xff),
 
-    brightness: Brightness.light
+    brightness: Brightness.light,
   ),
+
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(fontSize: 15, fontWeight: Dimens.weightBold)
+  ),
+
+  textTheme: TextTheme(
+    title: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+    subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
+    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)),
+
+    display2: TextStyle(fontSize: Dimens.authTitleSize, fontWeight: Dimens.weightBold, color: Colors.black),
+    display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
+  ),
+
+  buttonTheme: ButtonThemeData(
+    minWidth: 0,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))
+  )
 );

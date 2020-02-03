@@ -1,11 +1,14 @@
-
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO: review required.
+// Tests: TODO
 import 'package:app/models/user.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
 
 
 
-/// Provider used to handle the authentication business logic of the app.
+/// [ChangeNotifier] used to handle the authentication business logic
 /// 
 /// It is a [ChangeNotifier] so it can notify client when changment occured.
 /// In particular this provider holds 2 public variables (the state) :
@@ -26,7 +29,7 @@ import 'package:flutter/widgets.dart';
 /// If an error occured, it can be catched thanks to [Future.catchError()] 
 /// method.
 /// 
-/// When these variables change, clients are notified.
+/// When these state variables change, clients are notified.
 class AuthenticationProvider extends ChangeNotifier {
 
   final AuthenticationRepository _authRepo;
@@ -84,15 +87,13 @@ class AuthenticationProvider extends ChangeNotifier {
   /// Return a [Future.error] if an error occured.
   Future _handleLogin(Future<User> Function() function) async {
     if (_inProcess) return ;
-    bool error = false;
     _inProcess = true;
     try {
       user = await function();
     } catch (e) {
-      error = true;
+      return Future.error(null);
     }
     _inProcess = false;
-    if (error) return Future.error(null);
   }
 
 

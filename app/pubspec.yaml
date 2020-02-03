@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.3.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -28,6 +28,8 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   http: ^0.12.0+4
   flutter_svg: ^0.16.1
+  cloud_firestore: ^0.13.0+1
+  image_picker: ^0.6.3+1
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +52,8 @@ flutter:
     - assets/google.svg
     - assets/facebook.svg
     - assets/mail.svg
+    - assets/startup_image.svg
+    - assets/default_profile_pricture.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

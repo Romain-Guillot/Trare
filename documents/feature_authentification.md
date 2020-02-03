@@ -1,4 +1,4 @@
-# #1 : Authentification
+# Fonctionnalité : Authentification
 
 ## Objectifs
 L'objectif de cette semaine est d'implémenter l'authentification au sein de l'application. Toutes les fonctionnalités sont uniquement accessibles aux utilisateurs connectés sur l'application, cette fonctionnalité est donc primoridiale.
@@ -18,11 +18,6 @@ Bien-sûr, si le processus d'authentification échoue, l'utilisateur devra en ê
 - Impossible de vérifier si l'utilisateur est connecté ou non (impossible de communique avec *Firebase* par exemple);
 - Une erreur est survenue lors de la vérification des informations de l'utilisateur (inscription avec email déjà existant, mot de passe trop faible, adresse mail incorrecte, etc.).
 
-## TODO
-C'est une fonctionnalité complète, il faudra donc :
-- implémenter l'UI;
-- créer le provider qui se charge de fournir les données à l'UI et de communiquer avec les repositories;
-- le repositories chargé de communiquer avec *Firebase Authentication*.
 
 ## Diagramme d'activités
 
