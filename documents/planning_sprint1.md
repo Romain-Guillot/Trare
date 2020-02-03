@@ -36,7 +36,7 @@ Presque tout a été réalisé :
 - le provider qui communique entre l'ui et le repository + fourni à l'UI l'utilisateur actuelle;
 - le repository qui permet la communication avec Firebase pour les méthodes d'authentification suivants : Google et Facebook
 
-**TODO:** Authentification (connexion / inscription) via email / mot de passe.
+**TODO:** Authentification (connexion / inscription) via email / mot de passe [Issue#3](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/3)
 
 
 
