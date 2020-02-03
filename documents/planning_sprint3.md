@@ -10,4 +10,7 @@
     - Layout
     - Provider (avec données fictives)
 
+![](src/sprint3_1.jpg)
+![](src/sprint3_2.jpg)
+
 ## Résultats
