@@ -13,7 +13,7 @@ class Activity{
   String urlPhoto;
 
   String get getTitle => title;
-  String get getLocation=> location;
+  String get getLocation => location;
   String get getDuration => duration;
   String get getUrlPhoto => urlPhoto;
 
@@ -27,29 +27,4 @@ class Activity{
 
 
 
-}
-
-
-
-
-
-class User {
-  String name;
-  String description;
-  int age;
-  String spokenLanguages;
-  String country;
-  String urlPhoto;
-
-  User({
-    this.name, 
-    this.description, 
-    this.age, 
-    this.spokenLanguages, 
-    this.country, 
-    this.urlPhoto
-  });
-
-  @override
-  String toString() => "Name : $name";
 }

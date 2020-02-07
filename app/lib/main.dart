@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
@@ -15,6 +13,7 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 
 
@@ -35,6 +34,7 @@ void main() {
 
   final authRepo = FirebaseAuthenticationRepository();
   final profileRepo = FiresoreProfileRepository();
+  var activityRepo=MockActivityRepository();
         //var activityRepo;
     runApp(MultiProvider(
       providers: [
@@ -46,6 +46,11 @@ void main() {
         ChangeNotifierProvider<ProfileProvider>(create: (context) => 
           ProfileProvider(
             profileRepo: profileRepo
+          )
+        ),
+        ChangeNotifierProvider<ActivityProvider>(create: (context) => 
+          ActivityProvider(
+            activityRepository: activityRepo
           )
         ),
       /*ChangeNotifierProvider<ActivityProvider>(

@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 
 class Explore extends StatefulWidget{
   
-   Activity activity;
+  /*final Activity activity;
 
-   Explore({
+  const Explore({
     Key key, this.activity
-    }) : super(key: key);
+    }) : super(key: key);*/
   @override
   _ExploreState createState() => _ExploreState();
 
@@ -22,10 +22,10 @@ class _ExploreState extends State<Explore>{
 
     return Scaffold(
         body: Center(
-         
-            
+          child: ChangeNotifierProvider(
+            create: (context) => ActivityProvider(),
             child: ListItemsActivities() ,
-          
+          )
 
         )
     );
@@ -54,14 +54,14 @@ class _ListItemsActivitiesState extends State<ListItemsActivities>{
       child: Consumer<ActivityProvider>(
         builder: (context, activity, child){
           return ListView.builder(
-            itemCount: activity.lisActivity.length,
+            itemCount: activity.listActivity.length,
             itemBuilder: (context, index){
               return Container(
                 child: ListTile(
                   contentPadding: EdgeInsets.only(left: 32, right: 32, top: 8, bottom: 8),
-                  title: Text(activity.lisActivity[index].title, style : TextStyle(color: Colors.black87,
+                  title: Text(activity.listActivity[index].title, style : TextStyle(color: Colors.black87,
                                 fontWeight: FontWeight.bold),),
-                  subtitle: Text(activity.lisActivity[index].location, style: TextStyle(color: Colors.black45,
+                  subtitle: Text(activity.listActivity[index].location, style: TextStyle(color: Colors.black45,
                                 fontWeight: FontWeight.bold),),
                   trailing:  Icon(Icons.check_circle, color: Colors.greenAccent,),
                   
@@ -84,7 +84,7 @@ class _ListItemsActivitiesState extends State<ListItemsActivities>{
       child: Icon(Icons.add),
       backgroundColor: Colors.greenAccent,
       onPressed:() =>{
-        Provider.of<ActivityProvider>(context).lisActivity
+        //Provider.of<ActivityProvider>(context, listen = false)
       }),
     );
     

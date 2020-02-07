@@ -8,19 +8,19 @@ import 'package:app/repositories/activity_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 class ActivityProvider extends ChangeNotifier{
-   IActivityRepository activityRepository;
-  final List<Activity> lisActivity=[];
+   IActivityRepository _activityRepository;
+   List<Activity> listActivity=[];
 
   Activity _activity;
   Activity get activity => _activity;
 
   ActivityProvider({
     @required IActivityRepository activityRepository
-  }):this.activityRepository=activityRepository;
+  }):this._activityRepository=activityRepository;
   set activity(Activity newActivity){
     assert(newActivity!=null);
    _activity=newActivity;
-   lisActivity.add(_activity);
+   listActivity.add(_activity);
    notifyListeners();
   }
 

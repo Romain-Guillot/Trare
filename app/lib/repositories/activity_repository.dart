@@ -28,23 +28,4 @@ class MockActivityRepository implements IActivityRepository{
     
     return activity1;
   }
-
- 
- 
- 
-  
-
-
-}
-
-  @override
-  Activity editActivity(Activity activity) {
-    // TODO: implement editActivity
-    return null;
-  }
-
-  @override
-  Activity getActivity() {
-    // TODO: implement getActivity
-    return null;
   }
