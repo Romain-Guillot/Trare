@@ -1,9 +1,15 @@
+import 'dart:js';
+
+import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
+import 'package:app/repositories/activity_repository.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/home/explore.dart';
+import 'package:app/ui/home/home.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
@@ -29,19 +35,26 @@ void main() {
 
   final authRepo = FirebaseAuthenticationRepository();
   final profileRepo = FiresoreProfileRepository();
+        //var activityRepo;
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
+          AuthenticationProvider(
+            authRepo: authRepo
+          )..init(),
+        ),
+        ChangeNotifierProvider<ProfileProvider>(create: (context) => 
+          ProfileProvider(
+            profileRepo: profileRepo
+          )
+        ),
+      /*ChangeNotifierProvider<ActivityProvider>(
+          create: (context) => ActivityProvider(
+            activityRepository: activityRepo,
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
-        AuthenticationProvider(
-          authRepo: authRepo
-        )..init(),
-      ),
-      ChangeNotifierProvider<ProfileProvider>(create: (context) => 
-        ProfileProvider(
-          profileRepo: profileRepo
-        )
-      ),
+        ),
+        //child: ListItemsActivities(),
+        )*/
     ],
     child: MyApp())
   );
@@ -77,7 +90,8 @@ class MyApp extends StatelessWidget {
           if (authenticationProvider.user == null)
             return AuthenticationView();
           else {
-            return ProfileVisualisationView();
+            //return ProfileVisualisationView();
+            return MyHomePage();
           }
         }
       ),
