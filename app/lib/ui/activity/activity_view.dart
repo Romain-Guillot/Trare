@@ -1,5 +1,5 @@
-import 'package:app/ui/shared/widgets/app_layout.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
+import 'package:app/ui/shared/widgets/flat_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
