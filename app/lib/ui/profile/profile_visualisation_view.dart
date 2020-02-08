@@ -3,7 +3,6 @@ import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/activity/activity_view.dart';
 import 'package:app/ui/profile/profile_edit_view.dart';
-import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
@@ -11,9 +10,8 @@ import 'package:app/ui/shared/widgets/default_profile_picture.dart';
 import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:app/main.dart';
+
 
 
 class ProfileVisualisationView extends StatefulWidget {

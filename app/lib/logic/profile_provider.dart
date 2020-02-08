@@ -69,7 +69,9 @@ class ProfileProvider extends ChangeNotifier {
   /// So the method is surrouned by a try-catch and update the state accordingly
   /// (`initialized` or `error`)
   Future loadUser() async {
-    state = ProfileProviderState.not_initialized;
+    if (state == ProfileProviderState.initialized)
+      return ;
+
     try {
       _user = await _profileRepository.getUser();
     } catch (e) {
