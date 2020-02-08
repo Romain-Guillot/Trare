@@ -28,19 +28,20 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final authRepo = FirebaseAuthenticationRepository();
-  final profileRepo = FiresoreProfileRepository();
+  var authRepo = FirebaseAuthenticationRepository();
+  var profileRepo = FiresoreProfileRepository();
+
+  var authProvider = AuthenticationProvider(authRepo: authRepo)..init();
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
-        AuthenticationProvider(
-          authRepo: authRepo
-        )..init(),
+        authProvider
       ),
       ChangeNotifierProvider<ProfileProvider>(create: (context) => 
         ProfileProvider(
-          profileRepo: profileRepo
+          profileRepo: profileRepo,
+          authenticationProvider: authProvider
         )
       ),
     ],

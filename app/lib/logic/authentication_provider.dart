@@ -61,7 +61,6 @@ class AuthenticationProvider extends ChangeNotifier {
   init() async {
     user = await _authRepo.getCurrentUser();
     await Future.delayed(Duration(seconds: 1)); // TODO
-    print(user);
     isInitialized = true;
   }
 

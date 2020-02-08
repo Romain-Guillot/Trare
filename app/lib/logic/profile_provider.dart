@@ -2,6 +2,7 @@
 //
 // Doc: Done.
 // Tests: TODO
+import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -10,8 +11,9 @@ import 'package:flutter/widgets.dart';
 /// [ChangeNotifier] used to handle the current connected [user] 
 /// 
 /// [user] is the current connected user.
-/// You need to initialized the provide to retreive the user. Call [loadUser()]
-/// method to initialized the provider.
+/// 
+/// The user is automatically load thanks to the [AuthenticationProvider] given
+/// to the constructor.
 /// 
 /// [state] is the current state of the provider, it can take the following
 /// values :
@@ -54,8 +56,17 @@ class ProfileProvider extends ChangeNotifier {
 
 
   ProfileProvider({
-    @required IProfileRepository profileRepo
-  }) : this._profileRepository = profileRepo;
+    @required IProfileRepository profileRepo,
+    @required AuthenticationProvider authenticationProvider,
+  }) : this._profileRepository = profileRepo {
+    // if the user is already connected, we load his information
+    if (authenticationProvider.user != null)
+      loadUser();
+    // in any case we subsribe to the authentication provider to respond to
+    // connection status (log out, re sign in, etc.)
+    authenticationProvider.addListener(() => loadUser());
+
+  }
 
 
   /// Load the current user and update the [state] accordingly
@@ -69,9 +80,6 @@ class ProfileProvider extends ChangeNotifier {
   /// So the method is surrouned by a try-catch and update the state accordingly
   /// (`initialized` or `error`)
   Future loadUser() async {
-    if (state == ProfileProviderState.initialized)
-      return ;
-
     try {
       _user = await _profileRepository.getUser();
     } catch (e) {

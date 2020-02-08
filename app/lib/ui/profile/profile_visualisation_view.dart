@@ -13,20 +13,10 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 
-
-class ProfileVisualisationView extends StatefulWidget {
-  @override
-  _ProfileVisualisationViewState createState() => _ProfileVisualisationViewState();
-}
-
-
-class _ProfileVisualisationViewState extends State<ProfileVisualisationView> {
-
-  @override
-  void initState() {
-    super.initState();
-      Future.microtask(() => loadUser());
-  }
+/// Main page for displaying the user information
+///
+/// 
+class ProfileVisualisationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +28,7 @@ class _ProfileVisualisationViewState extends State<ProfileVisualisationView> {
               case ProfileProviderState.not_initialized:
                 return ProfileLoading();
               case ProfileProviderState.error:
-                return ProfileError(onPressed: loadUser);
+                return ProfileError(onPressed: () => loadUser(context));
               case ProfileProviderState.initialized:
               default: 
                 return ProfileView(user: profileProvider.user);
@@ -49,12 +39,16 @@ class _ProfileVisualisationViewState extends State<ProfileVisualisationView> {
     );
   }
 
-  loadUser() {
+  loadUser(context) {
     Provider.of<ProfileProvider>(context, listen: false).loadUser();
   }
 }
 
 
+
+///
+///
+///
 class ProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -65,6 +59,10 @@ class ProfileLoading extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfileError extends StatelessWidget {
 
   final Function onPressed;
@@ -92,6 +90,10 @@ class ProfileError extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfileView extends StatelessWidget {
   final User user;
   
@@ -145,6 +147,10 @@ class ProfileView extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfileSignOutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -161,6 +167,10 @@ class ProfileSignOutButton extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfileHeader extends StatelessWidget {
   final User user;
   final Function onEdit;
@@ -184,43 +194,53 @@ class ProfileHeader extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfilePicture extends StatelessWidget {
+
   final String url;
   
   ProfilePicture({@required this.url});
   
   @override
   Widget build(BuildContext context) {
-    return   
-        LayoutBuilder(
-          builder: (_, constraints) { 
-            final size = constraints.maxWidth;
-            return Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-              ),
-              child: url == null
-              ? DefaultProfilePicture()
-              : Image.network(
-                  url,
-                  width: size,
-                  height: size,
-                  fit: BoxFit.fitWidth,
-                  cacheHeight: Dimens.maxImageResolution,
-                )
-            );
-          }
+    return LayoutBuilder(
+      builder: (_, constraints) { 
+        var size = constraints.maxWidth;
+        return Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: url == null
+            ? DefaultProfilePicture()
+            : Image.network(
+                url,
+                width: size,
+                height: size,
+                fit: BoxFit.fitWidth,
+                cacheHeight: Dimens.maxImageResolution,
+              )
+        );
+      }
     );
   }
 }
 
 
+
+///
+///
+///
 class ProfileItemList extends StatelessWidget {
+
   final User user;
   
   ProfileItemList({@required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -248,6 +268,10 @@ class ProfileItemList extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class ProfileItem extends StatelessWidget {
   final String label;
   final String content;
@@ -257,13 +281,13 @@ class ProfileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return content == null || content.isEmpty
-    ? Container()
-    : Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(label, style: Theme.of(context).textTheme.subtitle),
-        Text(content),
-        FlexSpacer()
+      ? Container()
+      : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(label, style: Theme.of(context).textTheme.subtitle),
+          Text(content),
+          FlexSpacer()
       ],
     );
   }
