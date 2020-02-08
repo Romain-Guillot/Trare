@@ -2,6 +2,7 @@ import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/repositories/profile_repository.dart';
+import 'package:app/ui/activity/activity_view.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
@@ -43,8 +44,8 @@ void main() {
         )
       ),
     ],
-    child: MyApp())
-  );
+    child: MyApp()
+  ));
 }
 
 

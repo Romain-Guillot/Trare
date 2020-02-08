@@ -4,6 +4,7 @@ import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/shared/widgets/app_layout.dart';
 import 'package:app/ui/shared/widgets/app_text_field.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
 import 'package:app/ui/shared/widgets/default_profile_picture.dart';
@@ -37,16 +38,8 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: <Widget>[
-          SaveButton(profileFormKey: profileFormKey)
-        ],
+      appBar: FlatAppBar(
+        action: SaveButton(profileFormKey: profileFormKey)
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

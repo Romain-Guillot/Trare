@@ -1,6 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
+import 'package:app/ui/activity/activity_view.dart';
 import 'package:app/ui/profile/profile_edit_view.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -125,6 +126,11 @@ class ProfileView extends StatelessWidget {
                 Center(
                   child: ProfileSignOutButton()
                 )
+
+
+                ,
+                FlatButton(child: Text("GO"), onPressed: () => Navigator.push(context, 
+                MaterialPageRoute(builder: (_) => ActivityView(activity: Activity(),))),)
               ],
             )
           )
