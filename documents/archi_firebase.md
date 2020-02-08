@@ -1,4 +1,5 @@
 # Architecture : Firebase
+*Dernière modification : 8 fev 2020*
 
 Les données sont stockées dans les services de **Firebase**, notamment les services suivants :
 
@@ -13,6 +14,7 @@ Voici les raisons qui ont menées à choisir **Firebase** :
 - **La simplicité d'utilisation**
 
 ## Utilisateur
+Voir `archi_models.md > #Users` pour davantage information à propos des utilisateurs.
 ##### Connexion / inscription
 *Firebase Authentication* est utilisé pour gérer la connexion des utilisateurs via les façons suivantes :
 - email / mot de passe
@@ -40,11 +42,13 @@ Note: l'attribut `photo` des utilisateurs est une URL vers la photo de profile d
 
 Les photos des utilisateurs sont stockées dans *Cloud Storage* dans le dossier `users_photos`.
 
-TODO: Définir les limites de tailles d'image / compression / format / etc.
+TBD: Définir les limites de tailles d'image / compression / format / etc.
 
 
 
+## Activité
 
+TBD
 
 
 

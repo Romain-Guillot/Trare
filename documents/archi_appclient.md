@@ -1,5 +1,5 @@
 # Architecture : Architecture application client
-
+*Dernière modification : 8 fev 2020*
 
 
 Voici le schéma d'architecture globale côté client :

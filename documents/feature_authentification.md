@@ -1,4 +1,5 @@
 # Fonctionnalité : Authentification
+*Dernière modification : 8 fev 2020*
 
 ## Objectifs
 L'objectif de cette semaine est d'implémenter l'authentification au sein de l'application. Toutes les fonctionnalités sont uniquement accessibles aux utilisateurs connectés sur l'application, cette fonctionnalité est donc primoridiale.

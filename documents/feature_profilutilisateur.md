@@ -1,4 +1,5 @@
 # Fonctionnalité : Profil utilisateur
+*Dernière modification : 8 fev 2020*
 
 Voici les éléments que composent le profil utilisateur :
 - Nom d'utilisateur (texte libre, 1 ligne)
