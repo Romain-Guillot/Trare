@@ -52,7 +52,7 @@ abstract class IProfileRepository {
 /// This repository used the pattern Adapter :
 /// - to adapt noSQL data ([Map]) to [User] (to get the user)
 /// - to adapt [User] to noSQL data ([Map]) (to insert the user information)
-/// See [_FirestoreUserAdapter]
+/// See [FirestoreUserAdapter]
 class FiresoreProfileRepository implements IProfileRepository {
   
   final _auth = FirebaseAuth.instance;
@@ -76,7 +76,7 @@ class FiresoreProfileRepository implements IProfileRepository {
       userDoc.get()
         .then((userData) {
           try {
-            final user = _FirestoreUserAdapter(userData: userData?.data??{});
+            final user = FirestoreUserAdapter(userData: userData?.data??{});
             completer.complete(user);
           } catch (_) {
             completer.completeError(null);
@@ -95,17 +95,17 @@ class FiresoreProfileRepository implements IProfileRepository {
   /// 
   /// - This function use the Adapter for the two-ways adapting
   /// - The [user] paramater is first transform thanks to the 
-  ///   [_FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
+  ///   [FirestoreUserAdapter] to a [Map] (the noSQL data) and then this noSQL 
   ///   data is inserted into the Cloud Firestore database.
   /// - If the updating succeed, the inserted map is adapt to [User] thanks to the
-  /// [_FirestoreUserAdapter] adapter and returned.
+  /// [FirestoreUserAdapter] adapter and returned.
   @override
   Future<User> editUser(User user) async {
     var userDoc = await _userDocumentRef;
     if (userDoc != null) {
-      var userData = _FirestoreUserAdapter.toMap(user);
+      var userData = FirestoreUserAdapter.toMap(user);
       await userDoc.setData(userData, merge: true);
-      return _FirestoreUserAdapter(userData: userData);
+      return FirestoreUserAdapter(userData: userData);
     } 
     return Future.error(null);
   }
@@ -118,7 +118,7 @@ class FiresoreProfileRepository implements IProfileRepository {
   Future<DocumentReference> get _userDocumentRef async {
     final fbUser = await _auth.currentUser();
     if (fbUser != null)
-      return _firestore.collection(_Identifiers.USERS_COL).document(fbUser.uid);
+      return _firestore.collection(Identifiers.USERS_COL).document(fbUser.uid);
     return null;
   }
 }
@@ -139,7 +139,8 @@ class FiresoreProfileRepository implements IProfileRepository {
 ///
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
-class _FirestoreUserAdapter implements User {
+@visibleForTesting
+class FirestoreUserAdapter implements User {
   String country;
   String description;
   String name;
@@ -147,22 +148,24 @@ class _FirestoreUserAdapter implements User {
   String urlPhoto;
   int age;
 
-  _FirestoreUserAdapter({@required Map<String, Object> userData}) {
-    this.name = userData[_Identifiers.USER_NAME];
-    this.description = userData[_Identifiers.USER_DESCRIPTION];
-    this.age = userData[_Identifiers.USER_AGE];
-    this.country = userData[_Identifiers.USER_LOCATION];
-    this.spokenLanguages = userData[_Identifiers.USER_LANGUAGES];
-    this.urlPhoto = userData[_Identifiers.USER_PHOTO];
+  FirestoreUserAdapter({@required Map<String, Object> userData}) {
+    if (userData != null) {
+      this.name = userData[Identifiers.USER_NAME];
+      this.description = userData[Identifiers.USER_DESCRIPTION];
+      this.country = userData[Identifiers.USER_LOCATION];
+      this.spokenLanguages = userData[Identifiers.USER_LANGUAGES];
+      this.urlPhoto = userData[Identifiers.USER_PHOTO];
+      this.age = userData[Identifiers.USER_AGE];
+    }
   }
 
   static Map<String, Object> toMap(User user) => {
-    _Identifiers.USER_NAME: user.name,
-    _Identifiers.USER_DESCRIPTION: user.description,
-    _Identifiers.USER_LOCATION: user.country,
-    _Identifiers.USER_AGE: user.age,
-    _Identifiers.USER_LANGUAGES: user.spokenLanguages,
-    _Identifiers.USER_PHOTO: user.urlPhoto
+    Identifiers.USER_NAME: user.name,
+    Identifiers.USER_DESCRIPTION: user.description,
+    Identifiers.USER_LOCATION: user.country,
+    Identifiers.USER_AGE: user.age,
+    Identifiers.USER_LANGUAGES: user.spokenLanguages,
+    Identifiers.USER_PHOTO: user.urlPhoto
   };
 }
 
@@ -172,7 +175,8 @@ class _FirestoreUserAdapter implements User {
 /// noSQL database.
 /// 
 /// See the corresponding specification `documents > archi_firebase.md` (french)
-class _Identifiers {
+@visibleForTesting
+class Identifiers {
   static const USERS_COL = "users";
 
   static const USER_NAME = "name";
