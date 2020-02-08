@@ -9,6 +9,7 @@ class Strings {
   static const String appName = "TBD";
   static const String snakbarActionDismissed = "Ok";
   static const String loading = "Loading ...";
+  static const String unexpectedError = "This wasn't supposed to happen... 😳";
 
 
 
@@ -35,7 +36,8 @@ class Strings {
   static const String profileLoading = "Loading ...";
   static const String profileError = "An error occured while loading your profile";
   static const String profileErrorRetry = "Retry";
-  static const String profileSignOut = "Sign out";
+  static const String profileSignOut = "Sign out 👋";
+  static const String profileDelete = "Delete my account";
   static const String profileEdit = "Edit";
 
   // Profile edition
