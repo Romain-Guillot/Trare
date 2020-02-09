@@ -134,7 +134,7 @@ final appTheme = ThemeData(
   textTheme: TextTheme(
     title: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
     subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
-    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)),
+    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
 
     display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
   ),

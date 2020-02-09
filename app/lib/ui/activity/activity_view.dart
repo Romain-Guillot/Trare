@@ -8,6 +8,7 @@ import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class Activity {
@@ -66,6 +67,38 @@ class _ActivityViewState extends State<ActivityView> {
               Text(widget.activity.description),
               FlexSpacer(),
               Text(location),
+              SizedBox(
+                height: 200,
+                child: GoogleMap(
+                  compassEnabled: false,
+                  circles: {
+                    Circle(
+                      circleId: CircleId("circle"),
+                      fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                      strokeColor: Theme.of(context).colorScheme.primary,
+                      center: LatLng(
+                        widget.activity.location.latitude, widget.activity.location.longitude
+                      ),
+                      radius: 5000,
+                      strokeWidth: 5
+                    )
+                  },
+                  initialCameraPosition: CameraPosition(
+                    zoom: 10,
+                    target: LatLng(
+                     widget.activity.location.latitude, widget.activity.location.longitude
+                  )),
+                  markers: {
+                    Marker(
+                      markerId: MarkerId("marker"),
+                      position: LatLng(
+                        widget.activity.location.latitude, widget.activity.location.longitude
+                      )
+                    )
+                  },
+                  zoomGesturesEnabled: true,
+                ),
+              ),
               Text("Discuss with the host for the exact location")
               
             ],
