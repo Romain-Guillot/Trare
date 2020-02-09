@@ -143,8 +143,8 @@ class _ProfilEditionButtonState extends State<ProfilEditionButton> {
   /// If the updating succeed, we pop the current page (or we just display
   /// a snackbar if we cannot pop anything)
   handleSuccess() {
-    final ModalRoute<dynamic> parentRoute = ModalRoute.of(context);
-    final bool canPop = parentRoute?.canPop ?? false;
+    var parentRoute = ModalRoute.of(context);
+    var canPop = parentRoute?.canPop ?? false;
     if (canPop)
       Navigator.pop(context);
     else

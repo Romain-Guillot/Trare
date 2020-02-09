@@ -237,8 +237,8 @@ class AuthenticationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonStyle = Theme.of(context).textTheme.button;
-    final iconSize = buttonStyle.fontSize * 1.5; //  icons are 1.5 times bigger than the text
+    var buttonStyle = Theme.of(context).textTheme.button;
+    var iconSize = buttonStyle.fontSize * 1.5; //  icons are 1.5 times bigger than the text
     return Container(
       decoration: BoxDecoration(
         borderRadius: Dimens.rounedBorderRadius,
