@@ -121,7 +121,7 @@ class AuthenticationHeader extends StatelessWidget {
         SizedBox(height: Dimens.screenPaddingValue),
         Text(
           Strings.authenticationTitle,
-          style: Theme.of(context).textTheme.display2
+          style: Theme.of(context).textTheme.title
         ),
         Text(
           Strings.authenticationDescription,

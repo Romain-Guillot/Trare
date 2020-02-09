@@ -10,7 +10,7 @@ class Strings {
   static const String snakbarActionDismissed = "Ok";
   static const String loading = "Loading ...";
   static const String unexpectedError = "This wasn't supposed to happen... 😳";
-
+  static const String availableSoon = "Stay tuned, available soon 🙏";
 
 
   

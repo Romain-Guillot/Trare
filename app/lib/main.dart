@@ -118,22 +118,24 @@ final appTheme = ThemeData(
     error: Color(0xfffc3d46),
     onError: Colors.white,
 
-    background: Color(0xff),
-    onBackground: Color(0xff),
+    background: Colors.white,
+    onBackground: Colors.black,
 
     brightness: Brightness.light,
   ),
+
+  backgroundColor: Colors.white,
+  splashColor: Colors.white,
 
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(fontSize: 15, fontWeight: Dimens.weightBold)
   ),
 
   textTheme: TextTheme(
-    title: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+    title: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
     subtitle: TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 16),
     body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.9)),
 
-    display2: TextStyle(fontSize: Dimens.authTitleSize, fontWeight: Dimens.weightBold, color: Colors.black),
     display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
   ),
 
