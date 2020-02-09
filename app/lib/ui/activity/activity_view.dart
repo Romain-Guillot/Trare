@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 
 class Activity {
@@ -60,6 +61,11 @@ class _ActivityViewState extends State<ActivityView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
+                "Between ${DateFormat.yMMMd().format(widget.activity.beginDate)} and ${DateFormat.yMMMd().format(widget.activity.endDate)}".toUpperCase(), 
+                style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
+              ),
+              FlexSpacer(small: true,),
+              Text(
                 widget.activity.title,
                 style: Theme.of(context).textTheme.title,
               ),
@@ -99,7 +105,10 @@ class _ActivityViewState extends State<ActivityView> {
                   zoomGesturesEnabled: true,
                 ),
               ),
-              Text("Discuss with the host for the exact location")
+              Text(
+                "Discuss with the host for the exact location",
+                style: Theme.of(context).textTheme.caption,
+              )
               
             ],
           ),

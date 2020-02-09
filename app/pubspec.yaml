@@ -32,6 +32,7 @@ dependencies:
   image_picker: ^0.6.3+1
   geolocator: ^5.2.1
   google_maps_flutter: ^0.5.22+2
+  intl: ^0.16.1
 
 dev_dependencies:
   mockito: ^4.1.1
