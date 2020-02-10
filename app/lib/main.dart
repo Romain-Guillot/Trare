@@ -34,32 +34,25 @@ void main() {
 
   final authRepo = FirebaseAuthenticationRepository();
   final profileRepo = FiresoreProfileRepository();
-  var activityRepo=MockActivityRepository();
-        //var activityRepo;
-    runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
-          AuthenticationProvider(
-            authRepo: authRepo
-          )..init(),
-        ),
-        ChangeNotifierProvider<ProfileProvider>(create: (context) => 
-          ProfileProvider(
-            profileRepo: profileRepo
-          )
-        ),
-        ChangeNotifierProvider<ActivityProvider>(create: (context) => 
-          ActivityProvider(
-            activityRepository: activityRepo
-          )
-        ),
-      /*ChangeNotifierProvider<ActivityProvider>(
-          create: (context) => ActivityProvider(
-            activityRepository: activityRepo,
+  var activityRepo = MockActivityRepository();
 
-        ),
-        //child: ListItemsActivities(),
-        )*/
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
+        AuthenticationProvider(
+          authRepo: authRepo
+        )..init(),
+      ),
+      ChangeNotifierProvider<ProfileProvider>(create: (context) => 
+        ProfileProvider(
+          profileRepo: profileRepo
+        )
+      ),
+      ChangeNotifierProvider<ActivityProvider>(create: (context) => 
+        ActivityProvider(
+          activityRepository: activityRepo
+        )
+      )
     ],
     child: MyApp())
   );

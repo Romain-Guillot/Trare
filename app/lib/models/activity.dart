@@ -12,12 +12,6 @@ class Activity{
   String duration;
   String urlPhoto;
 
-  String get getTitle => title;
-  String get getLocation => location;
-  String get getDuration => duration;
-  String get getUrlPhoto => urlPhoto;
-
-
   Activity({
     this.title,
     this.location,

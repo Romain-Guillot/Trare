@@ -4,139 +4,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Explore extends StatefulWidget{
-  
-  /*final Activity activity;
 
-  const Explore({
-    Key key, this.activity
-    }) : super(key: key);*/
-  @override
-  _ExploreState createState() => _ExploreState();
 
-}
-
-class _ExploreState extends State<Explore>{
+class Explore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: Center(
-          child: ChangeNotifierProvider(
-            create: (context) => ActivityProvider(),
-            child: ListItemsActivities() ,
-          )
-
-        )
-    );
-
+      child: ListItemsActivities(),
+    ));
   }
-
 }
 
-class ListItemsActivities extends StatefulWidget{
-  @override
-  _ListItemsActivitiesState createState() => _ListItemsActivitiesState();
-
-}
-
-class _ListItemsActivitiesState extends State<ListItemsActivities>{
-
+class ListItemsActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:Column(
-      children: <Widget>[
-
-        Expanded(
-          child: Container(
-      child: Consumer<ActivityProvider>(
-        builder: (context, activity, child){
+    return Consumer<ActivityProvider>(
+      builder: (_, activityProvider, __) {
+        if (activityProvider.activities == null) {
+          return Text("Loading");
+        } else {
           return ListView.builder(
-            itemCount: activity.listActivity.length,
-            itemBuilder: (context, index){
-              return Container(
-                child: ListTile(
-                  contentPadding: EdgeInsets.only(left: 32, right: 32, top: 8, bottom: 8),
-                  title: Text(activity.listActivity[index].title, style : TextStyle(color: Colors.black87,
-                                fontWeight: FontWeight.bold),),
-                  subtitle: Text(activity.listActivity[index].location, style: TextStyle(color: Colors.black45,
-                                fontWeight: FontWeight.bold),),
-                  trailing:  Icon(Icons.check_circle, color: Colors.greenAccent,),
-                  
-                  
-                ),
-                margin: EdgeInsets.only(bottom: 8, left: 16, right: 16),
+            itemCount: activityProvider.activities.length,
+            itemBuilder: (_, position) {
+              var activity = activityProvider.activities[position];
+              return ListTile(
+                title: Text(activity.title),
+                subtitle: Text(activity.location),
+                trailing: Icon(Icons.account_circle),
               );
-                
-            },
-            );
-        })
-        ),
-        
-          ) 
-
-    ],
-    
-    ),
-    floatingActionButton:FloatingActionButton(
-      child: Icon(Icons.add),
-      backgroundColor: Colors.greenAccent,
-      onPressed:() =>{
-        //Provider.of<ActivityProvider>(context, listen = false)
-      }),
+            } 
+          );
+        }
+      }
     );
-    
   }
-  
-
 }
-
-
-
-/*class ItemActivity extends StatelessWidget{
-  final Activity initialActivity;
-  
-   ItemActivity({
-    Key key, 
-    this.initialActivity}) : super(key: key);
-
-  
-
-  @override
-  Widget build(BuildContext context) {
-  return InkWell(
-    child: Container(
-      padding:const EdgeInsets.all(10.0),
-      width: double.infinity,
-      child: Row(
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(initialActivity.title),
-              Text(initialActivity.location),
-              Text(initialActivity.duration),
-            ],
-          ),
-
-        //  Container(
-        //    decoration: BoxDecoration(
-        //      borderRadius: BorderRadius.circular(25.0) ,
-        //      image: DecorationImage(
-        //        image: AssetImage(urlPhoto),
-        //      )
-        //    ),
-        //  ),
-
-        ],
-      ),
-
-    ),
-    onTap: () => {print("Ok")},
-  );
-
-  }
-
-}*/

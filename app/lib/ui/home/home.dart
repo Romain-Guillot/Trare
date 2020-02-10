@@ -98,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedItemColor: Colors.greenAccent,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
       ),
     );

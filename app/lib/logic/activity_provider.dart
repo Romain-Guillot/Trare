@@ -7,35 +7,22 @@ import 'package:app/models/activity.dart';
 import 'package:app/repositories/activity_repository.dart';
 import 'package:flutter/cupertino.dart';
 
-class ActivityProvider extends ChangeNotifier{
-   IActivityRepository _activityRepository;
-   List<Activity> listActivity=[];
+class ActivityProvider extends ChangeNotifier {
 
-  Activity _activity;
-  Activity get activity => _activity;
+   IActivityRepository _activityRepository;
+
+   List<Activity> activities;
+
 
   ActivityProvider({
     @required IActivityRepository activityRepository
-  }):this._activityRepository=activityRepository;
-  set activity(Activity newActivity){
-    assert(newActivity!=null);
-   _activity=newActivity;
-   listActivity.add(_activity);
-   notifyListeners();
+  }) : this._activityRepository=activityRepository {
+    loadActivities();
   }
 
-  /*List<Activity> listActivity=[];
 
-  addActivityInList(){
-    Activity _activity=Activity(
-      title: "Randonée au mont tremblant",
-      duration: "2 jours",
-      location: "Montreal",
-      urlPhoto: " " );
-    listActivity.add(_activity);
+  loadActivities() async {
+    this.activities = await _activityRepository.getActivities();
     notifyListeners();
-  }*/
-
-
-  
+  }
 }
