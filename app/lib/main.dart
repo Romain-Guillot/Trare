@@ -1,15 +1,20 @@
+import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
+import 'package:app/repositories/activity_repository.dart';
 import 'package:app/repositories/authentication_repository.dart';
 import 'package:app/repositories/profile_repository.dart';
 import 'package:app/ui/activity/activity_view.dart';
 import 'package:app/ui/authentication/authentication_view.dart';
 import 'package:app/ui/authentication/loading_view.dart';
+import 'package:app/ui/home/explore.dart';
+import 'package:app/ui/home/home.dart';
 import 'package:app/ui/profile/profile_visualisation_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 
 
@@ -30,6 +35,7 @@ void main() {
 
   var authRepo = FirebaseAuthenticationRepository();
   var profileRepo = FiresoreProfileRepository();
+  var activityRepo = MockActivityRepository();
 
   var authProvider = AuthenticationProvider(authRepo: authRepo)..init();
 
@@ -44,6 +50,11 @@ void main() {
           authenticationProvider: authProvider
         )
       ),
+      ChangeNotifierProvider<ActivityProvider>(create: (context) => 
+        ActivityProvider(
+          activityRepository: activityRepo
+        )
+      )
     ],
     child: MyApp()
   ));
@@ -79,7 +90,8 @@ class MyApp extends StatelessWidget {
           if (authenticationProvider.user == null)
             return AuthenticationView();
           else {
-            return ProfileVisualisationView();
+            //return ProfileVisualisationView();
+            return MyHomePage();
           }
         }
       ),
