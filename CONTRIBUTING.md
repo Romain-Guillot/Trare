@@ -14,13 +14,15 @@ sprint1_dev_username  // working branch for username
 Branch naming are very important as the CI/CD tool (CodeMagic) use branch name pattern to do appropriate workflow.
 
 ###### Merge
+Integrate the changes from the master branch (of the origin remote) on your local branch (then fix conflicts if any) then merge the master with your updated branch.
+```
+git(???)      $ git checkout mybranch   // go to your branch
+git(mybranch) $ git pull origin master  // fetch master and merge with your branch
+git(mybranch) $ git checkout master     // go to master
+git(master)   $ git merge mybranch      // merge master with your updated branch
+```
 
-```
-git checkout mybranch
-git pull origin master
-git checkout master
-git merge test
-```
+Note: `git pull` = `git fetch` + `git merge`
 
 ###### Commit
 USE english language, **short and concise** message : preferably begins with a verb and DO NOT finished with a period (useless)
