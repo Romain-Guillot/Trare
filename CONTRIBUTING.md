@@ -48,6 +48,16 @@ Following components MUST always be commented
 
 READ this guide : https://dart.dev/guides/language/effective-dart/documentation
 
+## UI
+- DOESN'T use hard corded string or values, use `ui > shared > strings.dart` or `ui > shared > dimens.dart`
+- HAVE a file for each page
+- CONSIDER writing small widget (not very deep tree) to have reusable widget, **ONE widget = ONE scope / responsability** (hint: a maximum depth of 4 or 5, the build method has to be visible in a normal sceen <50 lines)
+- KEEP main page short (just call your reusable widgets)
+- USE app theme color and font (not hard coded)
+- PREFER shadow over elevation
+- KEEP stateful widget small as possible
+- DO NOT include processes in you build method (delegate to another function) (`onPressed: myHandlerFunction`)
+
 ## Coding conventions
 
 ###### Components
@@ -97,6 +107,7 @@ class MyClass {
 
 Some blank lines are also accepted depending on the situation, use your common sense.
 
+
 ###### Others
 - AVOID lines longer than 80 characters (certain cases are accepted)
 - DON’T use .length to see if a collection is empty (use `myCollec.isEmpty` or `myCollex.isNotEmpty`)
@@ -104,3 +115,4 @@ Some blank lines are also accepted depending on the situation, use your common s
 - PREFER direct cosntructore initialization with `this` keyword (`MyClass({this.myField})` and NOT `MyClass(int myField) { this.myField = myField}`)
 - Use implicit typing for local variables when the type of the variable is obvious (`var myObject = MyClass()`)
 - DON'T use `new` keyword (`var myObject = MyClass()` NOT `var myObject = new MyClass()`)
+- CONSIDER using => for short members whose body is a single return statement (`etState(() => _image = image);` , `(val) => val.isEmpty ? errorMessage : null`)
