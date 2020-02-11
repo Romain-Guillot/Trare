@@ -9,13 +9,13 @@ import 'package:flutter/cupertino.dart';
 
 class ActivityProvider extends ChangeNotifier {
 
-   IActivityRepository _activityRepository;
+   IActivitiesRepository _activityRepository;
 
    List<Activity> activities;
 
 
   ActivityProvider({
-    @required IActivityRepository activityRepository
+    @required IActivitiesRepository activityRepository
   }) : this._activityRepository=activityRepository {
     loadActivities();
   }

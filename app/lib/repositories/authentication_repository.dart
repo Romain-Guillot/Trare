@@ -65,6 +65,7 @@ abstract class AuthenticationRepository {
   Future<void> signOut();
 }
 
+
 /// Implements [AuthenticationRepository] with Firebase platform
 ///
 /// See the AuthenticationRepository to know more about the specification.

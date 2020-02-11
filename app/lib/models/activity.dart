@@ -3,22 +3,17 @@
 // Doc: TODO
 // Tests: TODO
 
-///
-///
-///
-class Activity{
+
+import 'package:app/models/user.dart';
+import 'package:geolocator/geolocator.dart';
+
+
+class Activity {
   String title;
-  String location;
-  String duration;
-  String urlPhoto;
-
-  Activity({
-    this.title,
-    this.location,
-    this.duration,
-    this.urlPhoto,
-  });
-
-
-
+  User user;
+  String description;
+  DateTime createdDate;
+  DateTime beginDate;
+  DateTime endDate;
+  Position location;
 }

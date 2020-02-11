@@ -7,28 +7,12 @@ import 'dart:math';
 
 import 'package:app/models/activity.dart';
 
-abstract class IActivityRepository{
+abstract class IActivitiesRepository{
   Future<List<Activity>> getActivities();
 }
 
 
-class MockActivityRepository implements IActivityRepository {
-
-  var _mockAtivities = [
-    Activity(
-      title: "Randonée",
-      location: "Montreal",
-      duration: "2 jours",
-      urlPhoto: "" 
-    ),
-    Activity(
-      title: "Club",
-      location: "Montreal",
-      duration: "3 jours",
-      urlPhoto: "" 
-    ),
-  ];
-
+class FirestoreActivitiesRepository implements IActivitiesRepository {
 
   @override
   Future<List<Activity>> getActivities() async {
