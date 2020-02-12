@@ -151,8 +151,8 @@ class ProfileView extends StatelessWidget {
                     ),
 
 
-                    RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, 
-                    MaterialPageRoute(builder: (_) => ActivityView(activity: Activity(),))),)
+                    // RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, 
+                    // MaterialPageRoute(builder: (_) => ActivityView(activity: Activity(),))),)
                   ],
                 )
               )

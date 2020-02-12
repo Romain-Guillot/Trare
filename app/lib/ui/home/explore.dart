@@ -31,7 +31,7 @@ class ListItemsActivities extends StatelessWidget {
               var activity = activityProvider.activities[position];
               return ListTile(
                 title: Text(activity.title),
-                subtitle: Text(activity.location),
+                // subtitle: Text(activity.location),
                 trailing: Icon(Icons.account_circle),
               );
             } 
