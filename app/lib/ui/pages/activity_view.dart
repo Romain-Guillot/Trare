@@ -53,7 +53,7 @@ class _ActivityViewState extends State<ActivityView> {
                 "Between ${DateFormat.yMMMd().format(widget.activity.beginDate)} and ${DateFormat.yMMMd().format(widget.activity.endDate)}".toUpperCase(), 
                 style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
               ),
-              FlexSpacer(small: true,),
+              FlexSpacer.small(),
               Text(
                 widget.activity.title,
                 style: Theme.of(context).textTheme.title,

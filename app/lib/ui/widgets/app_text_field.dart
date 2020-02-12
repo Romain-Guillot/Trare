@@ -39,7 +39,7 @@ class AppTextField extends StatelessWidget {
           labelText, 
           style: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
-        FlexSpacer(small: true),
+        FlexSpacer.small(),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,

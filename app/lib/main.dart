@@ -131,6 +131,7 @@ final appTheme = ThemeData(
   ),
 
   backgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white,
   splashColor: Colors.white,
 
   inputDecorationTheme: InputDecorationTheme(

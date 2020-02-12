@@ -145,9 +145,7 @@ class ProfileView extends StatelessWidget {
                     ProfileItemList(
                       user: user,
                     ),
-                    FlexSpacer(
-                      big: true
-                    ),
+                    FlexSpacer.big(),
 
 
                     // RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, 

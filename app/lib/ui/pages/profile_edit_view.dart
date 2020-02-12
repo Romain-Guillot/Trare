@@ -69,7 +69,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                 Strings.profileEditionInfo, 
                 style: Theme.of(context).textTheme.display1,
               ),
-              FlexSpacer(big: true,),
+              FlexSpacer.big(),
               ProfileForm(
                 key: profileFormKey,
                 initialUser: widget.user
