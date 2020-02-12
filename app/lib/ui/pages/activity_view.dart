@@ -1,10 +1,10 @@
 import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/widgets/buttons.dart';
-import 'package:app/ui/shared/widgets/flat_app_bar.dart';
-import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
+import 'package:app/ui/widgets/buttons.dart';
+import 'package:app/ui/widgets/flat_app_bar.dart';
+import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';

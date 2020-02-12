@@ -3,7 +3,7 @@
 // Doc: TODO: review required.
 // Tests: TODO
 import 'package:app/models/user.dart';
-import 'package:app/repositories/authentication_repository.dart';
+import 'package:app/services/authentication_service.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -32,7 +32,7 @@ import 'package:flutter/widgets.dart';
 /// When these state variables change, clients are notified.
 class AuthenticationProvider extends ChangeNotifier {
 
-  final AuthenticationRepository _authRepo;
+  final IAuthenticationService _authService;
   bool _inProcess = false;
   User _user;
   bool _isInitialized;
@@ -51,15 +51,15 @@ class AuthenticationProvider extends ChangeNotifier {
 
 
   AuthenticationProvider({
-    @required AuthenticationRepository authRepo
-  }) : this._authRepo = authRepo;
+    @required IAuthenticationService authService
+  }) : this._authService = authService;
 
 
 
   /// Check is an user is logged in the app
   /// When the init process is done, the flag [isInitialized] is set to true
   init() async {
-    user = await _authRepo.getCurrentUser();
+    user = await _authService.getCurrentUser();
     await Future.delayed(Duration(seconds: 1)); // TODO
     isInitialized = true;
   }
@@ -68,14 +68,14 @@ class AuthenticationProvider extends ChangeNotifier {
   /// Handle the Google login
   /// Please see the class level documentation to know more about its behavior
   Future<void> handleGoogleLogin() async {
-    return _handleLogin(_authRepo.handleGoogleLogin);
+    return _handleLogin(_authService.handleGoogleLogin);
   }
 
 
   /// Handle Facebook login
   /// Please see the class level documentation to know more about its behavior
   Future<void> handleFacebookLogin() async {
-    return _handleLogin(_authRepo.handleFacebookLogin);
+    return _handleLogin(_authService.handleFacebookLogin);
   }
 
 
@@ -99,7 +99,7 @@ class AuthenticationProvider extends ChangeNotifier {
   /// Sign out the user, after the completion, the [user] propertie is set to 
   /// null pointer.
   Future<void> signOut() async {
-    await _authRepo.signOut();
+    await _authService.signOut();
     user = null;
   }
 }

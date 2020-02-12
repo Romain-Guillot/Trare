@@ -1,15 +1,11 @@
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
-import 'package:app/repositories/activity_repository.dart';
-import 'package:app/repositories/authentication_repository.dart';
-import 'package:app/repositories/profile_repository.dart';
-import 'package:app/ui/activity/activity_view.dart';
-import 'package:app/ui/authentication/authentication_view.dart';
-import 'package:app/ui/authentication/loading_view.dart';
-import 'package:app/ui/home/explore.dart';
+import 'package:app/services/activity_service.dart';
+import 'package:app/services/authentication_service.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:app/ui/home/home.dart';
-import 'package:app/ui/profile/profile_visualisation_view.dart';
+import 'package:app/ui/pages/authentication_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +29,11 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var authRepo = FirebaseAuthenticationRepository();
-  var profileRepo = FiresoreProfileRepository();
-  var activityRepo = FirestoreActivitiesRepository();
+  var authService = FirebaseAuthenticationService();
+  var profileService = FirestoreProfileService();
+  var activityService = FirestoreActivitiesService();
 
-  var authProvider = AuthenticationProvider(authRepo: authRepo)..init();
+  var authProvider = AuthenticationProvider(authService: authService)..init();
 
   runApp(MultiProvider(
     providers: [
@@ -46,13 +42,13 @@ void main() {
       ),
       ChangeNotifierProvider<ProfileProvider>(create: (context) => 
         ProfileProvider(
-          profileRepo: profileRepo,
+          profileService: profileService,
           authenticationProvider: authProvider
         )
       ),
       ChangeNotifierProvider<ActivityProvider>(create: (context) => 
         ActivityProvider(
-          activityRepository: activityRepo
+          activitiesService: activityService
         )
       )
     ],

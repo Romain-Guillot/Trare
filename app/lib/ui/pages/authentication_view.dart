@@ -2,8 +2,8 @@ import 'package:app/logic/authentication_provider.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/shared/widgets/flex_spacer.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
+import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -276,6 +276,19 @@ class AuthenticationButton extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+
+class LoadingView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

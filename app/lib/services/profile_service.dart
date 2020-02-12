@@ -18,7 +18,7 @@ import 'package:flutter/widgets.dart';
 /// 
 /// So the goal of this repository if to get or insert data belonging to users 
 /// in a remote database.
-abstract class IProfileRepository {
+abstract class IProfileService {
 
   /// Returns the [User] currently connected to the application
   /// 
@@ -43,7 +43,7 @@ abstract class IProfileRepository {
 
 
 
-/// Implementation of [IProfileRepository] that used Cloud Firestore (Firebase)
+/// Implementation of [IProfileService] that used Cloud Firestore (Firebase)
 ///
 /// See interface-level documentation to know more. 
 /// See the corresponding specification `sprint2 > bdd_archi.md` (french)
@@ -53,7 +53,7 @@ abstract class IProfileRepository {
 /// - to adapt noSQL data ([Map]) to [User] (to get the user)
 /// - to adapt [User] to noSQL data ([Map]) (to insert the user information)
 /// See [FirestoreUserAdapter]
-class FiresoreProfileRepository implements IProfileRepository {
+class FirestoreProfileService implements IProfileService {
   
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;

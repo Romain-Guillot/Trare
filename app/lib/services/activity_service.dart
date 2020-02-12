@@ -8,12 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 
-abstract class IActivitiesRepository{
+abstract class IActivitiesService {
   Future<List<Activity>> getActivities();
 }
 
 
-class FirestoreActivitiesRepository implements IActivitiesRepository {
+class FirestoreActivitiesService implements IActivitiesService {
 
   @override
   Future<List<Activity>> getActivities() async {

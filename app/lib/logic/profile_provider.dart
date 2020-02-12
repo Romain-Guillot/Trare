@@ -4,7 +4,7 @@
 // Tests: TODO
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
-import 'package:app/repositories/profile_repository.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -33,7 +33,7 @@ import 'package:flutter/widgets.dart';
 class ProfileProvider extends ChangeNotifier {
 
   /// Repository used to perform action on the user (get, edit)
-  final IProfileRepository _profileRepository;
+  final IProfileService _profileService;
 
 
   /// The current provider state (not initialized, error, initialized)
@@ -56,9 +56,9 @@ class ProfileProvider extends ChangeNotifier {
 
 
   ProfileProvider({
-    @required IProfileRepository profileRepo,
+    @required IProfileService profileService,
     @required AuthenticationProvider authenticationProvider,
-  }) : this._profileRepository = profileRepo {
+  }) : this._profileService = profileService {
     // if the user is already connected, we load his information
     if (authenticationProvider.user != null)
       loadUser();
@@ -81,7 +81,7 @@ class ProfileProvider extends ChangeNotifier {
   /// (`initialized` or `error`)
   Future loadUser() async {
     try {
-      _user = await _profileRepository.getUser();
+      _user = await _profileService.getUser();
     } catch (e) {
       state = ProfileProviderState.error;
     }
@@ -103,7 +103,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<bool> editUser(User newUser) async {
     await Future.delayed(Duration(seconds: 1)); // TODO TEST
     try {
-      _user = await _profileRepository.editUser(newUser);
+      _user = await _profileService.editUser(newUser);
       notifyListeners();
       return true;
     } catch (_) {

@@ -4,25 +4,25 @@
 // Tests: TODO
 
 import 'package:app/models/activity.dart';
-import 'package:app/repositories/activity_repository.dart';
+import 'package:app/services/activity_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class ActivityProvider extends ChangeNotifier {
 
-   IActivitiesRepository _activityRepository;
+   IActivitiesService _activityService;
 
    List<Activity> activities;
 
 
   ActivityProvider({
-    @required IActivitiesRepository activityRepository
-  }) : this._activityRepository=activityRepository {
+    @required IActivitiesService activitiesService
+  }) : this._activityService = activitiesService {
     loadActivities();
   }
 
 
   loadActivities() async {
-    this.activities = await _activityRepository.getActivities();
+    this.activities = await _activityService.getActivities();
     notifyListeners();
   }
 }

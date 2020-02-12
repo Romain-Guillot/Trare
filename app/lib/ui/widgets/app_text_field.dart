@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/shared/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

@@ -24,7 +24,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 /// Note that the function are not "error safe". So make sure to handle error
 /// when you use them. And also, error can depends on the platform service
 /// used (Firebase, Amazon, custom server, etc.)
-abstract class AuthenticationRepository {
+abstract class IAuthenticationService {
   /// Returns the current logged user
   /// Returns null is no user is connected
   Future<User> getCurrentUser();
@@ -69,7 +69,7 @@ abstract class AuthenticationRepository {
 /// Implements [AuthenticationRepository] with Firebase platform
 ///
 /// See the AuthenticationRepository to know more about the specification.
-class FirebaseAuthenticationRepository implements AuthenticationRepository {
+class FirebaseAuthenticationService implements IAuthenticationService {
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
   final _facebookLogin = FacebookLogin();
