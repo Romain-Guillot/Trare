@@ -53,7 +53,23 @@ TBD: Définir les limites de tailles d'image / compression / format / etc.
 
 ### Activité
 
-*In progress with the sprint#4*
+Voici la structure noSQL des données des activités :
+
+```
+col:activities
+    doc:id#1
+        - createdDate: date
+        - title: text
+        - user: text
+        - description: text
+        - beginDate: date
+        - endDate: date
+        - location: geographical point        
+    doc:id#2
+        ...
+    ...
+```
+Note: l'attribut `user` stocke l'ID de l'utilisateur ayant créé l'activité.
 
 
 

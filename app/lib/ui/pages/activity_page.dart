@@ -13,25 +13,11 @@ import 'package:intl/intl.dart';
 
 
 
-class ActivityPage extends StatefulWidget {
+class ActivityPage extends StatelessWidget {
 
   final Activity activity;
 
-  ActivityPage({Key key, @required this.activity});
-
-  @override
-  _ActivityPageState createState() => _ActivityPageState();
-}
-
-class _ActivityPageState extends State<ActivityPage> {
-
-  String location = "";
-
-  @override
-  void initState() {
-    super.initState();
-    loadLocation();
-  }
+  ActivityPage({@required this.activity});
   
   @override
   Widget build(BuildContext context) {
@@ -50,55 +36,18 @@ class _ActivityPageState extends State<ActivityPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Between ${DateFormat.yMMMd().format(widget.activity.beginDate)} and ${DateFormat.yMMMd().format(widget.activity.endDate)}".toUpperCase(), 
+                "Between ${DateFormat.yMMMd().format(activity.beginDate)} and ${DateFormat.yMMMd().format(activity.endDate)}".toUpperCase(), 
                 style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
               ),
               FlexSpacer.small(),
               Text(
-                widget.activity.title,
+                activity.title,
                 style: Theme.of(context).textTheme.title,
               ),
               FlexSpacer(),
-              Text(widget.activity.description),
+              Text(activity.description),
               FlexSpacer(),
-              Text(location),
-              SizedBox(
-                height: 200,
-                child: GoogleMap(
-                  compassEnabled: false,
-                  circles: {
-                    Circle(
-                      circleId: CircleId("circle"),
-                      fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                      strokeColor: Theme.of(context).colorScheme.primary,
-                      center: LatLng(
-                        widget.activity.location.latitude, widget.activity.location.longitude
-                      ),
-                      radius: 5000,
-                      strokeWidth: 5
-                    )
-                  },
-                  initialCameraPosition: CameraPosition(
-                    zoom: 10,
-                    target: LatLng(
-                     widget.activity.location.latitude, widget.activity.location.longitude
-                  )),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId("marker"),
-                      position: LatLng(
-                        widget.activity.location.latitude, widget.activity.location.longitude
-                      )
-                    )
-                  },
-                  zoomGesturesEnabled: true,
-                ),
-              ),
-              Text(
-                "Discuss with the host for the exact location",
-                style: Theme.of(context).textTheme.caption,
-              )
-              
+              ActivityLocation(position: activity.location,)
             ],
           ),
         ),
@@ -106,20 +55,100 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  loadLocation() async {
-    var placemarks = await Geolocator().placemarkFromPosition(widget.activity.location);
-    if (placemarks.isNotEmpty) {
-      var place = placemarks[0];
-      print(place.toJson());
-      setState(() => location = place.subLocality + ", " + place.locality + ", " + place.country);
-    }
-  }
+
 
   handleParticipation(context) {
     showSnackbar(
       context: context, 
       content: Text(Strings.availableSoon),
       critical: true,
+    );
+  }
+}
+
+
+class ActivityLocation extends StatefulWidget {
+
+  final Position position;
+
+  ActivityLocation({@required this.position});
+
+  @override
+  _ActivityLocationState createState() => _ActivityLocationState();
+}
+
+class _ActivityLocationState extends State<ActivityLocation> {
+
+  String location = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadLocation();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Text(location),
+        SizedBox(
+          height: 200,
+          child: GoogleMapView(position: widget.position,)
+        ),
+        Text(
+          "Discuss with the host for the exact location",
+          style: Theme.of(context).textTheme.caption,
+        )
+      ],
+    );
+  }
+
+  loadLocation() async {
+    var placemarks = await Geolocator().placemarkFromPosition(widget.position);
+    if (placemarks.isNotEmpty) {
+      var place = placemarks[0];
+      setState(() => {
+        location = place.subLocality + ", " + place.locality + ", " + place.country
+      });
+    }
+  }
+}
+
+
+class GoogleMapView extends StatelessWidget {
+
+  final LatLng position;
+
+  GoogleMapView({
+    @required Position position
+  }) : this.position = LatLng(position.latitude, position.longitude);
+
+  @override
+  Widget build(BuildContext context) {
+    return GoogleMap(
+      compassEnabled: false,
+      circles: {
+        Circle(
+          circleId: CircleId("circle"),
+          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          strokeColor: Theme.of(context).colorScheme.primary,
+          center: position,
+          radius: 5000,
+          strokeWidth: 5
+        )
+      },
+      initialCameraPosition: CameraPosition(
+        zoom: 10,
+        target: position
+      ),
+      markers: {
+        Marker(
+          markerId: MarkerId("marker"),
+          position: position
+        )
+      },
+      zoomGesturesEnabled: true,
     );
   }
 }
