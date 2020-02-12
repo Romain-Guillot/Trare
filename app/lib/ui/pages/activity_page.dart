@@ -13,17 +13,17 @@ import 'package:intl/intl.dart';
 
 
 
-class ActivityView extends StatefulWidget {
+class ActivityPage extends StatefulWidget {
 
   final Activity activity;
 
-  ActivityView({Key key, @required this.activity});
+  ActivityPage({Key key, @required this.activity});
 
   @override
-  _ActivityViewState createState() => _ActivityViewState();
+  _ActivityPageState createState() => _ActivityPageState();
 }
 
-class _ActivityViewState extends State<ActivityView> {
+class _ActivityPageState extends State<ActivityPage> {
 
   String location = "";
 

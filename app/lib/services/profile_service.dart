@@ -10,13 +10,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 
-/// Repository used to get and edit the connected [User]
+/// Service used to get and edit the connected [User]
 /// 
 /// It's a very basic inteface with two actions :
 ///   - Get the user : [getUser()]
 ///   - Edit the user information : [editUser()]
 /// 
-/// So the goal of this repository if to get or insert data belonging to users 
+/// So the goal of this service if to get or insert data belonging to users 
 /// in a remote database.
 abstract class IProfileService {
 
@@ -49,7 +49,7 @@ abstract class IProfileService {
 /// See the corresponding specification `sprint2 > bdd_archi.md` (french)
 /// 
 /// Note:
-/// This repository used the pattern Adapter :
+/// This service used the pattern Adapter :
 /// - to adapt noSQL data ([Map]) to [User] (to get the user)
 /// - to adapt [User] to noSQL data ([Map]) (to insert the user information)
 /// See [FirestoreUserAdapter]
@@ -59,7 +59,7 @@ class FirestoreProfileService implements IProfileService {
   final _firestore = Firestore.instance;
 
 
-  /// See interface-level documentation [IProfileRepository.getUser()] (specs)
+  /// See interface-level documentation [IProfileService.getUser()] (specs)
   /// 
   /// Details about the implementation only :
   /// - As the cloud_firestore package returns a snapshot to get data, a 
@@ -89,7 +89,7 @@ class FirestoreProfileService implements IProfileService {
   }
 
 
-  /// See interface-level documentation [IProfileRepository.editUser()] (specs)
+  /// See interface-level documentation [IProfileService.editUser()] (specs)
   /// 
   /// Details about the implementation only :
   /// 

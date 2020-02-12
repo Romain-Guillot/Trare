@@ -10,9 +10,10 @@
 // bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
 
 import 'package:app/ui/home/explore.dart';
-import 'package:app/ui/pages/profile_visualisation_view.dart';
+import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+
 /// This Widget is the main application widget.
 class Home extends StatefulWidget {
   static const String _title = 'Flutter Code Sample';
@@ -50,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'Index 1: Business',
       style: optionStyle,
     ),
-    ProfileVisualisationView(),
+    ProfileVisualisationPage(),
 
   ];
 

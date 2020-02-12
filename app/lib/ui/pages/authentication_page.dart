@@ -17,8 +17,8 @@ import 'package:provider/provider.dart';
 /// widget (it also improve the reusability as the widget have a single
 /// responsability).
 /// 
-/// So this [AuthenticationView] has the following widget tree :
-///   - [AuthenticationView] (root)
+/// So this [AuthenticationPage] has the following widget tree :
+///   - [AuthenticationPage] (root)
 ///   |---- [AuthenticationHeader] (some information as the app logo)
 ///   |---- [AuthenticationButtonList] (the list of buttons to log in)
 /// 
@@ -30,7 +30,7 @@ import 'package:provider/provider.dart';
 /// layout depending on the actual [Orientation].
 /// 
 /// Note: the background image is only visible in the portait layout.
-class AuthenticationView extends StatelessWidget {
+class AuthenticationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +136,7 @@ class AuthenticationHeader extends StatelessWidget {
 
 /// List of all buttons to authenticate the user.
 /// 
-/// It reflect the 3 methods supporting by our repository :
+/// It reflect the 3 methods supporting by our service :
 ///  - with Google
 ///  - with Facebook
 ///  - with email / password

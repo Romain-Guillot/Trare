@@ -29,26 +29,26 @@ import 'package:provider/provider.dart';
 /// It's the [ProfilEditionButton] that handles the submission process (call
 /// the [ProfileProvider] in fact). So it needs to retreive the form content 
 /// to give these data to the provider. To do that, we keep the key of the
-/// [ProfileEditView] state ([_ProfileEditViewState]) to call the function
-/// [_ProfileEditViewState.getUser()] upon submission of the form.
+/// [ProfileEditPage] state ([_ProfileEditPageState]) to call the function
+/// [_ProfileEditPageState.getUser()] upon submission of the form.
 /// It's why it's a stateful widget, to keep in the state the form key and not
-/// lost data when the widget is rebuild : [_ProfileEditViewState.profileFormKey]
+/// lost data when the widget is rebuild : [_ProfileEditPageState.profileFormKey]
 /// If we move this key directly in the stateless widget we lost the key every
 /// rebuild and so we lost form data. Here when the tree is rebuild, the state
 /// is conserved and so the key.
 /// 
 /// To know more about keys : https://www.youtube.com/watch?v=kn0EOS-ZiIc
-class ProfileEditView extends StatefulWidget{
+class ProfileEditPage extends StatefulWidget {
 
   final User user;
 
-  ProfileEditView({Key key, @required this.user}) : super(key: key);
+  ProfileEditPage({Key key, @required this.user}) : super(key: key);
 
   @override
-  _ProfileEditViewState createState() => _ProfileEditViewState();
+  _ProfileEditPageState createState() => _ProfileEditPageState();
 }
 
-class _ProfileEditViewState extends State<ProfileEditView> {
+class _ProfileEditPageState extends State<ProfileEditPage> {
   
   final profileFormKey = GlobalKey<_ProfileFormState>();
 

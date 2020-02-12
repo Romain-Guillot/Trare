@@ -51,9 +51,9 @@ abstract class IAuthenticationService {
 }
 
 
-/// Implements [AuthenticationRepository] with Firebase platform
+/// Implements [IAuthenticationService] with Firebase platform
 ///
-/// See the AuthenticationRepository to know more about the specification.
+/// See the IAuthenticationService to know more about the specification.
 class FirebaseAuthenticationService implements IAuthenticationService {
 
   final _auth = FirebaseAuth.instance;
@@ -61,7 +61,7 @@ class FirebaseAuthenticationService implements IAuthenticationService {
   final _facebookLogin = FacebookLogin();
 
 
-  /// See [AuthenticationRepository.getCurrentUser()]
+  /// See [IAuthenticationService.getCurrentUser()]
   @override
   Future<bool> userIsConnected() async {
     var fbUser = await _auth.currentUser();
@@ -69,7 +69,7 @@ class FirebaseAuthenticationService implements IAuthenticationService {
   }
 
 
-  /// See [AuthenticationRepository.handleFacebookLogin()]
+  /// See [IAuthenticationService.handleFacebookLogin()]
   @override
   Future<bool> handleFacebookLogin() async {
     var facebookAuth = await _facebookLogin.logIn(['email']);
@@ -92,7 +92,7 @@ class FirebaseAuthenticationService implements IAuthenticationService {
   }
 
 
-  /// See [AuthenticationRepository.handleGoogleLogin()]
+  /// See [IAuthenticationService.handleGoogleLogin()]
   ///
   /// Note: this method uses the package google_sign_in. It has a bug, the
   /// method [GoogleSignIn.signIn] throw an exception instead of returning
@@ -114,7 +114,7 @@ class FirebaseAuthenticationService implements IAuthenticationService {
   }
 
 
-  /// See [AuthenticationRepository.signOut()]
+  /// See [IAuthenticationService.signOut()]
   @override
   Future<bool> signOut() async {
     await _auth.signOut();

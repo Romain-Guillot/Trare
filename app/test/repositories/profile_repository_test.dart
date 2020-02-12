@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 
 void main() {
 
-  group("FiresoreProfileRepository", () {
+  group("FiresoreProfileService", () {
 
   });
 

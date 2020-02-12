@@ -34,7 +34,7 @@
 - Spécification d'une activités
 - Spécification de la page *Explore*
 - Service : mock service pour récupérer des activités
-- Provider : provider communiquant avec le repository et notify l'UI
+- Provider : provider communiquant avec le service et notify l'UI
 - UI : [WIP] page explore
 
 

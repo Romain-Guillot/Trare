@@ -39,7 +39,7 @@ Source : https://chris.beams.io/posts/git-commit/
 
 ## Documentation
 Following components MUST always be commented
-- Repository : class, methods and public fields
+- Service : class, methods and public fields
 - Provider : at least class and methods (preferably public fields, or at least in the class level documentation)
 - UI :
     - Main pages have to be commented (at least the class, preferably methods and optionally fields)
@@ -63,7 +63,7 @@ READ https://flutter.dev/docs/perf/rendering/best-practices
 ## Coding conventions
 
 ###### Components
-- Suffix repositories with **"Repository"** and place them in `lib/repositories/`
+- Suffix services with **"Service"** and place them in `lib/services/`
 - Suffix providers with **"Provider"** and place them in `lib/logic/`
 - Suffix UI pages (widget that containes the Scaffold) with **"Page"** and place them in `lib/ui/<my_feature>/`
 

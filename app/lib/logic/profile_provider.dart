@@ -32,7 +32,7 @@ import 'package:flutter/widgets.dart';
 /// Observer pattern
 class ProfileProvider extends ChangeNotifier {
 
-  /// Repository used to perform action on the user (get, edit)
+  /// Service used to perform action on the user (get, edit)
   final IProfileService _profileService;
 
 
@@ -71,10 +71,10 @@ class ProfileProvider extends ChangeNotifier {
 
   /// Load the current user and update the [state] accordingly
   ///
-  /// It begins the the `not_initialized` state and then ask the repository
+  /// It begins the the `not_initialized` state and then ask the service
   /// to get the current connectect user.
   /// 
-  /// The [IProfileRepository.getUser()] method is called to get the current
+  /// The [IProfileService.getUser()] method is called to get the current
   /// connected user. This mehtod returns either the connected user, or 
   /// return an exception. (never null)
   /// So the method is surrouned by a try-catch and update the state accordingly
@@ -94,7 +94,7 @@ class ProfileProvider extends ChangeNotifier {
   /// Returns true is the update succeed, false else.
   /// It update and notify listeners of the new updated user.
   /// 
-  /// To edit the user the method [IProfileRepository.editUser()] is called.
+  /// To edit the user the method [IProfileService.editUser()] is called.
   /// This mehtod returns the updated user OR returns an exception. It never 
   /// retunrs null (if error, ...).
   /// So the method is simply surrouned with a try-catch. 

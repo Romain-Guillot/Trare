@@ -1,7 +1,7 @@
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
-import 'package:app/ui/pages/profile_edit_view.dart';
+import 'package:app/ui/pages/profile_edit_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
@@ -30,7 +30,7 @@ import 'package:provider/provider.dart';
 /// 
 /// Note: the user can try a reload if an error occured thanks to the 
 /// [ProfileError] widget.
-class ProfileVisualisationView extends StatelessWidget {
+class ProfileVisualisationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,7 @@ class ProfileView extends StatelessWidget {
 
   editProfile(context) {
     Navigator.push(context, MaterialPageRoute(
-      builder: (_) => ProfileEditView(user: user)
+      builder: (_) => ProfileEditPage(user: user)
     ));
   }
 }

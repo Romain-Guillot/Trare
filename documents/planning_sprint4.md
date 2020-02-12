@@ -7,7 +7,7 @@
 - [ ] Finir *Explore* (UI)
 - [ ] Vue détaillée d'une activité (ActivityView)
 - [ ] Compléter le document d'architecture de la base de données `archi_firebase.md` avec le système d'activités
-- [ ] Remplacer l'implémentation `MockActivitiesRepository` par une implémentation utilisant Firebase (`FirestoreActivitiesRepository`)
+- [ ] Remplacer l'implémentation `MockActivitiesService` par une implémentation utilisant Firebase (`FirestoreActivitiesService`)
 - [ ] Nom de l'application + configuration de CodeMagic (CI/CD) pour le deploiement automatiser sur le Play Store (pour les *internal testers*)
 
 ## Résultats

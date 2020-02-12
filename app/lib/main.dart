@@ -6,11 +6,11 @@ import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:app/ui/home/home.dart';
-import 'package:app/ui/pages/authentication_view.dart';
+import 'package:app/ui/pages/authentication_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/widgets/error_view.dart';
-import 'package:app/ui/widgets/loading_view.dart';
+import 'package:app/ui/widgets/error_page.dart';
+import 'package:app/ui/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
         builder: (_, authProvider, __) {
           switch (authProvider.state) {
             case AuthProviderState.notconnected:
-              return AuthenticationView();
+              return AuthenticationPage();
             case AuthProviderState.connected:
               return Home();
             case AuthProviderState.inprogress:
