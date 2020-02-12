@@ -38,5 +38,11 @@
 - UI : [WIP] page explore
 
 
+<div style="width:250px">
+
+![](src/screen4.jpg)
+
+</div>
+
 ## TODO
 - **WIP**: finir la page *Explore* (documentation, finitions)

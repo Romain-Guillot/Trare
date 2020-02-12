@@ -36,6 +36,12 @@ Voir `feature_authentification.md`
 - Provider qui communique avec le service et notifie l'UI;
 - Service qui permet l'authentification avec Google et Facebook
 
+<div style="width:250px">
+
+![](src/screen3.jpg)
+
+</div>
+
 ## TODO
 - **TODO:** Authentification (connexion / inscription) via email / mot de passe [Issue#3](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/3)
 - **TODO:** configuration de la phase de deploiement sur Google Play. [Issue#8](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/8) - [Issue#9](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/9)

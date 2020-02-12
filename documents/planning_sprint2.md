@@ -31,6 +31,21 @@ Voir `feature_profilutilisateur.md`.
 - UI : affichage du profil utilisateur
 - UI : formulaire d'édition du profil
 
+
+<div style="width:500px">
+
+<table style="border: none;">
+<tr><td>
+
+![](src/screen1.jpg)</td><td>
+
+![](src/screen2.jpg)</td></tr>
+</table>
+
+
+</div>
+
+
 ## TODO
 
 - **TODO:** Photo de profil (upload / modification) [Issue#12](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/12)
