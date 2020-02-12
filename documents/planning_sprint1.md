@@ -1,7 +1,6 @@
 # Planning : Sprint 1
 
-## Itération 1
-### Planning
+## Planning
 **Durée​ :** 1ère semaine (du 20 au 26 janvier)
 **Objectifs​ :**
 - [x] Mise en place de notre environnement de travail (Git, système de communication, etc.);
@@ -9,7 +8,7 @@
 - [x] Choix d’architecture côté client;
 - [x] Développement de la fonctionnalité d’authentification (spéfication, implémentation et tests).
 
-### Résulats
+## Résulats
 
 ###### Environnement de travail
 - Mise en place du système de versionning **Git** + hébergement du repository sur **Github**.  

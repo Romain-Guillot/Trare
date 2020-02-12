@@ -1,4 +1,4 @@
-import 'package:app/models/user.dart';
+import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/widgets/buttons.dart';
@@ -11,17 +11,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-
-class Activity {
-  String title = "Randonnée au Mont Tremblant";
-  String description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit ligula eu malesuada ultricies. Morbi sed venenatis enim. Sed convallis egestas tristique. In quis enim eu ante porta dignissim. Sed velit est, consequat ac massa blandit, porttitor viverra urna. Aenean pretium sagittis enim non tempus. Morbi eget varius urna.";
-  DateTime createdDate = DateTime.now();
-  DateTime beginDate = DateTime(2020, 2, 10);
-  DateTime endDate = DateTime(2020, 2, 15);
-  User user;
-  Position location = Position(latitude: 48.419124, longitude: -71.051799);
-
-}
 
 
 class ActivityView extends StatefulWidget {

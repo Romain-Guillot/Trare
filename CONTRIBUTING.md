@@ -58,6 +58,8 @@ READ this guide : https://dart.dev/guides/language/effective-dart/documentation
 - KEEP stateful widget small as possible
 - DO NOT include processes in you build method (delegate to another function) (`onPressed: myHandlerFunction`)
 
+READ https://flutter.dev/docs/perf/rendering/best-practices 
+
 ## Coding conventions
 
 ###### Components

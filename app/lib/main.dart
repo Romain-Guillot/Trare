@@ -35,7 +35,7 @@ void main() {
 
   var authRepo = FirebaseAuthenticationRepository();
   var profileRepo = FiresoreProfileRepository();
-  var activityRepo = MockActivityRepository();
+  var activityRepo = FirestoreActivitiesRepository();
 
   var authProvider = AuthenticationProvider(authRepo: authRepo)..init();
 
