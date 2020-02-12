@@ -33,6 +33,7 @@ dependencies:
   geolocator: ^5.2.1
   google_maps_flutter: ^0.5.22+2
   intl: ^0.16.1
+  get_it: ^3.1.0
 
 dev_dependencies:
   mockito: ^4.1.1

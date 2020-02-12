@@ -1,6 +1,7 @@
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
+import 'package:app/service_locator.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
@@ -16,24 +17,21 @@ import 'package:provider/provider.dart';
 
 /// Entry point for the app.
 /// 
-/// First, we create our repositories that will be used by our providers. So
-/// our providers will only deal with interfaces instead of concreate 
-/// implementations. And normally repositories have to be instantiated only
-/// here acconrding to the app architecture (see documentation) as there
-/// are only the providers that deal with the repositories.
+/// First, setup serices used in the app with [setupServiceLocator()].
 /// 
-/// Then, we inflate out main widget app and attach it to the screen thanks to
+/// Our providers will only deal with interfaces instead of concreate 
+/// implementations. 
+/// 
+/// Then, we inflate our main widget app and attach it to the screen thanks to
 /// the [runApp] method (framework method). Our root widget is a 
 /// [MultiProvider] that contains all our providers that can be used in the app
 /// to deal with the business logic.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var authService = FirebaseAuthenticationService();
-  var profileService = FirestoreProfileService();
-  var activityService = FirestoreActivitiesService();
+  setupServiceLocator();
 
-  var authProvider = AuthenticationProvider(authService: authService)..init();
+  var authProvider = AuthenticationProvider(authService: locator<IAuthenticationService>())..init();
 
   runApp(MultiProvider(
     providers: [
@@ -42,13 +40,13 @@ void main() {
       ),
       ChangeNotifierProvider<ProfileProvider>(create: (context) => 
         ProfileProvider(
-          profileService: profileService,
+          profileService: locator<IProfileService>(),
           authenticationProvider: authProvider
         )
       ),
       ChangeNotifierProvider<ActivityProvider>(create: (context) => 
         ActivityProvider(
-          activitiesService: activityService
+          activitiesService: locator<IActivitiesService>()
         )
       )
     ],
