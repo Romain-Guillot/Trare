@@ -9,6 +9,8 @@ import 'package:app/ui/home/home.dart';
 import 'package:app/ui/pages/authentication_view.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/widgets/error_view.dart';
+import 'package:app/ui/widgets/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,11 +66,10 @@ void main() {
 /// The content of our app is defined according to the [AuthenticationProvider]
 /// state. So a [Consumer] widget is used to listen the [AuthenticationProvider]
 /// state changes : 
-///   - if the authentication provider is not initialized we display a loading
-///     screen ([LoadingView])
-///   - if the authentication provider is initialized and no user is logged, we
-///     build the [AuthenticationView] widget
-///   - if the user is logged, we go to the homepage
+///   - user connected => Homepage
+///   - user not connected => Authentication page
+///   - error occured => error page
+///   - inprogress => loading page
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -78,14 +79,17 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
 
       home: Consumer<AuthenticationProvider>(
-        builder: (context, authenticationProvider, child) {
-          if (!authenticationProvider.isInitialized)
-            return LoadingView();
-          if (authenticationProvider.user == null)
-            return AuthenticationView();
-          else {
-            //return ProfileVisualisationView();
-            return MyHomePage();
+        builder: (_, authProvider, __) {
+          switch (authProvider.state) {
+            case AuthProviderState.notconnected:
+              return AuthenticationView();
+            case AuthProviderState.connected:
+              return Home();
+            case AuthProviderState.inprogress:
+              return LoadingPage();
+            case AuthProviderState.error:
+            default:
+              return ErrorPage();
           }
         }
       ),

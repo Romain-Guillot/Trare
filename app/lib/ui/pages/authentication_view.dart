@@ -280,16 +280,3 @@ class AuthenticationButton extends StatelessWidget {
     );
   }
 }
-
-
-
-class LoadingView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-}

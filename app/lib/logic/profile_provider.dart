@@ -60,7 +60,7 @@ class ProfileProvider extends ChangeNotifier {
     @required AuthenticationProvider authenticationProvider,
   }) : this._profileService = profileService {
     // if the user is already connected, we load his information
-    if (authenticationProvider.user != null)
+    if (authenticationProvider.isConnected)
       loadUser();
     // in any case we subsribe to the authentication provider to respond to
     // connection status (log out, re sign in, etc.)
