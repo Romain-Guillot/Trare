@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 /// [String] constants shared across our widgets.
 /// 
 /// Everything is constant, so the constructor is private
@@ -48,6 +50,20 @@ class Strings {
   static const String profileEditionError = "An error occured";
   static const String profileEditionSuccess = "Profile successufully updated";
 
+
+  // Activity view
+  static const String activityViewLoadingPos = "Loading position ...";
+  static const String activityMapViewCaption = "Discuss with the host for the exact location";
+  static String activityDateRange([DateTime d1, DateTime d2]) {
+    var dateFormat = DateFormat.yMMMd();
+    if (d1 == null && d2 == null)
+      return null;
+    if (d1 == null && d2 != null)
+      return "Until ${dateFormat.format(d2)}";
+    if (d1 != null && d2 == null)
+      return "From ${dateFormat.format(d1)}";
+    return "Between ${dateFormat.format(d1)} and ${dateFormat.format(d2)}";
+  }
 
   // Form
   static const String invalidForm = "Cannot be empty";

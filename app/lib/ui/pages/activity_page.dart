@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 
 
 
@@ -21,6 +20,7 @@ class ActivityPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    var dateRange = Strings.activityDateRange(activity.beginDate, activity.endDate);
     return Scaffold(
       appBar: FlatAppBar(
         action: Builder(
@@ -37,9 +37,9 @@ class ActivityPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (activity.beginDate != null && activity.endDate != null)
+              if (dateRange != null)
                 Text(
-                  "Between ${DateFormat.yMMMd().format(activity.beginDate)} and ${DateFormat.yMMMd().format(activity.endDate)}".toUpperCase(), 
+                  dateRange.toUpperCase(), 
                   style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
                 ),
               FlexSpacer.small(),
@@ -59,8 +59,6 @@ class ActivityPage extends StatelessWidget {
       ),
     );
   }
-
-
 
   handleParticipation(context) {
     showSnackbar(
@@ -84,7 +82,7 @@ class ActivityLocation extends StatefulWidget {
 
 class _ActivityLocationState extends State<ActivityLocation> {
 
-  String location = "";
+  String location = Strings.activityViewLoadingPos;
 
   @override
   void initState() {
@@ -98,12 +96,14 @@ class _ActivityLocationState extends State<ActivityLocation> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(location),
-        SizedBox(
-          height: 200,
-          child: GoogleMapView(position: widget.position,)
+        LayoutBuilder(
+          builder: (_, constraints) => SizedBox(
+            height: constraints.maxWidth / (4/3),
+            child: GoogleMapView(position: widget.position,)
+          ),
         ),
         Text(
-          "Discuss with the host for the exact location",
+          Strings.activityMapViewCaption,
           style: Theme.of(context).textTheme.caption,
         )
       ],

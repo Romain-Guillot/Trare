@@ -1,6 +1,6 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
-// Doc: Done.
+// Doc: TODO
 // Tests: TODO
 
 import 'package:app/models/activity.dart';
@@ -23,7 +23,7 @@ class ActivityProvider extends ChangeNotifier {
 
 
   loadActivities() async {
-    this.activities = await _activityService.getActivities(
+    this.activities = await _activityService.retreiveActivities(
       position: Position(latitude: 48.41759806, longitude: -71.04387688),
       radius: 50,
     );

@@ -1,6 +1,6 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
-// Doc: Done.
+// Doc: TODO
 // Tests: TODO
 import 'dart:async';
 
@@ -13,7 +13,7 @@ import 'package:geolocator/geolocator.dart';
 
 
 abstract class IActivitiesService {
-  Future<List<Activity>> getActivities({@required Position position, @required double radius});
+  Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 }
 
 
@@ -24,7 +24,7 @@ class FirestoreActivitiesService implements IActivitiesService {
   
 
   @override
-  Future<List<Activity>> getActivities({@required Position position, @required double radius}) async {
+  Future<List<Activity>> retreiveActivities({@required Position position, @required double radius}) async {
     var completer = Completer<List<Activity>>();
     StreamSubscription subscribtion;
     
