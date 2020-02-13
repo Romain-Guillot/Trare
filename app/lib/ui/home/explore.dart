@@ -1,4 +1,4 @@
-import 'package:app/logic/activity_provider.dart';
+import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/widgets/location_permission_requester.dart';

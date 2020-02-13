@@ -2,7 +2,6 @@
 //
 // Doc: Done
 // Tests: TODO
-
 import 'package:app/models/activity.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:flutter/cupertino.dart';

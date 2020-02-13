@@ -1,4 +1,4 @@
-import 'package:app/logic/activity_provider.dart';
+import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/permissions_provider.dart';
 import 'package:app/logic/profile_provider.dart';
