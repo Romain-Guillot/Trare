@@ -70,6 +70,7 @@ class Strings {
       return "From ${dateFormat.format(d1)}";
     return "Between ${dateFormat.format(d1)} and ${dateFormat.format(d2)}";
   }
+  static const String iAmInterested = "I'm interested";
 
   // Form
   static const String invalidForm = "Cannot be empty";

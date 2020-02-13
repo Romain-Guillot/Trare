@@ -26,7 +26,7 @@ class ActivityPage extends StatelessWidget {
       appBar: FlatAppBar(
         action: Builder(
           builder: (context) => Button(
-            child: Text("I'm interested"),
+            child: Text(Strings.iAmInterested),
             onPressed: () => handleParticipation(context),
           ),
         )        
@@ -149,12 +149,6 @@ class GoogleMapView extends StatelessWidget {
           center: position,
           radius: 5000,
           strokeWidth: 5
-        )
-      },
-      markers: {
-        Marker(
-          markerId: MarkerId("marker"),
-          position: position
         )
       },
       zoomGesturesEnabled: true,
