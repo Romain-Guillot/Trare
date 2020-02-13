@@ -43,10 +43,10 @@ abstract class IProfileService {
 
 
 
-/// Implementation of [IProfileService] that used Cloud Firestore (Firebase)
+/// Implementation of [IProfileService] that uses Cloud Firestore (Firebase)
 ///
 /// See interface-level documentation to know more. 
-/// See the corresponding specification `sprint2 > bdd_archi.md` (french)
+/// See the corresponding specification `documents > archi_server.md` (french)
 /// 
 /// Note:
 /// This service used the pattern Adapter :
@@ -125,10 +125,10 @@ class FirestoreProfileService implements IProfileService {
 
 
 
-/// Adapter use to adapt [Map] (noSQL data) to [User].
+/// Adapter used to adapt [Map] (noSQL data) to [User].
 ///
 /// So it implements User, and take a [Map] as constructor paramater
-/// to build out User from the noSQL data. It allows to hide the complexity
+/// to build our User from the noSQL data. It allows to hide the complexity
 /// of transformation.
 /// 
 /// It is also used to do the reverse direction transformation ([User] to SQL 
@@ -172,9 +172,9 @@ class FirestoreUserAdapter implements User {
 
 
 /// Identifiers (name of collections / fields) used in the Cloud Firestore
-/// noSQL database.
+/// noSQL database to store user information
 /// 
-/// See the corresponding specification `documents > archi_firebase.md` (french)
+/// See the corresponding specification `documents > archi_server.md` (french)
 @visibleForTesting
 class Identifiers {
   static const USERS_COL = "users";

@@ -1,6 +1,6 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
-// Doc: TODO
+// Doc: Done
 // Tests: TODO
 import 'dart:async';
 
@@ -12,17 +12,44 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 
 
+
+/// Services used to retreive activities store in database
+///
+/// For now, it has only one method to query activity base on their poisition
 abstract class IActivitiesService {
+
+  /// Performs a geoquery to retreive activities
+  /// 
+  /// Returns activities within the radius defined by [radius].(from [position])
+  /// null is never returned
+  /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 }
 
 
+
+/// Implementation of [IActivitiesService] that uses Firestore noSQL database
+///
+/// See interface-level documentation to know more. 
+/// See the corresponding specification `documents > archi_server.md` (french)
+/// 
+/// Note:
+///   - the package `geolocator` is used to performs geo queries
 class FirestoreActivitiesService implements IActivitiesService {
 
   final _firestore = Firestore.instance;
-  final geo = Geoflutterfire();
+  final geo = Geoflutterfire(); // used to perform geo queries
   
 
+  /// See interface-level doc [IActivitiesService.retreiveActivities()] (specs)
+  ///
+  /// `geolocator` is used to perfoms to geo query thanks to the geohash store
+  /// for each activity. [position] is transforms for [GeoFirePoint] and
+  /// then the query is perfomed with the tranformed position and [radius]
+  /// 
+  /// Then, we retreive all activities data that we adapt with 
+  /// [_FirestoreActivityAdapter] adapter to obtain [Activity] objects.
+  /// We use [Completer] to complete the future once we retreive all activities
   @override
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius}) async {
     var completer = Completer<List<Activity>>();
@@ -52,6 +79,15 @@ class FirestoreActivitiesService implements IActivitiesService {
 }
 
 
+
+/// Adpater used to adapt noSQL data ([Map]) to [Activity]
+///
+/// So it implements [Activity], and take a [Map] as constructor paramater
+/// to build out [Activity] from the noSQL data. It allows to hide the complexity
+/// of transformation.
+/// 
+/// See https://refactoring.guru/design-patterns/adapter to know more about the
+/// adapter pattern.
 class _FirestoreActivityAdapter implements Activity {
   
   @override DateTime createdDate;
@@ -70,12 +106,12 @@ class _FirestoreActivityAdapter implements Activity {
     description = data[_Identifiers.ACTIVITY_DESCRIPTION];
     beginDate = data[_Identifiers.ACTIVITY_BEGIN_DATE];
     endDate = data[_Identifiers.ACTIVITY_END_DATE];
-    location = buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
+    location = _buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
   }
 
-  Position buildPosition(dynamic data) {
+  Position _buildPosition(dynamic data) {
     try {
-      var geoPoint = data["geopoint"] as GeoPoint;
+      var geoPoint = data['geopoint'] as GeoPoint;
       return Position(latitude: geoPoint.latitude, longitude: geoPoint.longitude);
     } catch(_) {
       return null;
@@ -83,6 +119,12 @@ class _FirestoreActivityAdapter implements Activity {
   }
 }
 
+
+
+/// Identifiers (name of collections / fields) used in the Cloud Firestore
+/// noSQL database to store activities
+/// 
+/// See the corresponding specification `documents > archi_server.md` (french)
 class _Identifiers {
   static const ACTIVITIES_COL = "activities";
 

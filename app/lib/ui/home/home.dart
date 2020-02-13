@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         ],
         currentIndex: _selectedIndex,
+        backgroundColor: Colors.white,
         selectedItemColor: Colors.greenAccent,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: true,
