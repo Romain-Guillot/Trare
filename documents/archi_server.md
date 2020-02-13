@@ -64,12 +64,16 @@ col:activities
         - description: text
         - beginDate: date
         - endDate: date
-        - location: geographical point        
+        - location:
+            - geohash: text
+            - geopoint: geographical point
     doc:id#2
         ...
     ...
 ```
-Note: l'attribut `user` stocke l'ID de l'utilisateur ayant créé l'activité.
+Note: l'attribut `user` stocke l'ID de l'utilisateur ayant créé l'activité.  
+Note: l'attribut `location` est composé de 2 éléments pour effectuer des requêtes "par proximité spatiale" grâce au geohash
+> Geohash is a public domain geocode system invented in 2008 by Gustavo Niemeyer[1] and (similar work in 1966) G.M. Morton[2], which encodes a geographic location into a short string of letters and digits. It is a hierarchical spatial data structure which subdivides space into buckets of grid shape.
 
 
 

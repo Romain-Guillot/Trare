@@ -132,6 +132,10 @@ class GoogleMapView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GoogleMap(
       compassEnabled: false,
+      initialCameraPosition: CameraPosition(
+        zoom: 10,
+        target: position
+      ),
       circles: {
         Circle(
           circleId: CircleId("circle"),
@@ -142,10 +146,6 @@ class GoogleMapView extends StatelessWidget {
           strokeWidth: 5
         )
       },
-      initialCameraPosition: CameraPosition(
-        zoom: 10,
-        target: position
-      ),
       markers: {
         Marker(
           markerId: MarkerId("marker"),

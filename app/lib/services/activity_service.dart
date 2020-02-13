@@ -8,28 +8,44 @@ import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 
 
 abstract class IActivitiesService {
-  Future<List<Activity>> getActivities();
+  Future<List<Activity>> getActivities({@required Position position, @required double radius});
 }
 
 
 class FirestoreActivitiesService implements IActivitiesService {
 
   final _firestore = Firestore.instance;
+  final geo = Geoflutterfire();
+  
 
   @override
-  Future<List<Activity>> getActivities() async {
+  Future<List<Activity>> getActivities({@required Position position, @required double radius}) async {
     var completer = Completer<List<Activity>>();
-    _firestore.collection(_Identifiers.ACTIVITIES_COL).getDocuments().then((snap) {
+    StreamSubscription subscribtion;
+    
+    var geoPosition = geo.point(
+      latitude: position.latitude, 
+      longitude: position.longitude
+    );
+    var activitiesCol = _firestore.collection(_Identifiers.ACTIVITIES_COL);
+    subscribtion = geo.collection(collectionRef: activitiesCol).within(
+      center: geoPosition, 
+      radius: radius, 
+      field: _Identifiers.ACTIVITY_LOCATION,
+      strictMode: true
+    ).listen((docSnaps) {
       var activities = List<Activity>();
-      for (var docSnap in snap.documents) {
+      for (var docSnap in docSnaps) {
         var activity = _FirestoreActivityAdapter(data: docSnap.data);
         activities.add(activity);
       }
       completer.complete(activities);
+      subscribtion.cancel();
     });
     return completer.future;
   }
@@ -54,8 +70,16 @@ class _FirestoreActivityAdapter implements Activity {
     description = data[_Identifiers.ACTIVITY_DESCRIPTION];
     beginDate = data[_Identifiers.ACTIVITY_BEGIN_DATE];
     endDate = data[_Identifiers.ACTIVITY_END_DATE];
-    var geoPoint = data[_Identifiers.ACTIVITY_LOCATION] as GeoPoint;
-    location = Position(latitude: geoPoint.latitude, longitude: geoPoint.longitude);
+    location = buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
+  }
+
+  Position buildPosition(dynamic data) {
+    try {
+      var geoPoint = data["geopoint"] as GeoPoint;
+      return Position(latitude: geoPoint.latitude, longitude: geoPoint.longitude);
+    } catch(_) {
+      return null;
+    }
   }
 }
 
