@@ -49,7 +49,7 @@ class ListItemsActivities extends StatelessWidget {
           children: <Widget>[
             LocationPermissionRequester(
               textInformation: Strings.locationPermissionInfo,
-              onChecked: () => loadActivites(context),
+              onPermissionGranted: () => loadActivites(context),
             ),
             body
           ],

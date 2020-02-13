@@ -8,15 +8,20 @@ import 'package:provider/provider.dart';
 import 'package:app/ui/utils/color_operations.dart';
 
 
+/// Display a button to enable the location permission and an informative text
+/// 
+/// Renders an empty container if the permission is already granted (not visible)
 ///
-///
-///
+/// The informative text [textInformation] is required and have to describe
+/// why the permission is needed
+/// You can also provide a callback [onPermissionGranted] that will call the
+/// function when the location permission IS granted.
 class LocationPermissionRequester extends StatelessWidget {
 
   final String textInformation;
-  final Function onChecked;
+  final Function onPermissionGranted;
 
-  LocationPermissionRequester({@required this.textInformation, this.onChecked});
+  LocationPermissionRequester({@required this.textInformation, this.onPermissionGranted});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class LocationPermissionRequester extends StatelessWidget {
                 )),
                 Button(
                     child: Text(Strings.enable),
-                    onPressed: () => handleEnable(context),
+                    onPressed: () => handleOnEnable(context),
                   ),
               ],
             ),
@@ -50,10 +55,11 @@ class LocationPermissionRequester extends StatelessWidget {
     );
   }
 
-  handleEnable(context) async {
+  /// Request the location permission and call the [onPermissionGranted] callback
+  handleOnEnable(context) async {
     var provider = Provider.of<LocationPermissionProvider>(context, listen: false);
     await provider.requestLocationPermission();
-    if (provider.location == PermissionState.granted && onChecked != null)
-      onChecked();
+    if (provider.location == PermissionState.granted && onPermissionGranted != null)
+      onPermissionGranted();
   }
 }
