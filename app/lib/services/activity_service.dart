@@ -16,7 +16,7 @@ import 'package:geolocator/geolocator.dart';
 /// Services used to retreive activities store in database
 ///
 /// For now, it has only one method to query activity base on their poisition
-abstract class IActivitiesService {
+abstract class IActivityService {
 
   /// Performs a geoquery to retreive activities
   /// 
@@ -28,14 +28,14 @@ abstract class IActivitiesService {
 
 
 
-/// Implementation of [IActivitiesService] that uses Firestore noSQL database
+/// Implementation of [IActivityService] that uses Firestore noSQL database
 ///
 /// See interface-level documentation to know more. 
 /// See the corresponding specification `documents > archi_server.md` (french)
 /// 
 /// Note:
 ///   - the package `geolocator` is used to performs geo queries
-class FirestoreActivitiesService implements IActivitiesService {
+class FirestoreActivityService implements IActivityService {
 
   final _firestore = Firestore.instance;
   final geo = Geoflutterfire(); // used to perform geo queries

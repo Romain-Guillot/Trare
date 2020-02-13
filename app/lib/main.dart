@@ -48,7 +48,7 @@ void main() {
       ),
       ChangeNotifierProvider<ActivityProvider>(create: (context) => 
         ActivityProvider(
-          activitiesService: locator<IActivitiesService>()
+          activitiesService: locator<IActivityService>()
         )
       )
     ],
