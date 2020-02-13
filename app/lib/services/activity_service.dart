@@ -38,7 +38,7 @@ abstract class IActivityService {
 class FirestoreActivityService implements IActivityService {
 
   final _firestore = Firestore.instance;
-  final geo = Geoflutterfire(); // used to perform geo queries
+  final _geo = Geoflutterfire(); // used to perform geo queries
   
 
   /// See interface-level doc [IActivitiesService.retreiveActivities()] (specs)
@@ -55,12 +55,12 @@ class FirestoreActivityService implements IActivityService {
     var completer = Completer<List<Activity>>();
     StreamSubscription subscribtion;
     
-    var geoPosition = geo.point(
+    var geoPosition = _geo.point(
       latitude: position.latitude, 
       longitude: position.longitude
     );
     var activitiesCol = _firestore.collection(_Identifiers.ACTIVITIES_COL);
-    subscribtion = geo.collection(collectionRef: activitiesCol).within(
+    subscribtion = _geo.collection(collectionRef: activitiesCol).within(
       center: geoPosition, 
       radius: radius, 
       field: _Identifiers.ACTIVITY_LOCATION,
@@ -104,9 +104,17 @@ class _FirestoreActivityAdapter implements Activity {
     title = data[_Identifiers.ACTIVITY_TITLE];
     user = data[_Identifiers.ACTIVITY_USER];
     description = data[_Identifiers.ACTIVITY_DESCRIPTION];
-    beginDate = data[_Identifiers.ACTIVITY_BEGIN_DATE];
-    endDate = data[_Identifiers.ACTIVITY_END_DATE];
+    beginDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_BEGIN_DATE]);
+    endDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_END_DATE]);
     location = _buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
+  }
+
+  DateTime dateFromTimestamp(dynamic data) {
+    try {
+      return (data as Timestamp).toDate();
+    } catch (_) {
+      return null;
+    }
   }
 
   Position _buildPosition(dynamic data) {

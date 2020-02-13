@@ -1,3 +1,4 @@
+import 'package:app/main.dart';
 import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -40,7 +41,7 @@ class ActivityPage extends StatelessWidget {
               if (dateRange != null)
                 Text(
                   dateRange.toUpperCase(), 
-                  style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
+                  style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).colorScheme.onSurfaceLight),
                 ),
               FlexSpacer.small(),
               Text(
@@ -132,6 +133,8 @@ class GoogleMapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var circleBorderColor = Theme.of(context).colorScheme.primary;
+    var circleColor = circleBorderColor.withOpacity(0.3);
     return GoogleMap(
       compassEnabled: false,
       initialCameraPosition: CameraPosition(
@@ -141,8 +144,8 @@ class GoogleMapView extends StatelessWidget {
       circles: {
         Circle(
           circleId: CircleId("circle"),
-          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-          strokeColor: Theme.of(context).colorScheme.primary,
+          fillColor: circleColor,
+          strokeColor: circleBorderColor,
           center: position,
           radius: 5000,
           strokeWidth: 5

@@ -1,71 +1,109 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
-// Doc: TODO
+// Doc: Done
 // Tests: TODO
 
 import 'package:app/models/activity.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 
-final defaultRadius = 50.0;
+/// Default radius to look for activities near a position (near = radius)
+final defaultRadius = 100.0;
 
 
 
+/// Config used to perfom query to the database
 ///
-///
-///
+/// e.g. it can be viewed as parameters for a where clause, such a query in
+/// english :
+///   "activities whose position is within [radius] of position [position]."
 class ActivitiesConfig {
   double radius;
   Position position;
+  ActivitiesConfig({this.radius, this.position});
 }
 
 
 
+/// State to represent the provider state
+enum ActivityProviderState {
+  activitiesLoaded,
+  loadingInProgress,
+  locationPermissionNotGranted,
+  databaseError,
+}
 
-///
-///
-///
-class ActivityProvider extends ChangeNotifier {
 
-   IActivityService _activityService;
 
-   final config = ActivitiesConfig();
+/// Used to retrieve activities that that may be relevant to the user.
+///
+/// It's a [ChangeNotifier] so it can notify clients (UI typically) when
+/// changment occured. In praticular the provider holds three properties that
+/// can be interesting for the UI :
+///   - [config] the current [ActivitiesConfig] used to perform the search
+///   - [state] the current provider state
+///   - [activities] the list of activities results of a database query
+/// 
+/// If state is [ActivityProviderState.activitiesLoaded] the [activities] will
+/// NOT be null. Else, it can (and will probably) be null.
+class ActivityExploreProvider extends ChangeNotifier {
+
+   final IActivityService _activityService;
+
+   final config = ActivitiesConfig(radius: defaultRadius);
+   ActivityProviderState state = ActivityProviderState.loadingInProgress;
    List<Activity> activities;
 
 
-  ///
-  ///
-  ///
-  ActivityProvider({
+  ActivityExploreProvider({
     @required IActivityService activitiesService
   }) : this._activityService = activitiesService {
-    config.radius = defaultRadius;
     loadActivities();
   }
 
 
-
-
-
-
+  /// Load activities near the user and notify clients
   ///
-  ///
-  ///
+  /// Use [config] for the following parameters :
+  ///   - the position where to look for activities
+  ///   - the max radius in which retrieve activities
+  /// 
+  /// If the config position is null, we'll use the user location
+  /// 
+  /// [activities] list and [state] will be updated and clients notified
   loadActivities() async {
-    try {
-      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      config.position = position;
-    } catch(e) {
-      return ;
+    state = ActivityProviderState.loadingInProgress;
+    var userPosition = await _getUserLocation();
+    if (userPosition == null) {
+      state = ActivityProviderState.locationPermissionNotGranted;
+    } else {
+      config.position = userPosition;
+      try {
+        this.activities = await _activityService.retreiveActivities(
+          position: config.position,
+          radius: config.radius,
+        ); // null never returned
+        state = ActivityProviderState.activitiesLoaded;
+      } catch (_) {
+        state = ActivityProviderState.databaseError;
+      }
     }
-    await Future.delayed(Duration(seconds: 2));
-    this.activities = await _activityService.retreiveActivities(
-      position: config.position,
-      radius: config.radius,
-    );
     notifyListeners();
+  }
+
+
+  /// Returns the current user location, or null if we cannot determine his
+  /// location
+  Future<Position> _getUserLocation() async {
+    try { // getCurrentPosition can throw an exception the location permission is not granted
+      var position = await Geolocator().getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium
+      );
+      return position;
+    } catch(_) {
+      return null;
+    }
   }
 }

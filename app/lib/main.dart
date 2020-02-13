@@ -47,13 +47,13 @@ void main() {
           authenticationProvider: authProvider
         )
       ),
-      ChangeNotifierProvider<ActivityProvider>(create: (context) => 
-        ActivityProvider(
+      ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
+        ActivityExploreProvider(
           activitiesService: locator<IActivityService>()
         )
       ),
-      ChangeNotifierProvider<PermissionsProvider>(create: (context) => 
-        PermissionsProvider()
+      ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
+        LocationPermissionProvider()
       )
     ],
     child: MyApp()

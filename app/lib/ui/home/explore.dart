@@ -1,5 +1,6 @@
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/ui/pages/activity_page.dart';
+import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/widgets/location_permission_requester.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class ListItemsActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ActivityProvider>(
+    return Consumer<ActivityExploreProvider>(
       builder: (_, activityProvider, __) {
         Widget body; 
         if (activityProvider.activities == null) {
@@ -46,7 +47,10 @@ class ListItemsActivities extends StatelessWidget {
         }
         return Column(
           children: <Widget>[
-            LocationPermissionRequester(),
+            LocationPermissionRequester(
+              textInformation: Strings.locationPermissionInfo,
+              onChecked: () => loadActivites(context),
+            ),
             body
           ],
         );        
@@ -54,11 +58,17 @@ class ListItemsActivities extends StatelessWidget {
     );
   }
 
+
   openActivity(context, activity) {
     Navigator.push(context, MaterialPageRoute(
       builder: (_) => ActivityPage(activity: activity)
     ));
   } 
+
+
+  loadActivites(context) {
+    Provider.of<ActivityExploreProvider>(context, listen: false).loadActivities();
+  }
 }
 
 

@@ -86,9 +86,32 @@ Organize your classes in this order :
 Insert blank lines in the following cases :
 - ONE between class declaration and fields
 - ONE between static fields and others
-- ONE between methods
+- TWO between methods
+- TWO between constructor and fields
 - THREE between two classes
 
+```dart
+class MyClass {
+
+    int myField;
+    bool myBool;
+
+
+    MyClass(this.myField, this.myBool);
+
+
+    bool myMethod() {
+        ...
+    }
+
+
+    bool mySecondMethod(String myParam) {
+        ...
+    }
+}
+```
+
+For a short class, blank lines can be reduced :
 ```dart
 class MyClass {
 
@@ -104,6 +127,15 @@ class MyClass {
     bool mySecondMethod(String myParam) {
 
     }
+}
+```
+
+For data class, blank lines can be ommitted :
+```dart
+class MyClass {
+    int myField;
+    bool myBool;
+    MyClass(this.myField, this.myBool);
 }
 ```
 

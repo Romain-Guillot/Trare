@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO
+// Tests: TODO
 import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -6,11 +10,11 @@ enum PermissionState {granted, notGranted, neverAskAgain}
 
 
 
-class PermissionsProvider extends ChangeNotifier {
+class LocationPermissionProvider extends ChangeNotifier {
 
   PermissionState location;
 
-  PermissionsProvider() {
+  LocationPermissionProvider() {
     _checkLocationPermissionStatus();
   }
 
@@ -33,7 +37,7 @@ class PermissionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  requestLocationPermission() async {
+  Future requestLocationPermission() async {
     if (location == PermissionState.neverAskAgain) {
       await PermissionHandler().openAppSettings();
     } else {
@@ -41,7 +45,7 @@ class PermissionsProvider extends ChangeNotifier {
         PermissionGroup.location
       ]);
     }
-    _checkLocationPermissionStatus();
+    await _checkLocationPermissionStatus();
   }
 
 }
