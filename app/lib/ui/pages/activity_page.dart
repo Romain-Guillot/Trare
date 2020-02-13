@@ -35,19 +35,22 @@ class ActivityPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                "Between ${DateFormat.yMMMd().format(activity.beginDate)} and ${DateFormat.yMMMd().format(activity.endDate)}".toUpperCase(), 
-                style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
-              ),
+              if (activity.beginDate != null && activity.endDate != null)
+                Text(
+                  "Between ${DateFormat.yMMMd().format(activity.beginDate)} and ${DateFormat.yMMMd().format(activity.endDate)}".toUpperCase(), 
+                  style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).textTheme.body1.color.withOpacity(0.4)),
+                ),
               FlexSpacer.small(),
               Text(
                 activity.title,
                 style: Theme.of(context).textTheme.title,
               ),
               FlexSpacer(),
-              Text(activity.description),
+              if (activity.description != null)
+                Text(activity.description),
               FlexSpacer(),
-              ActivityLocation(position: activity.location,)
+              if (activity.location != null)
+                ActivityLocation(position: activity.location,)
             ],
           ),
         ),
@@ -90,6 +93,7 @@ class _ActivityLocationState extends State<ActivityLocation> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(location),
         SizedBox(

@@ -1,5 +1,6 @@
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/models/activity.dart';
+import 'package:app/ui/pages/activity_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class ListItemsActivities extends StatelessWidget {
                 title: Text(activity.title),
                 // subtitle: Text(activity.location),
                 trailing: Icon(Icons.account_circle),
+                onTap: () => openActivity(context, activity),
               );
             } 
           );
@@ -40,4 +42,10 @@ class ListItemsActivities extends StatelessWidget {
       }
     );
   }
+
+  openActivity(context, activity) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => ActivityPage(activity: activity)
+    ));
+  } 
 }
