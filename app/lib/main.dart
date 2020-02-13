@@ -1,5 +1,6 @@
 import 'package:app/logic/activity_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
+import 'package:app/logic/permissions_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/services/activity_service.dart';
@@ -50,6 +51,9 @@ void main() {
         ActivityProvider(
           activitiesService: locator<IActivityService>()
         )
+      ),
+      ChangeNotifierProvider<PermissionsProvider>(create: (context) => 
+        PermissionsProvider()
       )
     ],
     child: MyApp()
