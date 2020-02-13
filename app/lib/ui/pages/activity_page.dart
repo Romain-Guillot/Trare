@@ -23,9 +23,11 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FlatAppBar(
-        action: Button(
-          child: Text("I'm interested"),
-          onPressed: () => handleParticipation(context),
+        action: Builder(
+          builder: (context) => Button(
+            child: Text("I'm interested"),
+            onPressed: () => handleParticipation(context),
+          ),
         )        
       ),
 
