@@ -9,20 +9,20 @@
 // ![A scaffold with a bottom navigation bar containing three bottom navigation
 // bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
 
-import 'package:app/ui/home/explore.dart';
+import 'package:app/ui/pages/explore_page.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:flutter/material.dart';
 
 
 /// This Widget is the main application widget.
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static const String _title = 'Flutter Code Sample';
 
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MyHomePage();
@@ -42,13 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
    List<Widget> _widgetOptions = <Widget>[
-    Explore(),
+    ExplorePage(),
     Text(
-      'Index 1: Business',
+      'Index 2: CHats',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Business',
+      'Index 3: Myactivities',
       style: optionStyle,
     ),
     ProfileVisualisationPage(),
@@ -67,12 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      /*floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.greenAccent,
-        onPressed: () => {},
-      ),*/
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

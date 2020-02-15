@@ -5,15 +5,11 @@ import 'package:app/ui/widgets/location_permission_requester.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../logic/activity_explore_provider.dart';
-import '../../logic/activity_explore_provider.dart';
-import '../../logic/activity_explore_provider.dart';
-import '../../models/activity.dart';
+import 'package:app/models/activity.dart';
 
 
-
-class Explore extends StatelessWidget {
+/// this is the principal widget that show all the awailable activity
+class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +38,10 @@ class ListItemsActivities extends StatelessWidget {
             body=DatabaseErrorWidget();
             break;
         case ActivityProviderState.locationPermissionNotGranted:
-            body=LocationPermissionNotGrantedWidget();
+            body=LocationPermissionRequester(
+              textInformation: Strings.locationPermissionInfo,
+              onPermissionGranted: () => loadActivites(context),
+              );
             break;
         
         default: 
@@ -84,6 +83,7 @@ class ListItemsActivities extends StatelessWidget {
   }
 }
 
+/// this is a simple [CircularProgressIndicator] that will be displayed when the state of our [ActiviyExploreProvider] is LoadingInprogress
 class LoadInprogressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -97,51 +97,16 @@ class LoadInprogressWidget extends StatelessWidget {
   }
 }
 
-class LocationPermissionNotGrantedWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text("Sorry locationPermissionNotGranted!!!"),
-    );
-  }
-}
-
+/// this is a simple widget that will be displayed when the state of our [ActiviyExploreProvider] LocationPermissionNotGrant 
 class DatabaseErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Sorry DataBaseError!!!"),
+      child: Text(Strings.databaseErrorInfo),
     );
   }
 }
-
-
-/*class ActivitiesLoadedWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    
-    
-    return CircularProgressIndicator(
-      backgroundColor: Colors.amber,
-      semanticsLabel: Text("Please wait...").toString(),
-      semanticsValue: Text("Please wait...").toString(),  
-    );
-     /*ListView.builder(
-            shrinkWrap: true,
-            itemCount: activityProvider.activities.length,
-            itemBuilder: (_, position) {
-              var activity = activityProvider.activities[position];
-              return ListTile(
-                title: Text(activity.title),
-                trailing: Icon(Icons.account_circle),
-                onTap: () => openActivity(context, activity),
-              );
-            } 
-          );*/
-  }
-}*/
-
-class ItemActivityWidget extends StatefulWidget{
+class ItemActivityWidget extends StatelessWidget{
 
 Activity _activity;
   ItemActivityWidget(
@@ -149,20 +114,16 @@ Activity _activity;
   ): this._activity=activity;
 
   @override
-  _ItemActivityWidgetState createState() => _ItemActivityWidgetState();
-}
-
-class _ItemActivityWidgetState extends State<ItemActivityWidget> {
-  @override
   Widget build(BuildContext context) {
    
     return ListTile(
-                title: Text(widget._activity.title),
+                title: Text(_activity.title),
                 trailing: Icon(Icons.account_circle),
                 onTap: () => {},
-              );;
+              );
   }
 }
+
 
 
 

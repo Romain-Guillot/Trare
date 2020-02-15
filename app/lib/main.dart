@@ -6,7 +6,7 @@ import 'package:app/service_locator.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
-import 'package:app/ui/home/home.dart';
+import 'package:app/ui/pages/home_page.dart';
 import 'package:app/ui/pages/authentication_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
             case AuthProviderState.notconnected:
               return AuthenticationPage();
             case AuthProviderState.connected:
-              return Home();
+              return HomePage();
             case AuthProviderState.inprogress:
               return LoadingPage();
             case AuthProviderState.error:
