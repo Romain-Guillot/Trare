@@ -116,6 +116,7 @@ extension ColorSchemeExt on ColorScheme {
 /// more about all theme values.
 final appTheme = ThemeData(
   primaryColor: Color(0xff1FD59F),
+  accentColor: Color(0xff1FD59F),
 
   colorScheme: ColorScheme(
     primary: Color(0xff1FD59F),
