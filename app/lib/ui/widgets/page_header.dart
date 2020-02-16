@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 
+/// Display a page header with a title and a subtitle (both are optionnal)
+///
+/// It will display with the correct style, the page title (if not null) and
+/// the page subtitle (is not null).
 class PageHeader extends StatelessWidget {
 
   final Widget title;
