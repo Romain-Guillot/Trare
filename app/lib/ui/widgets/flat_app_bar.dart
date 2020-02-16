@@ -3,15 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 
-///
-///
+
+/// Create an AppBar for the application
+/// 
+/// There is NO title in the application app bars, so you can only provider
+/// an action widget (typically a [Button]).
+/// 
+/// The app bar will automaically add a back button if it is a secodnary page
+/// (if we can returned back to a previous page)
+/// 
+/// ```dart
+/// Scaffold(
+///   appBar: FlatAppBar(
+///     action: Button(...)
+///   )
+/// )
+/// ```
 class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final Widget action;
-  final bool main;
 
-
-  FlatAppBar({this.action, this.main = false});
+  FlatAppBar({this.action});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +47,6 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,
-
     );
   }
 
