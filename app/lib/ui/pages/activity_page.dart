@@ -1,11 +1,14 @@
 import 'package:app/main.dart';
 import 'package:app/models/activity.dart';
+import 'package:app/models/user.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/page_header.dart';
+import 'package:app/ui/widgets/profile/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -44,10 +47,11 @@ class ActivityPage extends StatelessWidget {
                   style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).colorScheme.onSurfaceLight),
                 ),
               FlexSpacer.small(),
-              Text(
-                activity.title,
-                style: Theme.of(context).textTheme.title,
+              PageHeader(
+                title: Text(activity.title),
               ),
+              FlexSpacer(),
+              UserCard(user: activity.user,),
               FlexSpacer(),
               if (activity.description != null)
                 Text(activity.description),
@@ -69,6 +73,8 @@ class ActivityPage extends StatelessWidget {
     );
   }
 }
+
+
 
 
 class ActivityLocation extends StatefulWidget {

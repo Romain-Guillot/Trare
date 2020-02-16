@@ -169,7 +169,7 @@ class _ItemActivityWidgetState extends State<ItemActivityWidget> {
       ),
       isThreeLine: true, // title, location, date
       title: Text(widget.activity.title),
-      subtitle: Text("$location\n$dates\n"),
+      subtitle: Text("$location\n$dates"),
       onTap: widget.onPressed,
     );
   }

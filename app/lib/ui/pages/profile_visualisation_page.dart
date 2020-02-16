@@ -6,8 +6,9 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/buttons.dart';
-import 'package:app/ui/widgets/default_profile_picture.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/page_header.dart';
+import 'package:app/ui/widgets/profile/user_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -235,9 +236,8 @@ class ProfileHeader extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-          child: Text(
-            username, 
-            style: Theme.of(context).textTheme.title,
+          child: PageHeader(
+            title: Text(username), 
           ),
         ),
         Button(
@@ -245,47 +245,6 @@ class ProfileHeader extends StatelessWidget {
           onPressed: onEdit,
         )
       ],
-    );
-  }
-}
-
-
-
-/// Display the user profile picture from the [url] of the default profile picture
-///
-/// If the url is non-null the image is displayed thanks to the [Image.network]
-/// widget, else the [DefaultProfilePicture] is displayed.
-/// 
-/// The entire content is wrapped inside a [LayoutBuilder] to get the width
-/// available to display a square image.
-class ProfilePicture extends StatelessWidget {
-
-  final String url;
-  
-  ProfilePicture({@required this.url});
-  
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, constraints) { 
-        var size = constraints.maxWidth;
-        return Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          child: url == null
-            ? DefaultProfilePicture()
-            : Image.network(
-                url,
-                width: size,
-                height: size,
-                fit: BoxFit.fitWidth,
-                cacheHeight: Dimens.maxImageResolution,
-              )
-        );
-      }
     );
   }
 }
@@ -348,7 +307,7 @@ class ProfileItem extends StatelessWidget {
       : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(label, style: Theme.of(context).textTheme.subtitle),
+          Text(label, style: Theme.of(context).textTheme.subtitle2),
           Text(content),
           FlexSpacer()
       ],

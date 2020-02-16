@@ -7,9 +7,10 @@ import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/app_text_field.dart';
 import 'package:app/ui/widgets/buttons.dart';
-import 'package:app/ui/widgets/default_profile_picture.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/page_header.dart';
+import 'package:app/ui/widgets/profile/user_profile_picture.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,9 +66,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                Strings.profileEditionInfo, 
-                style: Theme.of(context).textTheme.display1,
+              PageHeader(
+                subtitle: Text(Strings.profileEditionInfo), 
               ),
               FlexSpacer.big(),
               ProfileForm(

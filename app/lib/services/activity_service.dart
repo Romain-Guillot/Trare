@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -37,8 +38,14 @@ abstract class IActivityService {
 ///   - the package `geolocator` is used to performs geo queries
 class FirestoreActivityService implements IActivityService {
 
+  final IProfileService _profileService;
   final _firestore = Firestore.instance;
   final _geo = Geoflutterfire(); // used to perform geo queries
+
+
+  FirestoreActivityService({
+    @required IProfileService profileService
+  }) : this._profileService = profileService;
   
 
   /// See interface-level doc [IActivitiesService.retreiveActivities()] (specs)
@@ -65,11 +72,18 @@ class FirestoreActivityService implements IActivityService {
       radius: radius, 
       field: _Identifiers.ACTIVITY_LOCATION,
       strictMode: true
-    ).listen((docSnaps) {
+    ).listen((docSnaps) async {
       var activities = List<Activity>();
       for (var docSnap in docSnaps) {
-        var activity = _FirestoreActivityAdapter(data: docSnap.data);
-        activities.add(activity);
+        try {
+          var userUID = docSnap[_Identifiers.ACTIVITY_USER];
+          if (userUID != null) {
+            var user = await _profileService.getUser(userUID: userUID);
+            var activity = _FirestoreActivityAdapter(data: docSnap.data, user: user);
+            activities.add(activity);
+            
+          }
+        } catch (e) { print(e);}
       }
       completer.complete(activities);
       subscribtion.cancel();
@@ -99,14 +113,14 @@ class _FirestoreActivityAdapter implements Activity {
   @override Position location;
 
 
-  _FirestoreActivityAdapter({@required Map<String, dynamic> data}) {
-    createdDate = data[_Identifiers.ACTIVITY_CREATED_DATE];
-    title = data[_Identifiers.ACTIVITY_TITLE];
-    user = data[_Identifiers.ACTIVITY_USER];
-    description = data[_Identifiers.ACTIVITY_DESCRIPTION];
-    beginDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_BEGIN_DATE]);
-    endDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_END_DATE]);
-    location = _buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
+  _FirestoreActivityAdapter({@required Map<String, dynamic> data, @required User user}) {
+    this.createdDate = data[_Identifiers.ACTIVITY_CREATED_DATE];
+    this.title = data[_Identifiers.ACTIVITY_TITLE];
+    this.user = user;
+    this.description = data[_Identifiers.ACTIVITY_DESCRIPTION];
+    this.beginDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_BEGIN_DATE]);
+    this.endDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_END_DATE]);
+    this.location = _buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
   }
 
   DateTime dateFromTimestamp(dynamic data) {

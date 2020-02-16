@@ -4,6 +4,7 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -119,14 +120,10 @@ class AuthenticationHeader extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
         SizedBox(height: Dimens.screenPaddingValue),
-        Text(
-          Strings.authenticationTitle,
-          style: Theme.of(context).textTheme.title
-        ),
-        Text(
-          Strings.authenticationDescription,
-          style: Theme.of(context).textTheme.display1
-        ),
+        PageHeader(
+          title: Text(Strings.authenticationTitle),
+          subtitle: Text(Strings.authenticationDescription),
+        )
       ],
     );
   }

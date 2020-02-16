@@ -147,11 +147,33 @@ final appTheme = ThemeData(
   ),
 
   textTheme: TextTheme(
-    title: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-    subtitle: TextStyle(color: Colors.black.withOpacity(0.35), fontSize: 15, fontWeight: Dimens.weightBold),
-    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+    bodyText2: TextStyle(
+      fontSize: 15,
+      color: Colors.black.withOpacity(0.8)
+    ),
 
-    display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
+    headline1: TextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.w900,
+      letterSpacing: 0.1,
+      color: Colors.black
+    ),
+
+    
+
+    subtitle1: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.normal,
+      letterSpacing: 0.25,
+      color: Colors.black
+    ),
+
+    subtitle2: TextStyle(
+      fontSize: 15,
+      fontWeight: Dimens.weightBold,
+      letterSpacing: 0.25,
+      color: Colors.black.withOpacity(0.35)
+    )
   ),
 
   buttonTheme: ButtonThemeData(
