@@ -54,7 +54,7 @@ class Strings {
 
   // Explore
   static const String locationPermissionInfo = "Enable the location permission to look for activities near you";
-  static const String databaseErrorInfo="Sorry there is an erro accessing the database";
+  static const String databaseErrorInfo = "Sorry there is an erro accessing the database";
 
 
 

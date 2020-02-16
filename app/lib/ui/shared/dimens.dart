@@ -42,8 +42,12 @@ class Dimens {
   static const double authTitleSize = 35;
   static const double authDescriptionSize = 20;
 
+
   // Profile
   static const int maxImageResolution = 720;
   static const int profileDescriptionFormLineNumber = 10;
+
+  // Activity
+  static const double activityViewMapRatio = 4/3;
 
 }

@@ -210,7 +210,7 @@ class ProfileMenu extends StatelessWidget {
       default:
         showSnackbar(
           context: context, 
-          content: Text(Strings.unexpectedError), 
+          content: Text(Strings.availableSoon), 
           critical: true
         );
     }

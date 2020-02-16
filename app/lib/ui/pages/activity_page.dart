@@ -1,20 +1,34 @@
-import 'package:app/main.dart';
 import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
+import 'package:app/ui/utils/geocoding.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/maps/map_view.dart';
 import 'package:app/ui/widgets/page_header.dart';
 import 'package:app/ui/widgets/profile/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
+/// Main page to display an [activity]
+///
+/// It displays information about an activity such as the title, the 
+/// description, the user, etc.
+/// 
+/// The layout is pretty simple, it is composed of 2 elements :
+///   - the app bar
+///   - the body
+/// 
+/// The app bar contains a button to initiate the communication system between 
+/// the current user and the activity owner. See [ParticipationButton]
+/// 
+/// The body is simply a scroll view with the useful information about the 
+/// activity.
 class ActivityPage extends StatelessWidget {
 
   final Activity activity;
@@ -23,15 +37,9 @@ class ActivityPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    var dateRange = Strings.activityDateRange(activity.beginDate, activity.endDate);
     return Scaffold(
       appBar: FlatAppBar(
-        action: Builder(
-          builder: (context) => Button(
-            child: Text(Strings.iAmInterested),
-            onPressed: () => handleParticipation(context),
-          ),
-        )        
+        action: ParticipationButton()
       ),
 
       body: SingleChildScrollView(
@@ -40,14 +48,8 @@ class ActivityPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (dateRange != null)
-                Text(
-                  dateRange.toUpperCase(), 
-                  style: TextStyle(fontWeight: Dimens.weightBold, color: Theme.of(context).colorScheme.onSurfaceLight),
-                ),
-              FlexSpacer.small(),
-              PageHeader(
-                title: Text(activity.title),
+              ActivityViewHeader(
+                activity: activity
               ),
               FlexSpacer(),
               UserCard(
@@ -55,15 +57,34 @@ class ActivityPage extends StatelessWidget {
                 onTap: () {},
               ),
               FlexSpacer(),
-              if (activity.description != null)
-                Text(activity.description),
+              ActivityDescription(
+                description: activity.description,
+              ),
               FlexSpacer(),
-              if (activity.location != null)
-                ActivityLocation(position: activity.location,)
+              ActivityLocation(
+                position: activity.location,
+              )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+
+
+/// Button to initiate the communication system
+///
+/// It will initiate the communication system between the current user (the 
+/// user who click on this button) and the creator of the activity.
+class ParticipationButton extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+        child: Text(Strings.iAmInterested),
+        onPressed: () => handleParticipation(context),
     );
   }
 
@@ -78,7 +99,61 @@ class ActivityPage extends StatelessWidget {
 
 
 
+/// The header of the activity with the title and the dates
+class ActivityViewHeader extends StatelessWidget {
 
+  final Activity activity;
+
+  ActivityViewHeader({@required this.activity});
+
+  @override
+  Widget build(BuildContext context) {
+    var dateRange = Strings.activityDateRange(activity.beginDate, activity.endDate);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (dateRange != null)
+          Text(
+            dateRange.toUpperCase(), 
+            style: TextStyle(
+              fontWeight: Dimens.weightBold, 
+              color: Theme.of(context).textTheme.caption.color
+            ),
+          ),
+        FlexSpacer.small(),
+        PageHeader(
+          title: Text(activity.title),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+/// Display the activity description, or an empty container if no description
+class ActivityDescription extends StatelessWidget {
+
+  final String description;
+
+  ActivityDescription({@required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return description == null 
+      ? Container()
+      : Text(description);
+  }
+}
+
+
+
+/// Display the activity location, or an empty container if no description
+///
+/// It displays two elements :
+///   - a textual representation of the loation (country, city, etc)
+///     thanks to the [Geocoding] class
+///   - A map representation of the location thansk to [GoogleMapView]
 class ActivityLocation extends StatefulWidget {
 
   final Position position;
@@ -96,18 +171,23 @@ class _ActivityLocationState extends State<ActivityLocation> {
   @override
   void initState() {
     super.initState();
-    loadLocation();
+    if (widget.position != null)
+      Geocoding().locationReprFromPosition(widget.position)
+          .then((location) => setState(() => this.location = location));
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.position == null)
+      return Container();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(location),
         LayoutBuilder(
           builder: (_, constraints) => SizedBox(
-            height: constraints.maxWidth / (4/3),
+            height: constraints.maxWidth / Dimens.activityViewMapRatio,
             child: GoogleMapView(position: widget.position,)
           ),
         ),
@@ -116,50 +196,6 @@ class _ActivityLocationState extends State<ActivityLocation> {
           style: Theme.of(context).textTheme.caption,
         )
       ],
-    );
-  }
-
-  loadLocation() async {
-    var placemarks = await Geolocator().placemarkFromPosition(widget.position);
-    if (placemarks.isNotEmpty) {
-      var place = placemarks[0];
-      setState(() => {
-        location = place.subLocality + ", " + place.locality + ", " + place.country
-      });
-    }
-  }
-}
-
-
-class GoogleMapView extends StatelessWidget {
-
-  final LatLng position;
-
-  GoogleMapView({
-    @required Position position
-  }) : this.position = LatLng(position.latitude, position.longitude);
-
-  @override
-  Widget build(BuildContext context) {
-    var circleBorderColor = Theme.of(context).colorScheme.primary;
-    var circleColor = circleBorderColor.withOpacity(0.3);
-    return GoogleMap(
-      compassEnabled: false,
-      initialCameraPosition: CameraPosition(
-        zoom: 10,
-        target: position
-      ),
-      circles: {
-        Circle(
-          circleId: CircleId("circle"),
-          fillColor: circleColor,
-          strokeColor: circleBorderColor,
-          center: position,
-          radius: 5000,
-          strokeWidth: 5
-        )
-      },
-      zoomGesturesEnabled: true,
     );
   }
 }
