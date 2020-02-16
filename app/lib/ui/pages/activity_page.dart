@@ -54,7 +54,7 @@ class ActivityPage extends StatelessWidget {
               FlexSpacer(),
               UserCard(
                 user: activity.user,
-                onTap: () {},
+                isClickable: true,
               ),
               FlexSpacer(),
               ActivityDescription(

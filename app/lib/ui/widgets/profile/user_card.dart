@@ -1,4 +1,7 @@
 import 'package:app/models/user.dart';
+import 'package:app/ui/pages/profile_visualisation_page.dart';
+import 'package:app/ui/shared/strings.dart';
+import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/profile/user_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +10,9 @@ import 'package:flutter/widgets.dart';
 
 /// Widget to display information about an user (name, age, etc)
 ///
-/// It takes the [user] as parameter and an optionnal callback [onTap].
+/// It takes the [user] as parameter and can be clickable if the flag 
+/// [isClickable] is set to true. If so, the page [ProfileVisualisationPage]
+/// will be opened to display all the user information.
 /// 
 /// The layout is a [ListTile] with the following information :
 ///   - the user profile picture
@@ -17,9 +22,9 @@ import 'package:flutter/widgets.dart';
 class UserCard extends StatelessWidget {
 
   final User user;
-  final Function onTap;
+  final bool isClickable;
 
-  UserCard({@required this.user, this.onTap});
+  UserCard({@required this.user, this.isClickable = false});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,15 @@ class UserCard extends StatelessWidget {
       subtitle: user.spokenLanguages == null || user.spokenLanguages.isEmpty
                   ? null
                   : Text(user.spokenLanguages),
-      onTap: onTap,
+      onTap: !isClickable ? null : () => openUserProfile(context),
+    );
+  }
+
+  openUserProfile(context) {
+    showSnackbar(
+      context: context, 
+      content: Text(Strings.availableSoon),
+      critical: true,
     );
   }
 }
