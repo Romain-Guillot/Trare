@@ -2,9 +2,9 @@ Mamadou Diouldé Diallo - MDD22049622
 Romain Guillot - GUIR15079709
 # Remise préliminaire R1
 
-Ce rapport prélimaire R1 a pour objectif de présenter notre méthodes de travail, le but de l'application developpée (cas d'utilisation, description des fonctionnalités).
+Ce rapport prélimaire R1 a pour objectif de présenter notre méthode de travail, le but de l'application developpée (cas d'utilisation, description des fonctionnalités).
 
-En fin de rapport, nous avons aussi joint le résumé de 4 premiers sprints.
+En fin de rapport, nous avons aussi joint le résumé des 4 premiers sprints.
 
 ## Somaire
 1. Description du processus de travail
