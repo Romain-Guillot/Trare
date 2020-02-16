@@ -1,6 +1,5 @@
 import 'package:app/main.dart';
 import 'package:app/models/activity.dart';
-import 'package:app/models/user.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
@@ -51,7 +50,10 @@ class ActivityPage extends StatelessWidget {
                 title: Text(activity.title),
               ),
               FlexSpacer(),
-              UserCard(user: activity.user,),
+              UserCard(
+                user: activity.user,
+                onTap: () {},
+              ),
               FlexSpacer(),
               if (activity.description != null)
                 Text(activity.description),
