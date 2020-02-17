@@ -52,7 +52,13 @@ class ActivityExploreProvider extends ChangeNotifier {
    final IActivityService _activityService;
 
    final config = ActivitiesConfig(radius: defaultRadius);
-   ActivityProviderState state = ActivityProviderState.loadingInProgress;
+
+   var _state = ActivityProviderState.loadingInProgress;
+   ActivityProviderState get state => _state;
+   set state(value) {
+     _state = value;
+     notifyListeners();
+   }
    List<Activity> activities;
 
 
@@ -89,7 +95,6 @@ class ActivityExploreProvider extends ChangeNotifier {
         state = ActivityProviderState.databaseError;
       }
     }
-    notifyListeners();
   }
 
 
