@@ -1,8 +1,23 @@
 # Architecture : Modèles
-*Dernière modification : 8 fev 2020*
+*Dernière modification : 12 fev 2020*
+
+Voici le diagramme de classe à jour avec le **sprint#4** (le système de messagerie n'est pas encore spécifié, les classes `ActivityChat` et `Message` sont donc à l'état de suppositions pour l'instant)
+
+![](src/class_diagram.png)
 
 ## User
-TBD
+
+**TODO :** fields constraints [Issue#10](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/10)
+
+Propriétés | Contraintes | Remarques
+---|---|---
+username | |
+age |  |
+description |  |
+langues parlées |  |
+pays |  |  
+photos |  |  
+
 
 ## Activité
 

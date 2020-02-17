@@ -4,7 +4,7 @@
 // Tests: TODO
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
-import 'package:app/repositories/profile_repository.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -32,8 +32,8 @@ import 'package:flutter/widgets.dart';
 /// Observer pattern
 class ProfileProvider extends ChangeNotifier {
 
-  /// Repository used to perform action on the user (get, edit)
-  final IProfileRepository _profileRepository;
+  /// Service used to perform action on the user (get, edit)
+  final IProfileService _profileService;
 
 
   /// The current provider state (not initialized, error, initialized)
@@ -56,11 +56,11 @@ class ProfileProvider extends ChangeNotifier {
 
 
   ProfileProvider({
-    @required IProfileRepository profileRepo,
+    @required IProfileService profileService,
     @required AuthenticationProvider authenticationProvider,
-  }) : this._profileRepository = profileRepo {
+  }) : this._profileService = profileService {
     // if the user is already connected, we load his information
-    if (authenticationProvider.user != null)
+    if (authenticationProvider.isConnected)
       loadUser();
     // in any case we subsribe to the authentication provider to respond to
     // connection status (log out, re sign in, etc.)
@@ -71,17 +71,17 @@ class ProfileProvider extends ChangeNotifier {
 
   /// Load the current user and update the [state] accordingly
   ///
-  /// It begins the the `not_initialized` state and then ask the repository
+  /// It begins the the `not_initialized` state and then ask the service
   /// to get the current connectect user.
   /// 
-  /// The [IProfileRepository.getUser()] method is called to get the current
+  /// The [IProfileService.getUser()] method is called to get the current
   /// connected user. This mehtod returns either the connected user, or 
   /// return an exception. (never null)
   /// So the method is surrouned by a try-catch and update the state accordingly
   /// (`initialized` or `error`)
   Future loadUser() async {
     try {
-      _user = await _profileRepository.getUser();
+      _user = await _profileService.getUser();
     } catch (e) {
       state = ProfileProviderState.error;
     }
@@ -94,7 +94,7 @@ class ProfileProvider extends ChangeNotifier {
   /// Returns true is the update succeed, false else.
   /// It update and notify listeners of the new updated user.
   /// 
-  /// To edit the user the method [IProfileRepository.editUser()] is called.
+  /// To edit the user the method [IProfileService.editUser()] is called.
   /// This mehtod returns the updated user OR returns an exception. It never 
   /// retunrs null (if error, ...).
   /// So the method is simply surrouned with a try-catch. 
@@ -103,7 +103,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<bool> editUser(User newUser) async {
     await Future.delayed(Duration(seconds: 1)); // TODO TEST
     try {
-      _user = await _profileRepository.editUser(newUser);
+      _user = await _profileService.editUser(newUser);
       notifyListeners();
       return true;
     } catch (_) {

@@ -14,7 +14,7 @@
 /// convert the json to the model for noSQL database. We decided to NOT do that 
 /// here because these transformations are dependents of the noSQL dataabse
 /// strucutre (name of fields). These transformations are directly applied 
-/// in the corresponding repositories (through adapters)
+/// in the corresponding services (through adapters)
 class User {
   String name;
   String description;

@@ -1,17 +1,17 @@
-import 'package:app/logic/activity_provider.dart';
+import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
+import 'package:app/logic/permissions_provider.dart';
 import 'package:app/logic/profile_provider.dart';
-import 'package:app/repositories/activity_repository.dart';
-import 'package:app/repositories/authentication_repository.dart';
-import 'package:app/repositories/profile_repository.dart';
-import 'package:app/ui/activity/activity_view.dart';
-import 'package:app/ui/authentication/authentication_view.dart';
-import 'package:app/ui/authentication/loading_view.dart';
-import 'package:app/ui/home/explore.dart';
-import 'package:app/ui/home/home.dart';
-import 'package:app/ui/profile/profile_visualisation_view.dart';
+import 'package:app/service_locator.dart';
+import 'package:app/services/activity_service.dart';
+import 'package:app/services/authentication_service.dart';
+import 'package:app/services/profile_service.dart';
+import 'package:app/ui/pages/app_layout.dart';
+import 'package:app/ui/pages/authentication_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/widgets/error_page.dart';
+import 'package:app/ui/widgets/loading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,24 +20,21 @@ import 'package:provider/provider.dart';
 
 /// Entry point for the app.
 /// 
-/// First, we create our repositories that will be used by our providers. So
-/// our providers will only deal with interfaces instead of concreate 
-/// implementations. And normally repositories have to be instantiated only
-/// here acconrding to the app architecture (see documentation) as there
-/// are only the providers that deal with the repositories.
+/// First, setup serices used in the app with [setupServiceLocator()].
 /// 
-/// Then, we inflate out main widget app and attach it to the screen thanks to
+/// Our providers will only deal with interfaces instead of concreate 
+/// implementations. 
+/// 
+/// Then, we inflate our main widget app and attach it to the screen thanks to
 /// the [runApp] method (framework method). Our root widget is a 
 /// [MultiProvider] that contains all our providers that can be used in the app
 /// to deal with the business logic.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var authRepo = FirebaseAuthenticationRepository();
-  var profileRepo = FiresoreProfileRepository();
-  var activityRepo = MockActivityRepository();
+  setupServiceLocator();
 
-  var authProvider = AuthenticationProvider(authRepo: authRepo)..init();
+  var authProvider = AuthenticationProvider(authService: locator<IAuthenticationService>())..init();
 
   runApp(MultiProvider(
     providers: [
@@ -46,14 +43,17 @@ void main() {
       ),
       ChangeNotifierProvider<ProfileProvider>(create: (context) => 
         ProfileProvider(
-          profileRepo: profileRepo,
+          profileService: locator<IProfileService>(),
           authenticationProvider: authProvider
         )
       ),
-      ChangeNotifierProvider<ActivityProvider>(create: (context) => 
-        ActivityProvider(
-          activityRepository: activityRepo
+      ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
+        ActivityExploreProvider(
+          activitiesService: locator<IActivityService>()
         )
+      ),
+      ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
+        LocationPermissionProvider()
       )
     ],
     child: MyApp()
@@ -70,11 +70,10 @@ void main() {
 /// The content of our app is defined according to the [AuthenticationProvider]
 /// state. So a [Consumer] widget is used to listen the [AuthenticationProvider]
 /// state changes : 
-///   - if the authentication provider is not initialized we display a loading
-///     screen ([LoadingView])
-///   - if the authentication provider is initialized and no user is logged, we
-///     build the [AuthenticationView] widget
-///   - if the user is logged, we go to the homepage
+///   - user connected => Homepage
+///   - user not connected => Authentication page
+///   - error occured => error page
+///   - inprogress => loading page
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -84,14 +83,17 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
 
       home: Consumer<AuthenticationProvider>(
-        builder: (context, authenticationProvider, child) {
-          if (!authenticationProvider.isInitialized)
-            return LoadingView();
-          if (authenticationProvider.user == null)
-            return AuthenticationView();
-          else {
-            //return ProfileVisualisationView();
-            return MyHomePage();
+        builder: (_, authProvider, __) {
+          switch (authProvider.state) {
+            case AuthProviderState.notconnected:
+              return AuthenticationPage();
+            case AuthProviderState.connected:
+              return AppLayout();
+            case AuthProviderState.inprogress:
+              return LoadingPage();
+            case AuthProviderState.error:
+            default:
+              return ErrorPage();
           }
         }
       ),
@@ -114,6 +116,7 @@ extension ColorSchemeExt on ColorScheme {
 /// more about all theme values.
 final appTheme = ThemeData(
   primaryColor: Color(0xff1FD59F),
+  accentColor: Color(0xff1FD59F),
 
   colorScheme: ColorScheme(
     primary: Color(0xff1FD59F),
@@ -137,6 +140,7 @@ final appTheme = ThemeData(
   ),
 
   backgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white,
   splashColor: Colors.white,
 
   inputDecorationTheme: InputDecorationTheme(
@@ -144,11 +148,31 @@ final appTheme = ThemeData(
   ),
 
   textTheme: TextTheme(
-    title: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-    subtitle: TextStyle(color: Colors.black.withOpacity(0.35), fontSize: 15, fontWeight: Dimens.weightBold),
-    body1: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+    bodyText2: TextStyle(
+      fontSize: 15,
+      color: Colors.black.withOpacity(0.8)
+    ),
 
-    display1: TextStyle(fontSize: Dimens.authDescriptionSize, color: Colors.black.withOpacity(0.5))
+    headline1: TextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.w900,
+      letterSpacing: 0.1,
+      color: Colors.black
+    ),
+
+    subtitle1: TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.normal,
+      letterSpacing: 0.25,
+      color: Colors.black
+    ),
+
+    subtitle2: TextStyle(
+      fontSize: 15,
+      fontWeight: Dimens.weightBold,
+      letterSpacing: 0.25,
+      color: Colors.black.withOpacity(0.35)
+    )
   ),
 
   buttonTheme: ButtonThemeData(
