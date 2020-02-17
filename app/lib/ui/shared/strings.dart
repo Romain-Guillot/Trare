@@ -17,6 +17,12 @@ class Strings {
   static const String accessibilityLoadingLabel = "Please wait...";
 
 
+  // Layout
+  static const String navBarExplore = "Explore";
+  static const String navBarChats = "Chats";
+  static const String navBarMyActivities = "My activities";
+  static const String navBarProfile = "Profile";
+
   
   // Constants related to authentication
   static const String authenticationTitle = "Welcome,";

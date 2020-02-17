@@ -112,7 +112,6 @@ class LoadInprogressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        backgroundColor: Colors.amber,
         semanticsLabel: Strings.accessibilityLoadingLabel,
       ),
     );
