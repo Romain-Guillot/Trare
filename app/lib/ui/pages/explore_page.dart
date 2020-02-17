@@ -5,6 +5,7 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/geocoding.dart';
 import 'package:app/ui/widgets/location_permission_requester.dart';
 import 'package:app/ui/widgets/page_header.dart';
+import 'package:app/ui/widgets/profile/user_profile_picture.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -190,6 +191,16 @@ class _ItemActivityState extends State<ItemActivity> {
       isThreeLine: true, // title, location, date
       title: Text(widget.activity.title),
       subtitle: Text("$location\n$dates"),
+      trailing: LayoutBuilder(
+        builder: (_, constraints) => SizedBox(
+          height: constraints.maxHeight,
+          width: constraints.maxHeight,
+          child: ProfilePicture(
+            url: widget.activity.user.urlPhoto,
+            rounded: true,
+          ),
+        )
+      ),
       onTap: widget.onPressed,
     );
   }
