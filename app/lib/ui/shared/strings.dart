@@ -14,6 +14,7 @@ class Strings {
   static const String unexpectedError = "This wasn't supposed to happen... 😳";
   static const String availableSoon = "Stay tuned, available soon 🙏";
   static const String enable = "Enable";
+  static const String accessibilityLoadingLabel = "Please wait...";
 
 
   
@@ -53,9 +54,11 @@ class Strings {
 
 
   // Explore
+  static const String exploreTitle = "Explore";
+  static const String exploreDescription = "Explore activities proposed by other users arround you.";
   static const String locationPermissionInfo = "Enable the location permission to look for activities near you";
   static const String databaseErrorInfo = "Sorry there is an erro accessing the database";
-
+  
 
 
   // Activity view
