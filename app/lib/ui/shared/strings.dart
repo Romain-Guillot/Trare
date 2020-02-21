@@ -83,8 +83,21 @@ class Strings {
   static const String iAmInterested = "I'm interested";
 
   // Form
-  static const String invalidForm = "Cannot be empty";
+  static const String invalidFormEmpty = "Cannot be empty";
+  static const String invalidFormTooShort = "Too short";
+  static String invalidFormRangeValue({int min, int max}) {
+    if (min == null && max == null)
+      return "Invalid range";
+    if (min == null && max != null)
+      return "Cannot exceed $max";
+    if (min != null && max == null)
+      return "Must be at least $min";
+    return "Must be comprised between $min and $max";
+  } 
   static const String optionalTextField = "Optional";
   static const String requiredTextField = "Required";
+  static String textFieldMinLengthCounter(int remainingLength) {
+    return "Too short, add $remainingLength more character" + (remainingLength > 1 ? "s" : "");
+  }
 
 }

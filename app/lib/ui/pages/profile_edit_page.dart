@@ -4,6 +4,7 @@ import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/shared/values.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/app_text_field.dart';
 import 'package:app/ui/widgets/buttons.dart';
@@ -222,6 +223,8 @@ class _ProfileFormState extends State<ProfileForm> {
           AppTextField(
             controller: userNameController,
             labelText: Strings.profileUsername,
+            minLength: Values.profileUsernameMinLength,
+            maxLength: Values.profileUsernameMaxLength,
           ),
           FlexSpacer(),
           AppTextField(
@@ -230,6 +233,8 @@ class _ProfileFormState extends State<ProfileForm> {
             keyboardType: TextInputType.multiline,
             maxLines: Dimens.profileDescriptionFormLineNumber,
             optional: true,
+            minLength: Values.profileDescriptionMinLength,
+            maxLength: Values.profileDescriptionMaxLength,
           ),
           FlexSpacer(),
           AppTextField(
@@ -237,18 +242,22 @@ class _ProfileFormState extends State<ProfileForm> {
             labelText: Strings.profileAge,
             keyboardType: TextInputType.number,
             optional: true,
+            minValue: Values.profileAgeMinValue,
+            maxValue: Values.profileAgeMaxValue,
           ),
           FlexSpacer(),
           AppTextField(
             controller: languageController,
             labelText: Strings.profileSpokenLanguages,
             optional: true,
+            maxLength: Values.profileLanguagesMaxLength,
           ),
           FlexSpacer(),
           AppTextField(
             controller: contryController,
             labelText:  Strings.profileCountry,
             optional: true,
+            maxLength: Values.profileCountryMaxLength,
           ),
         ],
       ),
@@ -264,11 +273,11 @@ class _ProfileFormState extends State<ProfileForm> {
         age = int.parse(ageController.text);
       } catch(_) {}
       return User(
-        name: userNameController.text,
-        description: descriptionController.text, 
+        name: userNameController.text.trim(),
+        description: descriptionController.text.trim(), 
         age: age, 
-        spokenLanguages: languageController.text, 
-        country: contryController.text,
+        spokenLanguages: languageController.text.trim(), 
+        country: contryController.text.trim(),
       );
     }
     return null;

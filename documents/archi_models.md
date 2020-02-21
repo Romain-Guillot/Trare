@@ -7,17 +7,17 @@ Voici le diagramme de classe à jour avec le **sprint#4** (le système de messag
 
 ## User
 
-**TODO :** fields constraints [Issue#10](https://github.com/Romain-Guillot/UQAC-GL-Projet/issues/10)
 
 Propriétés | Contraintes | Remarques
 ---|---|---
-username | |
-age |  |
-description |  |
-langues parlées |  |
-pays |  |  
+username | 6 < len < 40 |
+age | 18 < value < 100 |
+description | 20 < len < 500 |
+langues parlées | len < 100 |
+pays | len < 50 |  
 photos |  |  
 
+Jean-Pierre Margaritin de la Poutra
 
 ## Activité
 

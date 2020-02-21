@@ -115,12 +115,12 @@ extension ColorSchemeExt on ColorScheme {
 /// See https://api.flutter.dev/flutter/material/ThemeData-class.html to know
 /// more about all theme values.
 final appTheme = ThemeData(
-  primaryColor: Color(0xff1FD59F),
-  accentColor: Color(0xff1FD59F),
+  primaryColor: _primary,
+  accentColor: _primary,
 
   colorScheme: ColorScheme(
-    primary: Color(0xff1FD59F),
-    primaryVariant: Color(0xff1FD59F),
+    primary: _primary,
+    primaryVariant: _primary,
     onPrimary: Colors.white,
 
     secondary: Color(0xff),
@@ -130,7 +130,7 @@ final appTheme = ThemeData(
     surface: Color(0xffe6e6e6),
     onSurface: Color(0xff000000),
 
-    error: Color(0xfffc3d46),
+    error: _errorColor,
     onError: Colors.white,
 
     background: Colors.white,
@@ -144,7 +144,9 @@ final appTheme = ThemeData(
   splashColor: Colors.white,
 
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: TextStyle(fontSize: 15, fontWeight: Dimens.weightBold)
+    labelStyle: TextStyle(fontSize: 15, fontWeight: Dimens.weightBold),
+    counterStyle: TextStyle(fontSize: 12),
+    errorStyle: TextStyle(fontSize: 12, color: _errorColor)
   ),
 
   textTheme: TextTheme(
@@ -180,3 +182,8 @@ final appTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))
   )
 );
+
+
+
+Color _primary = Color(0xff1FD59F);
+Color _errorColor = Color(0xfffc3d46);
