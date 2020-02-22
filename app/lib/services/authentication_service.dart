@@ -48,6 +48,12 @@ abstract class IAuthenticationService {
   /// Returns false if the operation was cancelled (with no error)
   /// Throw an exception if an error occured
   Future<bool> signOut();
+
+  /// Delete the current connected user
+  ///
+  /// Note: It will just delete the user reference, not its data. If you
+  /// want to delete its data, please configure a trigger in your database
+  Future deleteUser();
 }
 
 
@@ -120,4 +126,16 @@ class FirebaseAuthenticationService implements IAuthenticationService {
     await _auth.signOut();
     return true;
   }
+
+
+  /// See [IAuthenticationService.deleteUser()]
+  /// 
+  /// It just delete the user reference, not its data. Its data will be deleted
+  /// with cloud function trigger, see `documents > feature_authentication.md`
+  @override
+  Future deleteUser() async {
+    var fbUser = await _auth.currentUser();
+    await fbUser.delete();
+  }
+
 }

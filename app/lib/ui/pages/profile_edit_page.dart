@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/values.dart';
+import 'package:app/ui/utils/color_operations.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/app_text_field.dart';
 import 'package:app/ui/widgets/buttons.dart';
@@ -23,10 +25,11 @@ import 'package:provider/provider.dart';
 /// 
 /// It takes the actual [user] information (to pre-fill the fields)
 /// 
-/// It has the three following elements :
+/// It has the four following elements :
 /// - a simple description (just a [Text] in fact)
 /// - the actual form [ProfileForm] that contains all fields to edit the profile
 /// - a button to submit the form [ProfilEditionButton]
+/// - a widget to delete the user account
 /// 
 /// It's the [ProfilEditionButton] that handles the submission process (call
 /// the [ProfileProvider] in fact). So it needs to retreive the form content 
@@ -75,6 +78,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 key: profileFormKey,
                 initialUser: widget.user
               ),
+              FlexSpacer.big(),
+              DeleteAccount()
             ],
           )
         ),
@@ -354,5 +359,89 @@ class _UploadPhotoFormFieldState extends State<UploadPhotoFormField> {
   Future getImageFromGall() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() => _image = image);
+  }
+}
+
+
+
+/// Provide a button with a security verification to delete the user account
+///
+/// It displays a button to delete the user account. This button is only
+/// enabled if the user previously checked the [Switch] (it is the security
+/// verification).
+/// An informative text is also displayed.
+/// 
+/// It is a Stateful widget as there are 2 variables state :
+/// - [actionVerified] : true if the user HAS checked the verification switch
+/// - [loading] : true if the deletion action is in progress
+class DeleteAccount extends StatefulWidget {
+  @override
+  _DeleteAccountState createState() => _DeleteAccountState();
+}
+
+class _DeleteAccountState extends State<DeleteAccount> {
+
+  bool actionVerified = false;
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var errorColor = Theme.of(context).colorScheme.error;
+    var textStyle = TextStyle(color: ColorOperations.darken(errorColor, 0.25));
+    return Container(
+      padding: EdgeInsets.all(Dimens.normalSpacing),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: errorColor.withOpacity(0.2),
+        borderRadius: Dimens.borderRadius,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Strings.profileDeleteInfo,
+            style: textStyle,
+          ),
+          Row(
+            children: <Widget>[
+              Switch(
+                value: actionVerified,
+                activeColor: errorColor,
+                onChanged: (val) => setState(() => actionVerified = val),
+              ),
+              Text(
+                Strings.profileDeleteVerificationLabel,
+                style: textStyle,
+              )
+            ],
+          ),
+          FlatButton(
+            color: errorColor,
+            textColor: Theme.of(context).colorScheme.onError,
+            child: Text(loading ? Strings.loading : Strings.profileDelete),
+            onPressed: !actionVerified || loading ? null : onDelete,
+          ),
+        ],
+      ),
+    );
+  }
+
+  onDelete() async {
+    if (actionVerified) {
+      setState(() => loading = true);
+      try {
+        await Provider.of<AuthenticationProvider>(context, listen: false)
+            .deleteUser();
+        Navigator.pop(context);
+        return ;
+      } catch (_) {
+        showSnackbar(
+          context: context, 
+          content: Text(Strings.profileDeleteError),
+          critical: true
+        );
+      }
+      setState(() => loading = false);
+    }
   }
 }

@@ -46,7 +46,7 @@ class Strings {
   static const String profileLoading = "Loading ...";
   static const String profileError = "An error occured while loading your profile";
   static const String profileErrorRetry = "Retry";
-  static const String profileSignOut = "Sign out 👋";
+  static const String profileSignOut = "Sign out";
   static const String profileDelete = "Delete my account";
   static const String profileEdit = "Edit";
 
@@ -57,6 +57,10 @@ class Strings {
   static const String profileEditionSave = "Save";
   static const String profileEditionError = "An error occured";
   static const String profileEditionSuccess = "Profile successufully updated";
+  static const String profileDeleteInfo = "This action cannot be undone. This will permanently delete your account";
+  static const String profileDeleteVerificationLabel = "I'm sure";
+  static const String profileDeleteButton = "Delete my account";
+  static const String profileDeleteError = "Please log out and log in again to confirm your action.";
 
 
   // Explore

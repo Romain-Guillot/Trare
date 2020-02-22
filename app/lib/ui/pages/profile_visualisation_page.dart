@@ -190,10 +190,6 @@ class ProfileMenu extends StatelessWidget {
           value: _signOut,
           child: Text(Strings.profileSignOut),
         ),
-        PopupMenuItem(
-          value: 999,
-          child: Text(Strings.profileDelete),
-        )
       ],
     );
   }

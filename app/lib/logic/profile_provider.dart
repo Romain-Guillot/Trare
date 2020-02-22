@@ -101,7 +101,6 @@ class ProfileProvider extends ChangeNotifier {
   /// If the operation succeed [true] is returned (try block).
   /// Else (if an error occured), [flase] is returned (catch block)
   Future<bool> editUser(User newUser) async {
-    await Future.delayed(Duration(seconds: 1)); // TODO TEST
     try {
       _user = await _profileService.editUser(newUser);
       notifyListeners();

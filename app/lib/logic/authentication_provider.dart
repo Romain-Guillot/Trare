@@ -32,6 +32,7 @@ enum AuthProviderState {
 ///   - [handleGoogleLogin()]
 ///   - [handleFacebookLogin()]
 /// [signOut()] can be used to sign out the current connected user.
+/// [deleteUser()] can be user to delete the current connected user.
 /// 
 /// If an error occured, it can be catched thanks to [Future.catchError()] 
 /// method or through the provider [state].
@@ -79,6 +80,13 @@ class AuthenticationProvider extends ChangeNotifier {
   /// Sign out the user and update the state
   Future signOut() async {
     await _authService.signOut();
+    state = AuthProviderState.notconnected;
+  }
+
+
+  /// Delete the user and update the state
+  Future deleteUser() async {
+    await _authService.deleteUser();
     state = AuthProviderState.notconnected;
   }
 
