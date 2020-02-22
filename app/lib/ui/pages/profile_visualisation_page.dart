@@ -115,7 +115,10 @@ class ProfileError extends StatelessWidget {
 /// It takes the user as parameter and display his information in a scroll view.
 /// Nothing special here.
 /// 
-/// The entier profil scrollable column is wrapped inside a stack to positionned
+/// The layout simulate a bottom sheet to display information. The profile
+/// picture is fixed as a background, and the profile informations are
+/// displayed inside a scrollable container
+/// The entire profil scrollable column is wrapped inside a stack to positionned
 /// the [ProfileMenu] a the top right corner.
 class ProfileView extends StatelessWidget {
 
@@ -127,34 +130,30 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        ProfilePicture(
+          url: user.urlPhoto
+        ),
         SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ProfilePicture(
-                url: user.urlPhoto
-              ),
-              Container(
-                padding: Dimens.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ProfileHeader(
-                      user: user, 
-                      onEdit: () => editProfile(context),
-                    ),
-                    ProfileItemList(
-                      user: user,
-                    ),
-                    FlexSpacer.big(),
-
-
-                    // RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, 
-                    // MaterialPageRoute(builder: (_) => ActivityView(activity: Activity(),))),)
-                  ],
+          child: LayoutBuilder(
+            builder: (_, constraints) => Container(
+                padding: EdgeInsets.only(top: constraints.maxWidth), // height of the profile picture (square)
+                child: Container(
+                  padding: Dimens.screenPadding,
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ProfileHeader(
+                        user: user, 
+                        onEdit: () => editProfile(context),
+                      ),
+                      ProfileItemList(
+                        user: user,
+                      ),
+                    ],
+                  )
                 )
-              )
-            ],
+            ),
           ),
         ),
         Positioned(
