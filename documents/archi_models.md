@@ -17,8 +17,6 @@ langues parlées | len < 100 |
 pays | len < 50 |  
 photos |  |  
 
-Jean-Pierre Margaritin de la Poutra
-
 ## Activité
 
 Propriétés | Contraintes | Remarques
