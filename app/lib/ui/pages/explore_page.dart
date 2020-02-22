@@ -27,37 +27,41 @@ class ExplorePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: <Widget>[
-            Padding(
-              padding: Dimens.screenPadding,
-              child: PageHeader(
-                title: Text(Strings.exploreTitle),
-                subtitle: Text(Strings.exploreDescription),
+            children: <Widget>[
+              Padding(
+                padding: Dimens.screenPadding,
+                child: PageHeader(
+                  title: Text(Strings.exploreTitle),
+                  subtitle: Text(Strings.exploreDescription),
+                ),
               ),
-            ),
-            Consumer<ActivityExploreProvider>(
-              builder: (_, activityProvider, __) {
-                switch (activityProvider.state) {
-                  case ActivityProviderState.loadingInProgress: 
-                    return LoadInprogressWidget(); 
-                  case ActivityProviderState.databaseError: 
-                    return DatabaseErrorWidget();
-                  case ActivityProviderState.locationPermissionNotGranted:
-                    return LocationPermissionRequester(
-                      textInformation: Strings.locationPermissionInfo,
-                      onPermissionGranted: () => loadActivites(context)
-                    );   
-                  case ActivityProviderState.activitiesLoaded:
-                  default: 
-                    return ListItemsActivities(
-                      activities: activityProvider.activities
-                    );
-                }
-              }
-            ),
-          ],
+               Expanded(
+                child: Consumer<ActivityExploreProvider>(
+                  builder: (_, activityProvider, __) {
+                    switch (activityProvider.state) {
+                      case ActivityProviderState.loadingInProgress: 
+                        return LoadInprogressWidget(); 
+                      case ActivityProviderState.databaseError: 
+                        return DatabaseErrorWidget();
+                      case ActivityProviderState.locationPermissionNotGranted:
+                        return LocationPermissionRequester(
+                          textInformation: Strings.locationPermissionInfo,
+                          onPermissionGranted: () => loadActivites(context)
+                        );   
+                      case ActivityProviderState.activitiesLoaded:
+                      default: 
+                        return ListItemsActivities(
+                          key: GlobalKey(),
+                          activities: activityProvider.activities
+                        );
+                    }
+                  }
+                ),
+              ),
+            ],
+          ),
         ),
-      )
+    
     );
   }
 
@@ -79,7 +83,7 @@ class ListItemsActivities extends StatelessWidget {
 
   final List<Activity> activities;
 
-  ListItemsActivities({@required this.activities});
+  ListItemsActivities({Key key, @required this.activities}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +93,6 @@ class ListItemsActivities extends StatelessWidget {
       itemBuilder: (_, position) {
         var activity = activities[position];
         return ItemActivity(
-          key: GlobalKey(),
           activity: activity,
           onPressed: () => openActivity(context, activity),
         );
@@ -152,12 +155,10 @@ class ItemActivity extends StatefulWidget {
   final Function onPressed;
   
 
-
   ItemActivity({
-    Key key,
     @required this.activity,
     this.onPressed
-  }) : super(key: key);
+  });
 
   @override
   _ItemActivityState createState() => _ItemActivityState();
@@ -178,7 +179,9 @@ class _ItemActivityState extends State<ItemActivity> {
     super.initState();
     // retrieve location information from the coordinates (async)
     Geocoding().locationReprFromPosition(widget.activity.location)
-        .then((location) => setState(() => this.location = location));
+        .then((location) {
+          if (mounted) setState(() => this.location = location);
+        });
   }
 
 
