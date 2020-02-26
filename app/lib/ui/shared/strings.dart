@@ -15,6 +15,7 @@ class Strings {
   static const String availableSoon = "Stay tuned, available soon 🙏";
   static const String enable = "Enable";
   static const String accessibilityLoadingLabel = "Please wait...";
+  static const String addActivity = "Add activity";
 
 
   // Layout

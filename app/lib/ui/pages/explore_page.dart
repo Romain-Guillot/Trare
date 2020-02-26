@@ -21,10 +21,13 @@ import 'package:app/models/activity.dart';
 ///   - activity loading in progress : [LoadInprogressWidget]
 ///   - a database error occured : [DatabaseErrorWidget]
 ///   - the location permission is not granted (but needed) : [LocationPermissionRequester]
+///   - the floating action button [AddActivityFAB] to open the activity 
+///     creation page ([ActivityCreationPage]).
 class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: AddActivityFAB(),
       body: SafeArea(
         child: Column(
             children: <Widget>[
@@ -67,6 +70,32 @@ class ExplorePage extends StatelessWidget {
 
   loadActivites(context) {
     Provider.of<ActivityExploreProvider>(context, listen: false).loadActivities();
+  }
+}
+
+
+
+/// Floating action button to open the [ActivityCreationPage]
+///
+/// An extended floating action button with a label and an icon. The pressed
+/// action push a new route to open the [ActivityCreationPage]
+class AddActivityFAB extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      backgroundColor: Theme.of(context).primaryColor,
+      icon: Icon(Icons.add),
+      foregroundColor: Colors.white,
+      label: Text(Strings.addActivity),
+      onPressed: () => openActivityCreationPage(context),
+    );
+  }
+
+  openActivityCreationPage(context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => Text("TODO : activity page"),
+    ));
   }
 }
 
