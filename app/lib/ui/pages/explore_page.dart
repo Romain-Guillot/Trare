@@ -1,4 +1,5 @@
 import 'package:app/logic/activity_explore_provider.dart';
+import 'package:app/ui/pages/activity_creation_page.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -94,7 +95,7 @@ class AddActivityFAB extends StatelessWidget {
 
   openActivityCreationPage(context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => Text("TODO : activity page"),
+      builder: (_) => ActivityCreationPage(),
     ));
   }
 }
