@@ -1,5 +1,6 @@
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/activity.dart';
+import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
@@ -16,9 +17,32 @@ import 'package:provider/provider.dart';
 
 
 
-/// Page (scaffold) to create a new activity
+/// Page ([Scaffold]) to create a new activity
+/// 
+/// It will create a scaffold with an app bar with an action button to add
+/// the activity (make processes) and a body with the activity creation form.
 ///
-/// TODO
+/// It is composed of two main components :
+/// - the [ActivityForm] responsibles to display the form to create the activity
+///   and to create an [Activty] object with the [ActivityForm.makeActivity()]
+/// - the [ActivityCreationButton] that retreives the activity object from
+///   the form thanks to the makeActivity method seen above
+/// 
+/// It is a Stateful widget to keep a record of the [ActivityForm] to be able
+/// to call the [ActivityForm.makeActivity()] to retreive the generated
+/// activity and to communicate with a Provider to make proccesses (for example : 
+/// add the activity in a database)
+/// 
+/// The body is wrapped inside a [SingleChildScrollView] to be able to scroll
+/// the activity form
+///
+/// You can use the [Navigator] object to open this page :
+/// 
+/// ```dart
+/// Navigator.of(context).push(MaterialPageRoute(
+///   builder : (_) => ActivityCreationPage()
+/// ))
+/// ```
 class ActivityCreationPage extends StatefulWidget {
   @override
   _ActivityCreationPageState createState() => _ActivityCreationPageState();
@@ -58,9 +82,19 @@ class _ActivityCreationPageState extends State<ActivityCreationPage> {
 
 
 
-////
+//// Button to add the activity thanks to the [ActivityCreationProvider]
 ///
-///
+/// It retreives the activity object form the [ActivityForm] thanks to the
+/// key [activityCreationFormKey]. The [ActivityForm] has the method
+/// [ActivityForm.makeActivity()] to generate an instance of the activity
+/// from the form.
+/// 
+/// If the generated activity is not null, the proccess is delegates 
+/// to the [ActivityCreationProvider] to add the activity in the database.
+/// - If the process succeed, the created activity visualisation page is opened
+///   ([ActivityPage])
+/// - Else, an error snackbar is displayed to inform the user that an unexpected
+///   error occured
 class ActivityCreationButton extends StatefulWidget {
 
   final GlobalKey<_ActivityFormState> activityCreationFormKey;
@@ -78,36 +112,37 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
   @override
   Widget build(BuildContext context) {
     return Button(
-      child: Text("Add the activity"),
+      child: Text(Strings.addActivityButton),
       onPressed: handleSubmit,
     );
   }
 
+  /// Retreive the activity and call the provider, then call [handleSuccess]
+  /// or [handleError] depending on the process result (error, success)
   handleSubmit() {
-    var activity = widget.activityCreationFormKey.currentState.getActivity();
+    var activity = widget.activityCreationFormKey.currentState.makeActivity();
     if (activity != null) {
       setState(() => inProgress = true);
       // TODO(dioul)
       // bool success = << create activity provider function >>
-      bool success = false; // TODO(dioul) ==> à supprimer 
+      bool success = true; // TODO(dioul) ==> à supprimer 
       setState(() => inProgress = false);
-      success ? handleSuccess() : handleError();
+      success ? handleSuccess(activity) : handleError();
     }
   }
 
-  handleSuccess() {
-    var parentRoute = ModalRoute.of(context);
-    var canPop = parentRoute?.canPop ?? false;
-    if (canPop)
-      Navigator.pop(context);
-    else
-      showSnackbar(context: context, content: Text("Successs"));
+  /// Open the [ActivityPage] with the created activity
+  handleSuccess(Activity activity) {
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (context) => ActivityPage(activity: activity),
+    ));
   }
 
+  /// Show a snackbar to warn the user that an error occured
   handleError() {
     showSnackbar(
       context: context, 
-      content: Text("Error activity creation"), 
+      content: Text(Strings.unexpectedError), 
       critical: true
     );
   }
@@ -115,9 +150,31 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
 
 
 
+/// Widget to display a form to let the user create a new activity
 ///
-///
-///
+/// It is a basic form widget wrapped inside the [Form] widget and that contains
+/// [AppTextField]s, [DateTimePicker]s and [GoogleMapLocationField] to fill
+/// the activity information.
+/// 
+/// An [Activity] instance can be generated thanks to the [makeActivity]
+/// method.
+/// 
+/// Usage :
+/// 
+/// ```dart
+/// var activityCreationFormKey = GlobalKey<_ActivityFormState>();
+/// 
+/// ...
+/// 
+/// ActivityForm(
+///   key: activityCreationFormKey,
+/// ),
+/// 
+/// ...
+/// 
+/// var activity = activityCreationFormKey.currentState.makeActivity()
+/// 
+/// ```
 class ActivityForm extends StatefulWidget {
 
   ActivityForm({Key key}) : super(key: key);
@@ -138,6 +195,7 @@ class _ActivityFormState extends State<ActivityForm> {
   final _endDatePickerKey = GlobalKey<FormFieldState>();
   final _locationChooserKey = GlobalKey<FormFieldState>();
 
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -147,13 +205,13 @@ class _ActivityFormState extends State<ActivityForm> {
         children: <Widget>[
           AppTextField(
             optional: false,
-            labelText: "Title",
+            labelText: Strings.activityTitleLabel,
             controller: _titleController,
           ),
           FlexSpacer(),
           AppTextField(
             optional: false,
-            labelText: "Description",
+            labelText: Strings.activityDescriptionLabel,
             controller: _descriptionController,
             keyboardType: TextInputType.multiline,
             maxLines: 10,
@@ -161,32 +219,31 @@ class _ActivityFormState extends State<ActivityForm> {
           FlexSpacer(),
           DateTimePicker(
             key: _beginDatePickerKey,
-            label: "Begin date",
+            label: Strings.activityBeginDateLabel,
             initialDate: DateTime.now(),
             firstDate: now,
             lastDate: now.add(Duration(days: 365)),
-            validator: (date) => date == null ? "Cannot be null" : null,
+            required: true,
           ),
           FlexSpacer(),
           DateTimePicker(
             key: _endDatePickerKey,
-            label: "End date",
+            label: Strings.activityEndDateLabel,
             initialDate: DateTime.now(),
             firstDate: now,
             lastDate: now.add(Duration(days: 365)),
-            validator: (date) {
+            required: true,
+            customValidator: (date) {
               DateTime beginDate = _beginDatePickerKey.currentState.value;
-              if (beginDate != null && date.isBefore(beginDate))
-                return "The end date must be after the begin date";
-              if (beginDate == null)
-                return "Cannot be null";
-              return null;
+              return beginDate != null && date.isBefore(beginDate)
+                ? Strings.errorEndDateBeforeBeginDate
+                : null;
             },
           ),
           FlexSpacer(),
           GoogleMapLocationField(
             key: _locationChooserKey,
-            label: "Activity location",
+            label: Strings.activityLocationLabel,
             required: true,
           )
         ],
@@ -194,8 +251,11 @@ class _ActivityFormState extends State<ActivityForm> {
     );
   }
 
-  ///
-  Activity getActivity() {
+
+  /// Method the generate an [Activity] instance based on the form information
+  /// 
+  /// It returns null if the form is not valid
+  Activity makeActivity() {
     var currentUser = Provider.of<ProfileProvider>(context, listen: false).user;
     if (currentUser != null && _formKey.currentState.validate()) {
       return Activity(
@@ -209,12 +269,13 @@ class _ActivityFormState extends State<ActivityForm> {
       );
     }
     if (currentUser == null)
-      handeInvalidUserAccount();
+      _handeInvalidUserAccount();
     return null;
   }
+  
 
-  ///
-  handeInvalidUserAccount() {
+  /// Show a snackbar warn the user that an error occured
+  _handeInvalidUserAccount() {
     showSnackbar(
       context: context, 
       content: Text(Strings.unexpectedError)

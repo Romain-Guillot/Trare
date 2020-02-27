@@ -35,6 +35,7 @@ class Strings {
   static const String alternativeAuthenticationMethodeSeparotor = "OR";
   static const String authenticationError = "An error occured. Please try again";
 
+
   // Profile general
   static const String profileUsername = "Username";
   static const String profileDescription = "Description";
@@ -43,6 +44,7 @@ class Strings {
   static const String profileAge = "Age";
   static const String profileUnknownName = "Unknown";
 
+
   // Profile visualization
   static const String profileLoading = "Loading ...";
   static const String profileError = "An error occured while loading your profile";
@@ -50,6 +52,7 @@ class Strings {
   static const String profileSignOut = "Sign out";
   static const String profileDelete = "Delete my account";
   static const String profileEdit = "Edit";
+
 
   // Profile edition
   static const String profileEditionInfo = "Configure your profile to let users get to know you a little better";
@@ -69,7 +72,6 @@ class Strings {
   static const String exploreDescription = "Explore activities proposed by other users arround you.";
   static const String locationPermissionInfo = "Enable the location permission to look for activities near you";
   static const String databaseErrorInfo = "Sorry there is an erro accessing the database";
-  
 
 
   // Activity view
@@ -88,9 +90,15 @@ class Strings {
   static const String iAmInterested = "I'm interested";
 
 
-
   // Activity creation
   static const String activityCreationDescription = "Create a new activity to propose it to other users of the application.";
+  static const String addActivityButton = "Add the activity";
+  static const String activityTitleLabel = "Title";
+  static const String activityDescriptionLabel = "Description";
+  static const String activityBeginDateLabel = "Begin date";
+  static const String activityEndDateLabel = "End date";
+  static const String activityLocationLabel = "Location";
+  static const String errorEndDateBeforeBeginDate = "The end date must be after the begin date";
 
 
   // Form
@@ -111,5 +119,5 @@ class Strings {
     return "Too short, add $remainingLength more character" + (remainingLength > 1 ? "s" : "");
   }
   static const String requiredMap = "Required";
-
+  static const String requiredDate = "Required";
 }

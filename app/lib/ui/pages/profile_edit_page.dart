@@ -293,8 +293,6 @@ class _ProfileFormState extends State<ProfileForm> {
 /// IN PROGRESS
 ///
 /// TBD
-/// 
-/// TODO
 ///   - initial photo
 class UploadPhotoFormField extends StatefulWidget {
   @override

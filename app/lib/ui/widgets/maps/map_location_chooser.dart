@@ -11,9 +11,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
+/// [FormField] to choose a location on the [GoogleMap] widget
 ///
-///
-///
+/// TODO(romain)
 class GoogleMapLocationField extends FormField<Position> {
 
   GoogleMapLocationField({
@@ -60,9 +60,7 @@ class GoogleMapLocationField extends FormField<Position> {
 
 
 
-///
-///
-///
+/// TODO(romain)
 class GoogleMapLocationChooser extends StatefulWidget {
 
   final Function(LatLng) onPositionSelected;

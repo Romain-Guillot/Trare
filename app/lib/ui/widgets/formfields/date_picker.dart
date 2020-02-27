@@ -1,12 +1,46 @@
+import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 
+
+/// [FormField] used to choose a specific [DateTime] (year, month, day)
 ///
-///
-///
+/// It is a [FormField] so you can provide a [GlobalKey<FormFieldState>] to 
+/// retreive the form value (the date).
+/// 
+/// ```dart
+/// var datePickerKey = GlobalKey<FormFieldState>();
+/// 
+/// ...
+/// 
+/// DateTimePicker(
+///   key: datePickerKey
+///   label: "My field",
+///   initialDate: initialDate,
+///   firstDate: firstDate,
+///   lastDate: lastDate,
+/// )
+/// 
+/// ...
+/// 
+/// var date = datePickerKey.currentState.value;
+/// ```
+/// 
+/// You can set the flag [required], it will display an error text if no date
+/// is selected (it never happened normally as we give an initialDate)
+/// You can also add you [customValidator] to validate your date.
+/// For example to valdiate the date only if it is after a specific date :
+/// 
+/// ```dart
+/// DateTimePicker(
+///   ...
+///   customValidator: (date) => date.isBefore(beginDate) ? "Error" : null
+///   }
+/// )
+/// ```
 class DateTimePicker extends FormField<DateTime> {
 
   static final dateFormat = DateFormat.yMMMd();  
@@ -17,10 +51,17 @@ class DateTimePicker extends FormField<DateTime> {
     @required DateTime initialDate,
     @required DateTime firstDate,
     @required DateTime lastDate,
-    String Function(DateTime) validator,
+    bool required = false,
+    String Function(DateTime) customValidator,
   }) : super(
     key: key,
-    validator: validator??((_) => null),
+    validator: (date) {
+      if (required && date == null)
+        return Strings.requiredDate;
+      if (customValidator != null)
+        return customValidator(date) ;
+      return null;
+    },
     initialValue: initialDate,
     builder: (state) {
       var context = state.context;
