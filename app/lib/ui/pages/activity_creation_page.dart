@@ -3,15 +3,16 @@ import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
-import 'package:app/ui/widgets/app_text_field.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/formfields/app_text_field.dart';
+import 'package:app/ui/widgets/formfields/date_picker.dart';
+import 'package:app/ui/widgets/maps/map_location_chooser.dart';
 import 'package:app/ui/widgets/page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 
 
@@ -37,7 +38,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
+          padding: Dimens.screenPaddingBodyWithAppBar,
           child: Column(
             children: <Widget>[
               PageHeader(
@@ -46,7 +47,7 @@ class _ActivityCreationPageState extends State<ActivityCreationPage> {
               FlexSpacer.big(),
               ActivityForm(
                 key: activityCreationFormKey,
-              )
+              ),
             ],
           ),
         ),
@@ -127,12 +128,15 @@ class ActivityForm extends StatefulWidget {
 
 class _ActivityFormState extends State<ActivityForm> {
 
+  final now = DateTime.now();
+
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _beginDateController = GlobalKey<FormFieldState>();
-  final _endDateController = GlobalKey<FormFieldState>();
+  final _beginDatePickerKey = GlobalKey<FormFieldState>();
+  final _endDatePickerKey = GlobalKey<FormFieldState>();
+  final _locationChooserKey = GlobalKey<FormFieldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -156,20 +160,35 @@ class _ActivityFormState extends State<ActivityForm> {
           ),
           FlexSpacer(),
           DateTimePicker(
+            key: _beginDatePickerKey,
             label: "Begin date",
             initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(3000),
+            firstDate: now,
+            lastDate: now.add(Duration(days: 365)),
+            validator: (date) => date == null ? "Cannot be null" : null,
           ),
           FlexSpacer(),
           DateTimePicker(
+            key: _endDatePickerKey,
             label: "End date",
             initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(3000),
+            firstDate: now,
+            lastDate: now.add(Duration(days: 365)),
+            validator: (date) {
+              DateTime beginDate = _beginDatePickerKey.currentState.value;
+              if (beginDate != null && date.isBefore(beginDate))
+                return "The end date must be after the begin date";
+              if (beginDate == null)
+                return "Cannot be null";
+              return null;
+            },
           ),
           FlexSpacer(),
-          Text("Location")
+          GoogleMapLocationField(
+            key: _locationChooserKey,
+            label: "Activity location",
+            required: true,
+          )
         ],
       ),
     );
@@ -184,9 +203,9 @@ class _ActivityFormState extends State<ActivityForm> {
         description: _titleController.text,
         createdDate: DateTime.now(),
         user: currentUser,
-        beginDate: _beginDateController.currentState.value,
-        endDate: _endDateController.currentState.value,
-        location: null,
+        beginDate: _beginDatePickerKey.currentState.value,
+        endDate: _endDatePickerKey.currentState.value,
+        location: _locationChooserKey.currentState.value,
       );
     }
     if (currentUser == null)
@@ -201,47 +220,4 @@ class _ActivityFormState extends State<ActivityForm> {
       content: Text(Strings.unexpectedError)
     );
   }
-}
-
-
-class DateTimePicker extends FormField<DateTime> {
-
-  static final dateFormat = DateFormat.yMMMd();  
-
-  DateTimePicker({
-    @required String label,
-    @required DateTime initialDate,
-    @required DateTime firstDate,
-    @required DateTime lastDate
-  }) : super(
-    validator: (date) => initialDate == null ? "Invalid" : null,
-    initialValue: initialDate,
-    builder: (state) {
-      var context = state.context;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            label,
-            style: Theme.of(context).inputDecorationTheme.labelStyle,
-          ),
-          FlexSpacer.small(),
-          FlatButton.icon(
-            icon: Icon(Icons.calendar_today),
-            label: Text(dateFormat.format(state.value)),
-            color: Theme.of(context).colorScheme.surface,
-            onPressed: () async {
-              var date = await showDatePicker(
-                context: context, 
-                initialDate: initialDate, 
-                firstDate: firstDate,
-                lastDate: lastDate
-              );
-              state.didChange(date);
-            }
-          ),
-        ],
-      );
-    }
-  );
 }

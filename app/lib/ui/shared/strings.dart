@@ -110,5 +110,6 @@ class Strings {
   static String textFieldMinLengthCounter(int remainingLength) {
     return "Too short, add $remainingLength more character" + (remainingLength > 1 ? "s" : "");
   }
+  static const String requiredMap = "Required";
 
 }

@@ -19,4 +19,7 @@ class Values {
   static const int profileLanguagesMaxLength = 100;
 
   static const int profileCountryMaxLength = 50;
+
+  static const double mapDefaultZoom = 9;
+  static const double mapCircleRadius = 6000;
 }
