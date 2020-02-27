@@ -13,7 +13,7 @@
         android:label="Trare"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyBFBGmmN9O16XBsSMA6IIwFoykiyPUcvv4"/>
+               android:value="AIzaSyCd05zAsEu5VZ5j-Kzmu2iXKnPFfVhVBm4"/>
 
         <activity
             android:name=".MainActivity"

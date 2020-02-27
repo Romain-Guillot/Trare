@@ -8,7 +8,7 @@ import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/values.dart';
 import 'package:app/ui/utils/color_operations.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
-import 'package:app/ui/widgets/app_text_field.dart';
+import 'package:app/ui/widgets/formfields/app_text_field.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
@@ -66,7 +66,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          padding: Dimens.screenPadding,
+          padding: Dimens.screenPaddingBodyWithAppBar,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -156,7 +156,6 @@ class _ProfilEditionButtonState extends State<ProfilEditionButton> {
     else
       showSnackbar(context: context, content: Text(Strings.profileEditionSuccess));
   }
-    
 }
 
 
@@ -294,8 +293,6 @@ class _ProfileFormState extends State<ProfileForm> {
 /// IN PROGRESS
 ///
 /// TBD
-/// 
-/// TODO
 ///   - initial photo
 class UploadPhotoFormField extends StatefulWidget {
   @override

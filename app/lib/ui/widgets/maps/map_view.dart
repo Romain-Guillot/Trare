@@ -1,5 +1,6 @@
+import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/widgets/maps/map_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,33 +22,20 @@ class GoogleMapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var circleBorderColor = Theme.of(context).colorScheme.primary;
-    var circleColor = circleBorderColor.withOpacity(0.3);
-    return GoogleMap(
-      compassEnabled: false,
-      initialCameraPosition: CameraPosition(
-        zoom: 10,
-        target: position
-      ),
-      circles: {
-        Circle(
-          circleId: CircleId("circle"),
-          fillColor: circleColor,
-          strokeColor: circleBorderColor,
-          center: position,
-          radius: 5000,
-          strokeWidth: 5
-        )
-      },
-      zoomGesturesEnabled: true,
-
-      // To consume all touch event (especially to intercept events when this 
-      // widget is in a scrollable widget.
-      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-        Factory<OneSequenceGestureRecognizer>(
-          () => EagerGestureRecognizer(),
+    return ClipRRect(
+      borderRadius: Dimens.borderRadius,
+      child: GoogleMap(
+        compassEnabled: false,
+        initialCameraPosition: CameraPosition(
+          zoom: defaultZoom,
+          target: position
         ),
-      ].toSet(),
+        circles: {
+          createCircle(context, position)
+        },
+        zoomGesturesEnabled: true,
+        gestureRecognizers: gestureRecognizers
+      )
     );
   }
 }
