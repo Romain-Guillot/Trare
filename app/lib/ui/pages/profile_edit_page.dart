@@ -66,7 +66,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          padding: Dimens.screenPadding,
+          padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -156,7 +156,6 @@ class _ProfilEditionButtonState extends State<ProfilEditionButton> {
     else
       showSnackbar(context: context, content: Text(Strings.profileEditionSuccess));
   }
-    
 }
 
 

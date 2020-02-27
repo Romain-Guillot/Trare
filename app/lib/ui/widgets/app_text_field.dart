@@ -37,7 +37,7 @@ class AppTextField extends StatelessWidget {
 
   AppTextField({
     @required this.controller, 
-    this.labelText, 
+    @required this.labelText, 
     this.customValidator,
     this.keyboardType = TextInputType.text,
     this.optional = false,
@@ -67,7 +67,7 @@ class AppTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           maxLines: keyboardType == TextInputType.multiline ? null : 1,
-          minLines: keyboardType == TextInputType.multiline ? min(maxLines, 5) : 1,
+          minLines: keyboardType == TextInputType.multiline ? max(maxLines, 5) : 1,
           maxLength: maxLength,
           decoration: InputDecoration(
             hintText: optional ? Strings.optionalTextField : Strings.requiredTextField,

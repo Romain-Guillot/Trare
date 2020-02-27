@@ -5,6 +5,7 @@
 
 
 import 'package:app/models/user.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 
@@ -16,4 +17,14 @@ class Activity {
   DateTime beginDate;
   DateTime endDate;
   Position location;
+
+  Activity({
+    @required this.title,
+    @required this.user,
+    @required this.description,
+    @required this.createdDate,
+    @required this.beginDate,
+    @required this.endDate,
+    @required this.location,
+  }); 
 }

@@ -87,6 +87,12 @@ class Strings {
   }
   static const String iAmInterested = "I'm interested";
 
+
+
+  // Activity creation
+  static const String activityCreationDescription = "Create a new activity to propose it to other users of the application.";
+
+
   // Form
   static const String invalidFormEmpty = "Cannot be empty";
   static const String invalidFormTooShort = "Too short";

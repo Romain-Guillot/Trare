@@ -45,7 +45,7 @@ class Dimens {
 
   // Profile
   static const int maxImageResolution = 720;
-  static const int profileDescriptionFormLineNumber = 10;
+  static const int profileDescriptionFormLineNumber = 5;
 
   // Activity
   static const double activityViewMapRatio = 4/3;
