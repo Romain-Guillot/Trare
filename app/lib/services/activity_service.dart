@@ -25,6 +25,8 @@ abstract class IActivityService {
   /// null is never returned
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
+
+  Future <Activity> createActivity(Activity activity);
 }
 
 
@@ -90,6 +92,28 @@ class FirestoreActivityService implements IActivityService {
     });
     return completer.future;
   }
+
+  @override
+  Future<Activity> createActivity(Activity activity) async {
+    var activityDoc= await _activityDocumentRef(null);
+    if(activityDoc!=null) {
+      var activityData= _FirestoreActivityAdapter.toMap(activity);
+      await activityDoc.setData(activityData, merge: true);
+      return _FirestoreActivityAdapter(data: activityData, user: activity.user);
+    }
+    return Future.error(null);
+  }
+
+  Future<DocumentReference> _activityDocumentRef(String uid) async {
+    if(uid==null) {
+     
+    }
+    if(uid!=null) {
+      _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
+    }
+    return null;
+
+  }
 }
 
 
@@ -113,6 +137,7 @@ class _FirestoreActivityAdapter implements Activity {
   @override Position location;
 
 
+
   _FirestoreActivityAdapter({@required Map<String, dynamic> data, @required User user}) {
     this.createdDate = data[_Identifiers.ACTIVITY_CREATED_DATE];
     this.title = data[_Identifiers.ACTIVITY_TITLE];
@@ -131,6 +156,11 @@ class _FirestoreActivityAdapter implements Activity {
     }
   }
 
+  static Timestamp timestampFromDatetime(DateTime date) {
+
+    return Timestamp.fromDate(date);
+  }
+
   Position _buildPosition(dynamic data) {
     try {
       var geoPoint = data['geopoint'] as GeoPoint;
@@ -139,6 +169,24 @@ class _FirestoreActivityAdapter implements Activity {
       return null;
     }
   }
+
+   static GeoFirePoint _rebuildPosition(Position position) {
+    Geoflutterfire geo = Geoflutterfire();
+  GeoFirePoint myLocation = geo.point(latitude: position.latitude, longitude: position.longitude);
+  return myLocation;
+  }
+
+
+    static Map<String, Object> toMap(Activity activity) =>{
+
+    _Identifiers.ACTIVITY_TITLE: activity.title,
+    _Identifiers.ACTIVITY_USER: activity.user,
+    _Identifiers.ACTIVITY_DESCRIPTION: activity.description,
+    _Identifiers.ACTIVITY_BEGIN_DATE: _FirestoreActivityAdapter.timestampFromDatetime(activity.beginDate),
+    _Identifiers.ACTIVITY_END_DATE: _FirestoreActivityAdapter.timestampFromDatetime(activity.endDate),
+    _Identifiers.ACTIVITY_LOCATION: _FirestoreActivityAdapter._rebuildPosition(activity.location)
+
+  };
 }
 
 
