@@ -1,3 +1,4 @@
+import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/activity.dart';
 import 'package:app/ui/shared/dimens.dart';
@@ -86,9 +87,8 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
     var activity = widget.activityCreationFormKey.currentState.getActivity();
     if (activity != null) {
       setState(() => inProgress = true);
-      // TODO(dioul)
-      // bool success = << create activity provider function >>
-      bool success = false; // TODO(dioul) ==> à supprimer 
+      ActivityProvider activityProvider;
+       bool success = (activityProvider.CreateActivity(activity) != null);
       setState(() => inProgress = false);
       success ? handleSuccess() : handleError();
     }

@@ -8,6 +8,7 @@ import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
@@ -42,6 +43,7 @@ class FirestoreActivityService implements IActivityService {
 
   final IProfileService _profileService;
   final _firestore = Firestore.instance;
+  final _auth = FirebaseAuth.instance;
   final _geo = Geoflutterfire(); // used to perform geo queries
 
 
@@ -105,8 +107,9 @@ class FirestoreActivityService implements IActivityService {
   }
 
   Future<DocumentReference> _activityDocumentRef(String uid) async {
-    if(uid==null) {
-     
+    if(uid == null) {
+      final fbUser = await _auth.currentUser();
+      uid = fbUser?.uid;
     }
     if(uid!=null) {
       _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
