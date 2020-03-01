@@ -27,6 +27,7 @@ abstract class IActivityService {
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 
+  /// insert the activity created by the user in the firestore
   Future <Activity> createActivity(Activity activity);
 }
 
@@ -108,8 +109,6 @@ class FirestoreActivityService implements IActivityService {
     }
     return Future.error(null);
   }
-
-
 }
 
 
