@@ -14,6 +14,11 @@ class Dimens {
 
   static const double screenPaddingValue = 17;
   static const EdgeInsets screenPadding = const EdgeInsets.all(screenPaddingValue);
+  static const EdgeInsets screenPaddingBodyWithAppBar = EdgeInsets.only(
+    left: Dimens.screenPaddingValue,
+    right: Dimens.screenPaddingValue,
+    bottom: Dimens.screenPaddingValue
+  );
   static const double smallSpacing = 5;
   static const double normalSpacing = 15;
   static const double bigSpacing = 45;

@@ -1,7 +1,7 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
 // Doc: TODO
-// Tests: TODO
+// Tests: Done (not need...)
 
 
 import 'package:app/models/user.dart';
