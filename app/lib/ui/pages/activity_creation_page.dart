@@ -124,14 +124,8 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
     var activity = widget.activityCreationFormKey.currentState.makeActivity();
     if (activity != null) {
       setState(() => inProgress = true);
-<<<<<<< HEAD
       ActivityProvider activityProvider;
        bool success = (activityProvider.CreateActivity(activity) != null);
-=======
-      // TODO(dioul)
-      // bool success = << create activity provider function >>
-      bool success = true; // TODO(dioul) ==> à supprimer 
->>>>>>> 0a36694352257168768113d8895ee9e6f92a59ae
       setState(() => inProgress = false);
       success ? handleSuccess(activity) : handleError();
     }

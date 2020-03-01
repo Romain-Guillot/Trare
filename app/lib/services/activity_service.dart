@@ -97,7 +97,7 @@ class FirestoreActivityService implements IActivityService {
 
   @override
   Future<Activity> createActivity(Activity activity) async {
-    //var activityDoc= await _activityDocumentRef(null);
+    
      final fbUser = await _auth.currentUser();
       String uid = fbUser?.uid;
     var activityDoc= _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
@@ -109,17 +109,7 @@ class FirestoreActivityService implements IActivityService {
     return Future.error(null);
   }
 
-  /*Future<DocumentReference> _activityDocumentRef(String uid) async {
-    if(uid == null) {
-      final fbUser = await _auth.currentUser();
-      uid = fbUser?.uid;
-    }
-    if(uid!=null) {
-      _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
-    }
-    return null;
 
-  }*/
 }
 
 
