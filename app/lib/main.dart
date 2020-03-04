@@ -1,3 +1,6 @@
+import 'dart:js';
+
+import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/permissions_provider.dart';
@@ -51,6 +54,11 @@ void main() {
         ActivityExploreProvider(
           activitiesService: locator<IActivityService>()
         )
+      ),
+      ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
+          ActivityCreationProvider(
+            iActivityService: locator<IActivityService>()
+            )
       ),
       ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
         LocationPermissionProvider()

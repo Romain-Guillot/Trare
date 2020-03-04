@@ -98,7 +98,25 @@ class FirestoreActivityService implements IActivityService {
   @override
   Future<Activity> createActivity(Activity activity) async {
     
-     final fbUser = await _auth.currentUser();
+      /// recupere le map de l'activity dans [activityData]
+      var activityData= _FirestoreActivityAdapter.toMap(activity);
+      if(activityData!=null) {
+        /// recupere la collection des activities dans [activityDoc] ensuite ajoute [activityData] à la collection
+        var activityDoc= _firestore.collection(_Identifiers.ACTIVITIES_COL);
+            activityDoc.add(activityData);
+        return _FirestoreActivityAdapter(data: activityData, user: activity.user);
+
+      }
+       return Future.error(null);   
+    } 
+  }
+  
+    
+    
+    
+    
+    
+     /*final fbUser = await _auth.currentUser();
       String uid = fbUser?.uid;
     var activityDoc= _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
     if(activityDoc!=null) {
@@ -107,10 +125,10 @@ class FirestoreActivityService implements IActivityService {
       return _FirestoreActivityAdapter(data: activityData, user: activity.user);
     }
     return Future.error(null);
-  }
+  }*/
+  
+  
 
-
-}
 
 
 
@@ -174,7 +192,7 @@ class _FirestoreActivityAdapter implements Activity {
 
 
     static Map<String, Object> toMap(Activity activity) =>{
-
+    _Identifiers.ACTIVITY_CREATED_DATE: _FirestoreActivityAdapter.timestampFromDatetime(new DateTime.now()),
     _Identifiers.ACTIVITY_TITLE: activity.title,
     _Identifiers.ACTIVITY_USER: activity.user,
     _Identifiers.ACTIVITY_DESCRIPTION: activity.description,

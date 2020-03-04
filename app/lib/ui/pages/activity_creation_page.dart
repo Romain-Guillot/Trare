@@ -1,6 +1,7 @@
 import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/activity.dart';
+import 'package:app/services/activity_service.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -120,12 +121,17 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
 
   /// Retreive the activity and call the provider, then call [handleSuccess]
   /// or [handleError] depending on the process result (error, success)
-  handleSubmit() {
+  handleSubmit() async {
     var activity = widget.activityCreationFormKey.currentState.makeActivity();
     if (activity != null) {
+      
       setState(() => inProgress = true);
-      ActivityProvider activityProvider;
-       bool success = (activityProvider.CreateActivity(activity) != null);
+      //Je recupère mon provider et je lui passe l'activity qui sera crée par le formulaire
+      var provider = Provider.of<ActivityCreationProvider>(context);
+      // je verifie bien que cette activity n'est pas null
+      bool success = (await provider.createActivity(activity) != null);
+    
+    
       setState(() => inProgress = false);
       success ? handleSuccess(activity) : handleError();
     }
@@ -282,3 +288,5 @@ class _ActivityFormState extends State<ActivityForm> {
     );
   }
 }
+
+
