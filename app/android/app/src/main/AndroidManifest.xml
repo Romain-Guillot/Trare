@@ -29,7 +29,6 @@
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCd05zAsEu5VZ5j-Kzmu2iXKnPFfVhVBm4"/>
         <activity android:name="com.facebook.FacebookActivity" android:configChanges=
             "keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name" />
 

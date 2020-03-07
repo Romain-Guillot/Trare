@@ -90,9 +90,6 @@ class ActivityExploreProvider extends ChangeNotifier {
           position: config.position,
           radius: config.radius,
         ); // null never returned
-        for (int i = 0; i<999; i++) // TEST
-          this.activities.add(this.activities.elementAt(0));
-        
         state = ActivityProviderState.activitiesLoaded;
       } catch (_) {
         state = ActivityProviderState.databaseError;
