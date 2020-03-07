@@ -1,7 +1,6 @@
 import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/profile_provider.dart';
 import 'package:app/models/activity.dart';
-import 'package:app/services/activity_service.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -124,14 +123,10 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
   handleSubmit() async {
     var activity = widget.activityCreationFormKey.currentState.makeActivity();
     if (activity != null) {
-      
       setState(() => inProgress = true);
-      //Je recupère mon provider et je lui passe l'activity qui sera crée par le formulaire
-      var provider = Provider.of<ActivityCreationProvider>(context);
-      // je verifie bien que cette activity n'est pas null
-      bool success = (await provider.createActivity(activity) != null);
-    
-    
+      var provider = Provider.of<ActivityCreationProvider>(context, listen: false);
+      activity = await provider.createActivity(activity);
+      bool success = activity != null;
       setState(() => inProgress = false);
       success ? handleSuccess(activity) : handleError();
     }
@@ -284,7 +279,8 @@ class _ActivityFormState extends State<ActivityForm> {
   _handeInvalidUserAccount() {
     showSnackbar(
       context: context, 
-      content: Text(Strings.unexpectedError)
+      content: Text(Strings.unexpectedError),
+      critical: true
     );
   }
 }

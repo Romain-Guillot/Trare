@@ -16,6 +16,7 @@
 /// strucutre (name of fields). These transformations are directly applied 
 /// in the corresponding services (through adapters)
 class User {
+  String uid;
   String name;
   String description;
   int age;
@@ -24,6 +25,7 @@ class User {
   String urlPhoto;
 
   User({
+    this.uid,
     this.name, 
     this.description, 
     this.age, 

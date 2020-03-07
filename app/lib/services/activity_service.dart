@@ -8,7 +8,6 @@ import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,6 +26,9 @@ abstract class IActivityService {
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 
+  /// insert the activity created by the user in the firestore
+  /// 
+  /// 
   Future <Activity> createActivity(Activity activity);
 }
 
@@ -43,7 +45,6 @@ class FirestoreActivityService implements IActivityService {
 
   final IProfileService _profileService;
   final _firestore = Firestore.instance;
-  final _auth = FirebaseAuth.instance;
   final _geo = Geoflutterfire(); // used to perform geo queries
 
 
@@ -85,7 +86,6 @@ class FirestoreActivityService implements IActivityService {
             var user = await _profileService.getUser(userUID: userUID);
             var activity = _FirestoreActivityAdapter(data: docSnap.data, user: user);
             activities.add(activity);
-            
           }
         } catch (e) { print(e);}
       }
@@ -95,40 +95,22 @@ class FirestoreActivityService implements IActivityService {
     return completer.future;
   }
 
+
+  ///
+  ///
+  ///
   @override
   Future<Activity> createActivity(Activity activity) async {
-    
-      /// recupere le map de l'activity dans [activityData]
-      var activityData= _FirestoreActivityAdapter.toMap(activity);
-      if(activityData!=null) {
-        /// recupere la collection des activities dans [activityDoc] ensuite ajoute [activityData] à la collection
-        var activityDoc= _firestore.collection(_Identifiers.ACTIVITIES_COL);
-            activityDoc.add(activityData);
-        return _FirestoreActivityAdapter(data: activityData, user: activity.user);
-
-      }
-       return Future.error(null);   
-    } 
-  }
-  
-    
-    
-    
-    
-    
-     /*final fbUser = await _auth.currentUser();
-      String uid = fbUser?.uid;
-    var activityDoc= _firestore.collection(_Identifiers.ACTIVITIES_COL).document(uid);
-    if(activityDoc!=null) {
-      var activityData= _FirestoreActivityAdapter.toMap(activity);
-      await activityDoc.setData(activityData, merge: true);
+    var activityData = _FirestoreActivityAdapter.toMap(activity);
+    if (activityData != null) {
+      var activityDoc = _firestore.collection(_Identifiers.ACTIVITIES_COL);
+      await activityDoc.add(activityData);
       return _FirestoreActivityAdapter(data: activityData, user: activity.user);
     }
-    return Future.error(null);
-  }*/
+    return Future.error(null);   
+  }
+}
   
-  
-
 
 
 
@@ -150,10 +132,8 @@ class _FirestoreActivityAdapter implements Activity {
   @override DateTime endDate;
   @override Position location;
 
-
-
   _FirestoreActivityAdapter({@required Map<String, dynamic> data, @required User user}) {
-    this.createdDate = data[_Identifiers.ACTIVITY_CREATED_DATE];
+    this.createdDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_CREATED_DATE]);
     this.title = data[_Identifiers.ACTIVITY_TITLE];
     this.user = user;
     this.description = data[_Identifiers.ACTIVITY_DESCRIPTION];
@@ -170,11 +150,6 @@ class _FirestoreActivityAdapter implements Activity {
     }
   }
 
-  static Timestamp timestampFromDatetime(DateTime date) {
-
-    return Timestamp.fromDate(date);
-  }
-
   Position _buildPosition(dynamic data) {
     try {
       var geoPoint = data['geopoint'] as GeoPoint;
@@ -184,22 +159,20 @@ class _FirestoreActivityAdapter implements Activity {
     }
   }
 
-   static GeoFirePoint _rebuildPosition(Position position) {
-    Geoflutterfire geo = Geoflutterfire();
-  GeoFirePoint myLocation = geo.point(latitude: position.latitude, longitude: position.longitude);
-  return myLocation;
+  static Map<String, Object> _buildGeoPosition(Position position) {
+    var geo = Geoflutterfire();
+    var myLocation = geo.point(latitude: position.latitude, longitude: position.longitude);
+    return myLocation.data;
   }
 
-
-    static Map<String, Object> toMap(Activity activity) =>{
-    _Identifiers.ACTIVITY_CREATED_DATE: _FirestoreActivityAdapter.timestampFromDatetime(new DateTime.now()),
+  static Map<String, Object> toMap(Activity activity) => {
+    _Identifiers.ACTIVITY_CREATED_DATE: Timestamp.fromDate(DateTime.now()),
     _Identifiers.ACTIVITY_TITLE: activity.title,
-    _Identifiers.ACTIVITY_USER: activity.user,
+    _Identifiers.ACTIVITY_USER: activity.user.uid,
     _Identifiers.ACTIVITY_DESCRIPTION: activity.description,
-    _Identifiers.ACTIVITY_BEGIN_DATE: _FirestoreActivityAdapter.timestampFromDatetime(activity.beginDate),
-    _Identifiers.ACTIVITY_END_DATE: _FirestoreActivityAdapter.timestampFromDatetime(activity.endDate),
-    _Identifiers.ACTIVITY_LOCATION: _FirestoreActivityAdapter._rebuildPosition(activity.location)
-
+    _Identifiers.ACTIVITY_BEGIN_DATE: Timestamp.fromDate(activity.beginDate),
+    _Identifiers.ACTIVITY_END_DATE: Timestamp.fromDate(activity.endDate),
+    _Identifiers.ACTIVITY_LOCATION: _FirestoreActivityAdapter._buildGeoPosition(activity.location)
   };
 }
 

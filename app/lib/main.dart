@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
@@ -37,18 +35,20 @@ void main() {
 
   setupServiceLocator();
 
-  var authProvider = AuthenticationProvider(authService: locator<IAuthenticationService>())..init();
+  var authProvider = AuthenticationProvider(
+    authService: locator<IAuthenticationService>()
+  )..init();
+  var profileProvider = ProfileProvider(
+    profileService: locator<IProfileService>(),
+  )..init(authProvider);
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<AuthenticationProvider>(create: (context) => 
-        authProvider
+      ChangeNotifierProvider<AuthenticationProvider>.value( 
+        value: authProvider
       ),
-      ChangeNotifierProvider<ProfileProvider>(create: (context) => 
-        ProfileProvider(
-          profileService: locator<IProfileService>(),
-          authenticationProvider: authProvider
-        )
+      ChangeNotifierProvider<ProfileProvider>.value( 
+        value: profileProvider
       ),
       ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
         ActivityExploreProvider(
@@ -56,9 +56,9 @@ void main() {
         )
       ),
       ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
-          ActivityCreationProvider(
-            iActivityService: locator<IActivityService>()
-            )
+        ActivityCreationProvider(
+          iActivityService: locator<IActivityService>()
+        )
       ),
       ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
         LocationPermissionProvider()

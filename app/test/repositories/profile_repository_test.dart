@@ -27,9 +27,9 @@ void main() {
       Identifiers.USER_AGE: 0
     };
 
-    var user1 = FirestoreUserAdapter(userData: map1);
-    var user2 = FirestoreUserAdapter(userData: map2);
-    var user3 = FirestoreUserAdapter(userData: map3);
+    var user1 = FirestoreUserAdapter(uid: "1", userData: map1);
+    var user2 = FirestoreUserAdapter(uid: "2", userData: map2);
+    var user3 = FirestoreUserAdapter(uid: "3", userData: map3);
     
 
     test("Constructor", () {

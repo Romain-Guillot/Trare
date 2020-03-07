@@ -79,23 +79,21 @@ class _GoogleMapLocationChooser extends State<GoogleMapLocationChooser> {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: ClipRRect(
-        borderRadius: Dimens.borderRadius,
-        child: GoogleMap(
-          compassEnabled: false,
-          initialCameraPosition: CameraPosition(target: LatLng(0,0)),
-          onMapCreated: (controller) => this.controller = controller,
-          circles: {
-            if (position != null)
-              createCircle(context, position)
-          },
-          zoomGesturesEnabled: true,
-          onTap: onPlaceMarker,
-          onCameraMove: (cameraPosition) => currentZoom = cameraPosition.zoom,
-          gestureRecognizers: gestureRecognizers
-        ),
-      )
+    return ClipRRect(
+      borderRadius: Dimens.borderRadius,
+      child: GoogleMap(
+        compassEnabled: false,
+        initialCameraPosition: CameraPosition(target: LatLng(0,0)),
+        onMapCreated: (controller) => this.controller = controller,
+        circles: {
+          if (position != null)
+            createCircle(context, position)
+        },
+        zoomGesturesEnabled: true,
+        onTap: onPlaceMarker,
+        onCameraMove: (cameraPosition) => currentZoom = cameraPosition.zoom,
+        gestureRecognizers: gestureRecognizers
+      ),
     );
   }
 

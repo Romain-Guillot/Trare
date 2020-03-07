@@ -76,7 +76,10 @@ class FirestoreProfileService implements IProfileService {
       userDoc.get()
         .then((userData) {
           try {
-            final user = FirestoreUserAdapter(userData: userData?.data??{});
+            final user = FirestoreUserAdapter(
+              uid: userDoc.documentID, 
+              userData: userData?.data??{}
+            );
             completer.complete(user);
           } catch (_) {
             completer.completeError(null);
@@ -105,7 +108,7 @@ class FirestoreProfileService implements IProfileService {
     if (userDoc != null) {
       var userData = FirestoreUserAdapter.toMap(user);
       await userDoc.setData(userData, merge: true);
-      return FirestoreUserAdapter(userData: userData);
+      return FirestoreUserAdapter(uid: userDoc.documentID, userData: userData);
     } 
     return Future.error(null);
   }
@@ -144,6 +147,7 @@ class FirestoreProfileService implements IProfileService {
 /// adapter pattern.
 @visibleForTesting
 class FirestoreUserAdapter implements User {
+  String uid;
   String country;
   String description;
   String name;
@@ -151,8 +155,9 @@ class FirestoreUserAdapter implements User {
   String urlPhoto;
   int age;
 
-  FirestoreUserAdapter({@required Map<String, Object> userData}) {
+  FirestoreUserAdapter({@required String uid, @required Map<String, Object> userData}) {
     if (userData != null) {
+      this.uid = uid;
       this.name = userData[Identifiers.USER_NAME];
       this.description = userData[Identifiers.USER_DESCRIPTION];
       this.country = userData[Identifiers.USER_LOCATION];
