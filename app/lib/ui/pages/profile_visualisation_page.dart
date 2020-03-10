@@ -6,9 +6,10 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/buttons.dart';
+import 'package:app/ui/widgets/error_widgets.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:app/ui/widgets/page_header.dart';
-import 'package:app/ui/widgets/profile/user_profile_picture.dart';
+import 'package:app/ui/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,10 @@ class ProfileVisualisationPage extends StatelessWidget {
               case ProfileProviderState.not_initialized:
                 return ProfileLoading();
               case ProfileProviderState.error:
-                return ProfileError(onPressed: () => forceReload(context));
+                return ErrorWidgetWithReload(
+                  message: Strings.profileError,
+                  onReload: () => forceReload(context)
+                );
               case ProfileProviderState.initialized:
               default: 
                 return ProfileView(user: profileProvider.user);
@@ -72,38 +76,6 @@ class ProfileLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(Strings.profileLoading)
-    );
-  }
-}
-
-
-
-/// Simple widget to display an error message if the profile loading failed
-///
-/// There is an informational text and a button to reaload the profile. The
-/// loading process has to be in the [onPressed] function
-class ProfileError extends StatelessWidget {
-
-  final Function onPressed;
-  
-  ProfileError({@required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(Strings.profileError),
-          FlexSpacer(),
-          Button(
-            child: Text(Strings.profileErrorRetry),
-            critical: true,
-            onPressed: onPressed,
-          )
-        ],
-      ),
     );
   }
 }

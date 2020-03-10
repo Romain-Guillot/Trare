@@ -1,5 +1,6 @@
 import 'package:app/ui/pages/explore_page.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
+import 'package:app/ui/pages/user_activities_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var _widgetOptions = <Widget>[
     ExplorePage(),
     Container(),
-    Container(),
+    UserActivitiesPage(),
     ProfileVisualisationPage(),
   ];
 

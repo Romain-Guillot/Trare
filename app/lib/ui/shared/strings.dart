@@ -16,6 +16,8 @@ class Strings {
   static const String enable = "Enable";
   static const String accessibilityLoadingLabel = "Please wait...";
   static const String addActivity = "Add activity";
+  static const String reload = "Reload";
+
 
 
   // Layout
@@ -48,7 +50,6 @@ class Strings {
   // Profile visualization
   static const String profileLoading = "Loading ...";
   static const String profileError = "An error occured while loading your profile";
-  static const String profileErrorRetry = "Retry";
   static const String profileSignOut = "Sign out";
   static const String profileDelete = "Delete my account";
   static const String profileEdit = "Edit";
@@ -88,6 +89,7 @@ class Strings {
     return "Between ${dateFormat.format(d1)} and ${dateFormat.format(d2)}";
   }
   static const String iAmInterested = "I'm interested";
+  static const String unknownLocation = "Unknown location";
 
 
   // Activity creation
@@ -100,6 +102,10 @@ class Strings {
   static const String activityLocationLabel = "Location";
   static const String errorEndDateBeforeBeginDate = "The end date must be after the begin date";
 
+
+  // User activities
+  static const String userActivitiesTitle = "My activities";
+  static const String userActivitiesError = "Unable to load your activities";
 
   // Form
   static const String invalidFormEmpty = "Cannot be empty";

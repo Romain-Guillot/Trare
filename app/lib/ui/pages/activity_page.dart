@@ -8,7 +8,7 @@ import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:app/ui/widgets/maps/map_view.dart';
 import 'package:app/ui/widgets/page_header.dart';
-import 'package:app/ui/widgets/profile/user_card.dart';
+import 'package:app/ui/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
