@@ -1,8 +1,8 @@
 import 'package:app/logic/activity_explore_provider.dart';
-import 'package:app/ui/pages/activity_creation_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/widgets/activities_widgets.dart';
+import 'package:app/ui/widgets/error_widgets.dart';
 import 'package:app/ui/widgets/loading_widgets.dart';
 import 'package:app/ui/widgets/location_permission_requester.dart';
 import 'package:app/ui/widgets/page_header.dart';
@@ -44,7 +44,10 @@ class ExplorePage extends StatelessWidget {
                       case ActivityProviderState.loadingInProgress: 
                         return LoadingWidget(); 
                       case ActivityProviderState.databaseError: 
-                        return DatabaseErrorWidget();
+                        return ErrorWidgetWithReload(
+                          message: Strings.databaseErrorInfo,
+                          onReload: () => loadActivites(context),
+                        );
                       case ActivityProviderState.locationPermissionNotGranted:
                         return LocationPermissionRequester(
                           textInformation: Strings.locationPermissionInfo,
@@ -71,53 +74,3 @@ class ExplorePage extends StatelessWidget {
     Provider.of<ActivityExploreProvider>(context, listen: false).loadActivities();
   }
 }
-
-
-
-/// Floating action button to open the [ActivityCreationPage]
-///
-/// An extended floating action button with a label and an icon. The pressed
-/// action push a new route to open the [ActivityCreationPage]
-class AddActivityFAB extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      backgroundColor: Theme.of(context).primaryColor,
-      icon: Icon(Icons.add),
-      foregroundColor: Colors.white,
-      label: Text(Strings.addActivity),
-      onPressed: () => openActivityCreationPage(context),
-    );
-  }
-
-  openActivityCreationPage(context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ActivityCreationPage(),
-    ));
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-/// this is a simple widget that will be displayed when the state of our 
-/// [ActiviyExploreProvider] LocationPermissionNotGrant 
-class DatabaseErrorWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(Strings.databaseErrorInfo),
-    );
-  }
-}
-
-
-

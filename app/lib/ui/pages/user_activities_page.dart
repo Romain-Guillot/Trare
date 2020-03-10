@@ -19,6 +19,7 @@ class UserActivitiesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: AddActivityFAB(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,26 +30,26 @@ class UserActivitiesPage extends StatelessWidget {
                 title: Text(Strings.userActivitiesTitle),
               ),
             ),
-            Consumer<MockProvider>(
-              builder: (_, userActivitiesProvider, __) {
-                switch (userActivitiesProvider.state) {
-                  case MockEnum.loaded:
-                    return Expanded(
-                      child: ListItemsActivities(
+            Expanded(
+              child: Consumer<MockProvider>(
+                builder: (_, userActivitiesProvider, __) {
+                  switch (userActivitiesProvider.state) {
+                    case MockEnum.loaded:
+                      return ListItemsActivities(
                         key: GlobalKey(),
                         activities: userActivitiesProvider.activities,
-                      )
-                    );
-                  case MockEnum.inprogress:
-                   return LoadingWidget();
-                  case MockEnum.error:
-                  default:
-                   return ErrorWidgetWithReload(
-                     message: Strings.userActivitiesError,
-                     onReload: () => reloadActivities(context),
-                   );
-                }
-              } 
+                      );
+                    case MockEnum.inprogress:
+                     return LoadingWidget();
+                    case MockEnum.error:
+                    default:
+                     return ErrorWidgetWithReload(
+                       message: Strings.userActivitiesError,
+                       onReload: () => reloadActivities(context),
+                     );
+                  }
+                } 
+              ),
             )
           ],
         ),

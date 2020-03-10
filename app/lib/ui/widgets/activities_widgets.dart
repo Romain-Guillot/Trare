@@ -1,4 +1,5 @@
 import 'package:app/models/activity.dart';
+import 'package:app/ui/pages/activity_creation_page.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
@@ -114,5 +115,31 @@ class _ItemActivityState extends State<ItemActivity> {
       ),
       onTap: widget.onPressed,
     );
+  }
+}
+
+
+
+/// Floating action button to open the [ActivityCreationPage]
+///
+/// An extended floating action button with a label and an icon. The pressed
+/// action push a new route to open the [ActivityCreationPage]
+class AddActivityFAB extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      backgroundColor: Theme.of(context).primaryColor,
+      icon: Icon(Icons.add),
+      foregroundColor: Colors.white,
+      label: Text(Strings.addActivity),
+      onPressed: () => openActivityCreationPage(context),
+    );
+  }
+
+  openActivityCreationPage(context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => ActivityCreationPage(),
+    ));
   }
 }
