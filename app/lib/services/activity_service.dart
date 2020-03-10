@@ -26,9 +26,11 @@ abstract class IActivityService {
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 
-  /// insert the activity created by the user in the firestore
+  /// Insert an activity in database
   /// 
-  /// 
+  /// Returns the created activity if the insertion succeed
+  /// null is never returned
+  /// An exception can be throwed if an error occured
   Future <Activity> createActivity(Activity activity);
 }
 
