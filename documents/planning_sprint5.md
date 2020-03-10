@@ -11,4 +11,25 @@ Pour ce sprint, nous avons légèrement modifié notre organisation d'interne de
 
 ## Résultats
 
-*In progress*
+L'insertion d'activité a été implémentée :
+- Ajout du bouton d'insertion
+- Ajout de l'UI d'insertion
+- Ajout du business logic
+- Ajout du service responsable d'insérer l'activité dans la BDD
+
+
+<table style="border: none;">
+<tr><td>
+
+![](src/screen_5.1.jpg)
+</td><td>
+
+![](src/screen_5.3.jpg)</td>
+
+<td>
+
+![](src/screen_5.2.jpg)</td></tr>
+</table>
+</div>
+
+*Bouton, formulaire, gestion des champs mal formatés*
