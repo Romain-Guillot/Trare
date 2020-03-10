@@ -16,6 +16,9 @@ class ActivityCreationProvider extends ChangeNotifier {
     
   /// this function gives the new activity to the service class that have to map the activity in
   /// noSQL data  before to insert it  in the firestore
+  /// 
+  /// Returns the created activity if succeed
+  /// Returns null if an occured occured
   Future<Activity> createActivity(Activity newActivity) async {
     try {
       var activity = await _activityService.createActivity(newActivity);
