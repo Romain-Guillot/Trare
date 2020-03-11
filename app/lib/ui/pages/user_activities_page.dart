@@ -14,7 +14,19 @@ import 'package:provider/provider.dart';
 
 
 
-
+/// Page to display the list of the activities created by the connected user
+/// 
+/// It used the [ActivityUserProvider] provider that is responsible to load the
+/// user activities and to maintain a state depending (loading in progress,
+/// database error, etc.). Here, we use a [Consumer] to listen this state and
+/// display the widget accordingly :
+/// - The [ListItemsActivities] if the user acitvities are loaded
+/// - The [LoadingWidget] if the loading is in progress
+/// - The [ErrorWidgetWithReload] if an error occured. It will displays a button
+///   to try to reload the user activites
+///
+/// A floating action button is also rendered in the main Scaffold to open the
+/// activity creation page, it's the [AddActivityFAB] widget
 class UserActivitiesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

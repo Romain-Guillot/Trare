@@ -20,8 +20,9 @@ import 'package:provider/provider.dart';
 ///   - activity loading in progress : [LoadingWidget]
 ///   - a database error occured : [DatabaseErrorWidget]
 ///   - the location permission is not granted (but needed) : [LocationPermissionRequester]
-///   - the floating action button [AddActivityFAB] to open the activity 
-///     creation page ([ActivityCreationPage]).
+/// 
+/// A floating action button is also rendered in the main Scaffold to open the
+/// activity creation page, it's the [AddActivityFAB] widget
 class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
