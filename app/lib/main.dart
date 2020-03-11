@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/activity_user_provider.dart';
