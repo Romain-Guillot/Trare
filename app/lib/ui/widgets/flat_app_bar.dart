@@ -1,4 +1,5 @@
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,15 +22,15 @@ import 'package:flutter/widgets.dart';
 /// ```
 class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
+  static double padding = 5.0;
+
   final Widget action;
 
   FlatAppBar({this.action});
 
   @override
   Widget build(BuildContext context) {
-    var parentRoute = ModalRoute.of(context);
-    var canPop = parentRoute?.canPop ?? false;
-    var elemsPadding = const EdgeInsets.all(5.0);
+    var elemsPadding = EdgeInsets.all(padding);
     return AppBar(
       actions: <Widget>[
         Padding(
@@ -37,13 +38,9 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: action,
         )
       ],
-      leading: !canPop ? null : Padding(
+      leading:  Padding(
         padding: elemsPadding,
-        child: InkWell(     
-          borderRadius: Dimens.rounedBorderRadius,   
-          child: Icon(Icons.close),
-          onTap: () => Navigator.of(context).pop(),
-        ),
+        child: NavigatorBackButton()
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,

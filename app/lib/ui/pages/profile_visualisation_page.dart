@@ -5,8 +5,10 @@ import 'package:app/ui/pages/profile_edit_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
+import 'package:app/ui/widgets/back_button.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/error_widgets.dart';
+import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:app/ui/widgets/page_header.dart';
 import 'package:app/ui/widgets/profile_widgets.dart';
@@ -30,10 +32,13 @@ import 'package:provider/provider.dart';
 /// The profile provider state is represented by the [ProfileProviderState]
 /// enumeration.
 /// 
+/// The entire profil scrollable column is wrapped inside a stack to positionned
+/// the [ProfileMenu] a the top right corner.
+/// 
 /// Note: the user can try a reload if an error occured thanks to the 
 /// [ProfileError] widget.
-class ProfileVisualisationPage extends StatelessWidget {
-
+class ConnectedUserProfileView extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +55,18 @@ class ProfileVisualisationPage extends StatelessWidget {
                 );
               case ProfileProviderState.initialized:
               default: 
-                return ProfileView(user: profileProvider.user);
+                return Stack(
+                  children: <Widget>[
+                    ProfileView(
+                      user: profileProvider.user,
+                      onEdit: () => editProfile(context, profileProvider.user)
+                    ),
+                    Positioned(
+                      top: 0, right: 0,
+                      child: ProfileMenu()
+                    ),
+                  ] 
+                );
             }
           }
         ),
@@ -61,6 +77,36 @@ class ProfileVisualisationPage extends StatelessWidget {
   /// Try to load again the user information
   forceReload(context) {
     Provider.of<ProfileProvider>(context, listen: false).loadUser();
+  }
+
+  /// Push the page [ProfileEditPage] on the navigation stack
+  editProfile(context, user) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => ProfileEditPage(user: user)
+    ));
+  }
+}
+
+
+
+/// Page to display information of an user (it is the public user page)
+/// 
+/// To display the connected user page (with edit option and menu) use 
+/// [ConnectedUserProfileView] instead.
+class UserProfileVisualisationPage extends StatelessWidget {
+  final User user;
+
+  UserProfileVisualisationPage({@required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+          child: ProfileView(
+          user: user
+        ),
+      )
+    );
   }
 }
 
@@ -87,16 +133,18 @@ class ProfileLoading extends StatelessWidget {
 /// It takes the user as parameter and display his information in a scroll view.
 /// Nothing special here.
 /// 
+/// If [onEdit] is specified, it will a a button to edit the user profile (so
+/// specify it when you want to display the connected user profile)
+/// 
 /// The layout simulate a bottom sheet to display information. The profile
 /// picture is fixed as a background, and the profile informations are
 /// displayed inside a scrollable container
-/// The entire profil scrollable column is wrapped inside a stack to positionned
-/// the [ProfileMenu] a the top right corner.
 class ProfileView extends StatelessWidget {
 
   final User user;
+  final Function onEdit;
   
-  ProfileView({@required this.user});
+  ProfileView({@required this.user, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +165,7 @@ class ProfileView extends StatelessWidget {
                     children: <Widget>[
                       ProfileHeader(
                         user: user, 
-                        onEdit: () => editProfile(context),
+                        onEdit: onEdit,
                       ),
                       ProfileItemList(
                         user: user,
@@ -129,17 +177,11 @@ class ProfileView extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 0, right: 0,
-          child: ProfileMenu()
+          top: FlatAppBar.padding, left: FlatAppBar.padding,
+          child: NavigatorBackButton()
         ),
       ]
     );
-  }
-
-  editProfile(context) {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (_) => ProfileEditPage(user: user)
-    ));
   }
 }
 
@@ -207,10 +249,11 @@ class ProfileHeader extends StatelessWidget {
             title: Text(username), 
           ),
         ),
-        Button(
-          child: Text(Strings.profileEdit),
-          onPressed: onEdit,
-        )
+        if (onEdit != null)
+          Button(
+            child: Text(Strings.profileEdit),
+            onPressed: onEdit,
+          )
       ],
     );
   }

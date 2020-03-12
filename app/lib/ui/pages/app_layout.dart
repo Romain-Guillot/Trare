@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ExplorePage(),
     Container(),
     UserActivitiesPage(),
-    ProfileVisualisationPage(),
+    ConnectedUserProfileView(),
   ];
 
 

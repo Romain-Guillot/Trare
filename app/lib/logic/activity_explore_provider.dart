@@ -102,7 +102,7 @@ class ActivityExploreProvider extends ChangeNotifier {
   /// location
   Future<Position> _getUserLocation() async {
     try { // getCurrentPosition can throw an exception the location permission is not granted
-      var position = await Geolocator().getCurrentPosition(
+      var position = await Geolocator().getLastKnownPosition(
           desiredAccuracy: LocationAccuracy.medium
       );
       return position;

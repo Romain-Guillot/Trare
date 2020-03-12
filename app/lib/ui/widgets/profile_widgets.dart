@@ -2,8 +2,6 @@ import 'package:app/models/user.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:app/ui/shared/assets.dart';
 import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +13,7 @@ import 'package:app/main.dart';
 /// Widget to display information about an user (name, age, etc)
 ///
 /// It takes the [user] as parameter and can be clickable if the flag 
-/// [isClickable] is set to true. If so, the page [ProfileVisualisationPage]
+/// [isClickable] is set to true. If so, the page [UserProfileVisualisationPage]
 /// will be opened to display all the user information.
 /// 
 /// The layout is a [ListTile] with the following information :
@@ -50,11 +48,9 @@ class UserCard extends StatelessWidget {
   }
 
   openUserProfile(context) {
-    showSnackbar(
-      context: context, 
-      content: Text(Strings.availableSoon),
-      critical: true,
-    );
+    Navigator.of(context).push(MaterialPageRoute(builder: 
+      (_) => UserProfileVisualisationPage(user: user)
+    ));
   }
 }
 
