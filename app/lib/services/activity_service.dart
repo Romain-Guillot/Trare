@@ -26,12 +26,15 @@ abstract class IActivityService {
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 
-  /// Insert an activity in database
+  /// insert the activity created by the user in the firestore
   /// 
-  /// Returns the created activity if the insertion succeed
-  /// null is never returned
-  /// An exception can be throwed if an error occured
+  /// 
   Future <Activity> createActivity(Activity activity);
+
+  /// Returns activities created by [user]
+  /// Returns null if the current [user] has never create an [activity]
+  /// An exception can be throwed if an error occured
+  Future <List<Activity>> retreiveActivitiesUser({@required User user});
 }
 
 
@@ -110,6 +113,28 @@ class FirestoreActivityService implements IActivityService {
       return _FirestoreActivityAdapter(data: activityData, user: activity.user);
     }
     return Future.error(null);   
+  }
+
+  @override
+  Future<List<Activity>> retreiveActivitiesUser({User user}) {
+   var completer = Completer<List<Activity>>();
+   var activities = List<Activity>();
+   var activitiesUsercollection = _firestore.collection(_Identifiers.ACTIVITIES_COL)
+   .where("user" == user.uid)
+   .getDocuments();
+   
+   activitiesUsercollection.then((QuerySnapshot snapshot) async {
+     try{
+       snapshot.documents.forEach((docsnap) {
+         var activity = _FirestoreActivityAdapter(data: docsnap.data, user: user);
+         activities.add(activity);
+        });
+     } catch(e){
+       print(e);
+     }
+     completer.complete(activities);
+   });
+   return completer.future;
   }
 }
   

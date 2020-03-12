@@ -1,5 +1,6 @@
 import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/activity_explore_provider.dart';
+import 'package:app/logic/activity_user_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/permissions_provider.dart';
 import 'package:app/logic/profile_provider.dart';
@@ -61,6 +62,12 @@ void main() {
           iActivityService: locator<IActivityService>()
         )
       ),
+      ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
+      ActivityUserProvider(
+        iActivityService: locator<IActivityService>(), 
+        iProfileService: locator<IProfileService>() 
+        )
+        ),
       ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
         LocationPermissionProvider()
       ),
