@@ -26,13 +26,17 @@ abstract class IActivityService {
   /// An exception can be throwed if an error occured
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius});
 
-  /// insert the activity created by the user in the firestore
+  /// Insert an activity in database
   /// 
-  /// 
+  /// Returns the created activity if the insertion succeed
+  /// null is never returned
+  /// An exception can be throwed if an error occured
   Future <Activity> createActivity(Activity activity);
 
   /// Returns activities created by [user]
-  /// Returns null if the current [user] has never create an [activity]
+  /// 
+  /// null is never returned (an empty list is returned if the user has never
+  /// created an activity)
   /// An exception can be throwed if an error occured
   Future <List<Activity>> retreiveActivitiesUser({@required User user});
 }
@@ -115,26 +119,28 @@ class FirestoreActivityService implements IActivityService {
     return Future.error(null);   
   }
 
+
+  ///
+  ///
+  ///
   @override
   Future<List<Activity>> retreiveActivitiesUser({User user}) {
-   var completer = Completer<List<Activity>>();
-   var activities = List<Activity>();
-   var activitiesUsercollection = _firestore.collection(_Identifiers.ACTIVITIES_COL)
-   .where("user" == user.uid)
-   .getDocuments();
-   
-   activitiesUsercollection.then((QuerySnapshot snapshot) async {
-     try{
-       snapshot.documents.forEach((docsnap) {
-         var activity = _FirestoreActivityAdapter(data: docsnap.data, user: user);
-         activities.add(activity);
-        });
-     } catch(e){
-       print(e);
-     }
-     completer.complete(activities);
-   });
-   return completer.future;
+    var completer = Completer<List<Activity>>();
+    var activities = List<Activity>();
+    var activitiesUsercollection = _firestore.collection(_Identifiers.ACTIVITIES_COL)
+      .where(_Identifiers.ACTIVITY_USER, isEqualTo: user.uid)
+      .getDocuments();
+
+    activitiesUsercollection.then((QuerySnapshot snapshot) async {
+      snapshot.documents.forEach((docsnap) {
+        try{
+          var activity = _FirestoreActivityAdapter(data: docsnap.data, user: user);
+          activities.add(activity);
+        } catch(_) { }
+      });
+      completer.complete(activities);
+    });
+    return completer.future;
   }
 }
   

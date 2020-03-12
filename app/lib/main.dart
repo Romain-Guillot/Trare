@@ -63,17 +63,14 @@ void main() {
         )
       ),
       ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
-      ActivityUserProvider(
-        iActivityService: locator<IActivityService>(), 
-        iProfileService: locator<IProfileService>() 
-        )
-        ),
+        ActivityUserProvider(
+          activityService: locator<IActivityService>(), 
+          profileService: locator<IProfileService>() 
+        )..loadActivities()
+      ),
       ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
         LocationPermissionProvider()
       ),
-      ChangeNotifierProvider<MockProvider>(create: (context) =>
-        MockProvider()..init()
-      )
     ],
     child: MyApp()
   ));

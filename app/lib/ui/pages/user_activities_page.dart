@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:app/models/activity.dart';
+import 'package:app/logic/activity_user_provider.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/widgets/activities_widgets.dart';
@@ -43,17 +40,17 @@ class UserActivitiesPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Consumer<MockProvider>(
+              child: Consumer<ActivityUserProvider>(
                 builder: (_, userActivitiesProvider, __) {
                   switch (userActivitiesProvider.state) {
-                    case MockEnum.loaded:
+                    case ActivityUserProviderState.activitiesLoaded:
                       return ListItemsActivities(
                         key: GlobalKey(),
                         activities: userActivitiesProvider.activities,
                       );
-                    case MockEnum.inprogress:
+                    case ActivityUserProviderState.loadingInProgress:
                      return LoadingWidget();
-                    case MockEnum.error:
+                    case ActivityUserProviderState.dataBaseError:
                     default:
                      return ErrorWidgetWithReload(
                        message: Strings.userActivitiesError,
@@ -70,48 +67,6 @@ class UserActivitiesPage extends StatelessWidget {
   }
 
   reloadActivities(context) {
-    Provider.of<MockProvider>(context, listen: false).load();
-  }
-}
-
-
-
-
-
-
-
-
-// MOCK MOCK MOCK MOCK MOCK MOCK 
-// Juste pour tester
-// MOCK MOCK MOCK MOCK MOCK MOCK 
-
-enum MockEnum {loaded, inprogress, error}
-
-
-class MockProvider extends ChangeNotifier {
-
-  MockEnum state = MockEnum.inprogress;
-
-  var activities = List<Activity>.generate(999, (i) => Activity(
-    title: "Title",
-    beginDate: DateTime.now(),
-    endDate: DateTime.now(),
-    createdDate: DateTime.now(),
-    description: "",
-    location: null,
-    user: null
-  ));
-
-  init() async {
-    await Future.delayed(Duration(seconds: 2));
-    Timer.periodic(Duration(seconds: 4), (t)  {
-      state = Random().nextBool() ? MockEnum.error : MockEnum.loaded; 
-      notifyListeners();
-    });
-  }
-
-  load() {
-    state = MockEnum.inprogress;
-    notifyListeners();
+    Provider.of<ActivityUserProvider>(context, listen: false).loadActivities();
   }
 }

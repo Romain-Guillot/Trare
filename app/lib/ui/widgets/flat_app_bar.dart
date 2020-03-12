@@ -1,4 +1,3 @@
-import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
