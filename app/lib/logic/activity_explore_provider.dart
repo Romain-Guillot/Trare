@@ -1,9 +1,10 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
 // Doc: Done
-// Tests: TODO
+// Tests: Done
 import 'package:app/models/activity.dart';
 import 'package:app/services/activity_service.dart';
+import 'package:app/services/user_location_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -27,11 +28,12 @@ class ActivitiesConfig {
 
 
 /// State to represent the provider state
-enum ActivityProviderState {
-  activitiesLoaded,
-  loadingInProgress,
+enum ActivityExploreProviderState {
+  idle,
+  loaded,
+  inProgress,
   locationPermissionNotGranted,
-  databaseError,
+  error,
 }
 
 
@@ -45,16 +47,17 @@ enum ActivityProviderState {
 ///   - [state] the current provider state
 ///   - [activities] the list of activities results of a database query
 /// 
-/// If state is [ActivityProviderState.activitiesLoaded] the [activities] will
+/// If state is [ActivityExploreProviderState.loaded] the [activities] will
 /// NOT be null. Else, it can (and will probably) be null.
 class ActivityExploreProvider extends ChangeNotifier {
 
    final IActivityService _activityService;
+   final IUserLocationService _locationService;
 
    final config = ActivitiesConfig(radius: defaultRadius);
 
-   var _state = ActivityProviderState.loadingInProgress;
-   ActivityProviderState get state => _state;
+   var _state = ActivityExploreProviderState.idle;
+   ActivityExploreProviderState get state => _state;
    set state(value) {
      _state = value;
      notifyListeners();
@@ -63,10 +66,10 @@ class ActivityExploreProvider extends ChangeNotifier {
 
 
   ActivityExploreProvider({
-    @required IActivityService activitiesService
-  }) : this._activityService = activitiesService {
-    loadActivities();
-  }
+    @required IActivityService activitiesService,
+    @required IUserLocationService locationService,
+  }) : this._activityService = activitiesService,
+       this._locationService = locationService;
 
 
   /// Load activities near the user and notify clients
@@ -79,10 +82,10 @@ class ActivityExploreProvider extends ChangeNotifier {
   /// 
   /// [activities] list and [state] will be updated and clients notified
   loadActivities() async {
-    state = ActivityProviderState.loadingInProgress;
-    var userPosition = await _getUserLocation();
+    state = ActivityExploreProviderState.inProgress;
+    var userPosition = await _locationService.retrieveUserPosition();
     if (userPosition == null) {
-      state = ActivityProviderState.locationPermissionNotGranted;
+      state = ActivityExploreProviderState.locationPermissionNotGranted;
     } else {
       config.position = userPosition;
       try {
@@ -90,24 +93,10 @@ class ActivityExploreProvider extends ChangeNotifier {
           position: config.position,
           radius: config.radius,
         ); // null never returned
-        state = ActivityProviderState.activitiesLoaded;
+        state = ActivityExploreProviderState.loaded;
       } catch (_) {
-        state = ActivityProviderState.databaseError;
+        state = ActivityExploreProviderState.error;
       }
-    }
-  }
-
-
-  /// Returns the current user location, or null if we cannot determine his
-  /// location
-  Future<Position> _getUserLocation() async {
-    try { // getCurrentPosition can throw an exception the location permission is not granted
-      var position = await Geolocator().getLastKnownPosition(
-          desiredAccuracy: LocationAccuracy.medium
-      );
-      return position;
-    } catch(_) {
-      return null;
     }
   }
 }

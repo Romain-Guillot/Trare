@@ -8,6 +8,7 @@ import 'package:app/service_locator.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
+import 'package:app/services/user_location_service.dart';
 import 'package:app/ui/pages/app_layout.dart';
 import 'package:app/ui/pages/authentication_page.dart';
 import 'package:app/ui/pages/user_activities_page.dart';
@@ -54,8 +55,9 @@ void main() {
       ),
       ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
         ActivityExploreProvider(
-          activitiesService: locator<IActivityService>()
-        )
+          activitiesService: locator<IActivityService>(),
+          locationService: locator<IUserLocationService>()
+        )..loadActivities()
       ),
       ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
         ActivityCreationProvider(

@@ -42,23 +42,26 @@ class ExplorePage extends StatelessWidget {
                 child: Consumer<ActivityExploreProvider>(
                   builder: (_, activityProvider, __) {
                     switch (activityProvider.state) {
-                      case ActivityProviderState.loadingInProgress: 
-                        return LoadingWidget(); 
-                      case ActivityProviderState.databaseError: 
-                        return ErrorWidgetWithReload(
-                          message: Strings.databaseErrorInfo,
-                          onReload: () => loadActivites(context),
+                      case ActivityExploreProviderState.loaded: 
+                        return ListItemsActivities(
+                          key: GlobalKey(),
+                          activities: activityProvider.activities
                         );
-                      case ActivityProviderState.locationPermissionNotGranted:
+
+                      case ActivityExploreProviderState.inProgress: 
+                        return LoadingWidget(); 
+                      
+                      case ActivityExploreProviderState.locationPermissionNotGranted:
                         return LocationPermissionRequester(
                           textInformation: Strings.locationPermissionInfo,
                           onPermissionGranted: () => loadActivites(context)
                         );   
-                      case ActivityProviderState.activitiesLoaded:
-                      default: 
-                        return ListItemsActivities(
-                          key: GlobalKey(),
-                          activities: activityProvider.activities
+                      
+                      case ActivityExploreProviderState.error: 
+                      default:
+                        return ErrorWidgetWithReload(
+                          message: Strings.databaseErrorInfo,
+                          onReload: () => loadActivites(context),
                         );
                     }
                   }

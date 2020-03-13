@@ -1,6 +1,7 @@
 import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
+import 'package:app/services/user_location_service.dart';
 import 'package:get_it/get_it.dart';
 
 /// Service locator to retrieve services
@@ -21,5 +22,8 @@ void setupServiceLocator() {
   );
   locator.registerLazySingleton<IActivityService>(
     () => FirestoreActivityService(profileService: locator<IProfileService>())
+  );
+  locator.registerLazySingleton<IUserLocationService>(
+    () => UserLocationService()
   );
 }

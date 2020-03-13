@@ -1,0 +1,33 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+import 'package:app/models/activity.dart';
+import 'package:app/models/user.dart';
+import 'package:app/services/activity_service.dart';
+import 'package:geolocator/geolocator.dart';
+
+import 'shared_models.dart';
+
+
+class MockActivityService implements IActivityService {
+
+  bool willReturnError = false;
+
+
+  @override
+  Future<Activity> createActivity(Activity activity) 
+  => throw UnimplementedError();
+
+  @override
+  Future<List<Activity>> retreiveActivities({Position position, double radius}) 
+  => throw UnimplementedError();
+
+  @override
+  Future<List<Activity>> retreiveActivitiesUser({User user}) async {
+    await Future.delayed(Duration(microseconds: 100));
+    if (willReturnError)
+      throw Exception();
+    return [
+      a1,
+      a2
+    ];
+  }
+}

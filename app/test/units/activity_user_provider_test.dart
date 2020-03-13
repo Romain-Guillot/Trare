@@ -1,11 +1,11 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 import 'package:app/logic/activity_user_provider.dart';
-import 'package:app/models/activity.dart';
-import 'package:app/models/user.dart';
-import 'package:app/services/activity_service.dart';
-import 'package:app/services/profile_service.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
+
+import '../mocks/activity_service_mock.dart';
+import '../mocks/profile_service_mock.dart';
+import '../mocks/shared_models.dart';
+
 
 /// Unit tests for [ActivityUserProvider]
 void main() async {
@@ -19,6 +19,7 @@ void main() async {
         profileService: mockProfileService,
       );
       expect(provider.state, ActivityUserProviderState.idle);
+      expect(provider.activities, isNull);
     });
 
     bool listenerCalled = false;
@@ -92,70 +93,4 @@ void main() async {
       }
     });
   });
-  
-}
-
-final user = User(uid: "uid");
-
-final a1 = Activity(
-  title: "a1",
-  beginDate: DateTime.fromMicrosecondsSinceEpoch(0),
-  endDate: DateTime.fromMicrosecondsSinceEpoch(10000),
-  createdDate: DateTime.fromMicrosecondsSinceEpoch(0),
-  description: "a1 descr",
-  location: Position(longitude: 50, latitude: 100),
-  user: user
-);
-
-final a2 = Activity(
-  title: "a2",
-  beginDate: DateTime.fromMicrosecondsSinceEpoch(100),
-  endDate: DateTime.fromMicrosecondsSinceEpoch(500),
-  createdDate: DateTime.fromMicrosecondsSinceEpoch(10),
-  description: "a2 descr",
-  location: Position(longitude: 0, latitude: 0),
-  user: user
-);
-
-
-class MockActivityService implements IActivityService {
-
-  bool willReturnError = false;
-
-
-  @override
-  Future<Activity> createActivity(Activity activity) 
-  => throw UnimplementedError();
-
-  @override
-  Future<List<Activity>> retreiveActivities({Position position, double radius}) 
-  => throw UnimplementedError();
-
-  @override
-  Future<List<Activity>> retreiveActivitiesUser({User user}) async {
-    await Future.delayed(Duration(microseconds: 100));
-    if (willReturnError)
-      throw Exception();
-    return [
-      a1,
-      a2
-    ];
-  }
-}
-
-
-class MockProfileService implements IProfileService {  
-  bool willReturnError = false;
-
-
-  @override
-  Future<User> editUser(User user)
-  => throw UnimplementedError();
-
-  @override
-  Future<User> getUser({String userUID}) async {
-    if (willReturnError)
-      throw Exception();
-    return user;
-  }
 }
