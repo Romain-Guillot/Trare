@@ -1,8 +1,4 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
-//
-// Doc: Done
-// Tests: Done (not need...)
-
 
 /// Model to represent a user
 /// 

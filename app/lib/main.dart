@@ -11,7 +11,6 @@ import 'package:app/services/profile_service.dart';
 import 'package:app/services/user_location_service.dart';
 import 'package:app/ui/pages/app_layout.dart';
 import 'package:app/ui/pages/authentication_page.dart';
-import 'package:app/ui/pages/user_activities_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/widgets/error_widgets.dart';

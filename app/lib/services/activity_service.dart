@@ -1,7 +1,6 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
 // Doc: Done
-// Tests: TODO
 import 'dart:async';
 
 import 'package:app/models/activity.dart';
@@ -105,7 +104,7 @@ class FirestoreActivityService implements IActivityService {
   }
 
 
-  ///
+  /// TODO
   ///
   ///
   @override
@@ -120,7 +119,7 @@ class FirestoreActivityService implements IActivityService {
   }
 
 
-  ///
+  /// TODO
   ///
   ///
   @override

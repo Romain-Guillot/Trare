@@ -1,7 +1,6 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
 //
 // Doc: Done.
-// Tests: TODO
 import 'dart:async';
 
 import 'package:app/models/user.dart';
