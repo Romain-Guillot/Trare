@@ -18,8 +18,27 @@ L'architecture utilisé pour le projet permet de facilement tester les différen
 
 - Le package `ui` contient tous les widgets de l'application, cette partie doit être testée avec des *widget tests* ;
 - Le package `logic` contient le business logic de l'application (son comportement), cette partie doit être testée avec des *unit tests* ;
-- La package
+- Le package `services` contient la communication avec la base de donnée, ces services seront utilisés pour les tests d'intégrations.
 
+Les tests doivent être créés dans le package `test` de l'application, puis la structure naturelle est la suivante :
+```
+test/
+    units/
+        myfile_test.dart
+        ...
+    widgets/
+        ...
+    integrations/
+        ...
+```
+
+Les fichiers de tests doivent être suffixé par `_test.dart` comme l'indique la documentation :
+> In general, test files should reside inside a test folder located at the root of your Flutter application or package. Test files should always end with `_test.dart`, this is the convention used by the test runner when searching for tests.
+> **Source : [Flutter - An introduction to unit testing](https://flutter.dev/docs/cookbook/testing/unit/introduction)**
+
+De plus, pour les tests unitaires la racine du nom du fichier, par convention, doit être la même que le fichier testé.   
+Exemple :
+`activity_user_provider.dart`, et son fichier de test : `activity_user_provider_test.dart`
 
 ## Mocking
 
@@ -29,6 +48,19 @@ L'architecture utilisé pour le projet permet de facilement tester les différen
 Donc, pour écrire nos tests unitaires, sachant que nos providers (business logic) dépendent des services, nous devront créer des mock services qui étendent des interfaces définissant nos services.
 
 ![](src/repo_provider_ex_mock.png)
+
+
+## Current status
+
+Providers | Covered |
+---|---|
+AuthenticationProvider | ❌ |
+ProfileProvider | ❌ |
+ActivityUserProvider | ✔️ |
+ActivityExploreProvider | ✔️|
+ActivityCreationProvider | ❌ |
+LocationPermissionProvider | ❌ |
+
 
 ## Références
 - [Flutter - Testing Flutter apps](https://flutter.dev/docs/testing)
