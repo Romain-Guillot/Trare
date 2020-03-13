@@ -1,6 +1,5 @@
-*Dernière modification : 13 mar 2020*
-
 # Tests (unit, integration, UI)
+*Dernière modification : 13 mar 2020*
 
 ## Introduction
 
@@ -45,6 +44,12 @@ Exemple :
 Les services mocks doivent être placé dans le `mocks` package et, comme avec les fichiers de tests unitaires, les fichiers de mock doivent être préfixés avec `_mock.dart`.  
 Exemple:  
 `profile_service.dart`, et son fichier mock : `profile_service_mock.dart`
+
+
+## Lancer les tests
+Les tests sont automatiquement lancer par Codemagic lorsqu'une version de l'application est publié sur une branche stable (sinon les phases de build et de deploiement sont annulées).
+
+Pour vérifier que tous les tests passents : `flutter test`
 
 ## Mocking
 

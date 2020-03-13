@@ -1,8 +1,6 @@
 ![Coverage](app/coverage/coverage_badge.svg) [![Codemagic build status](https://api.codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/status_badge.svg)](https://codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/latest_build)
 # Trare
 
-
-
 Trare is a social network application for connecting travellers who want to do activities with other people (have a drink, go hiking, play a board game, etc).
 
 
@@ -58,6 +56,7 @@ Trare is a social network application for connecting travellers who want to do a
 </div>
 
 ## What's next ?
+![](documents/src/use_case.png)
 - [ ] Add photo to the user profile
 - [ ] System for connecting users (activity chats, "I'm interested" button)
 - [ ] Ability to change the activity search parameters (radius, position)
