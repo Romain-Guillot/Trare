@@ -55,6 +55,8 @@ Donc, pour écrire nos tests unitaires, sachant que nos providers (business logi
 
 ![](src/repo_provider_ex_mock.png)
 
+Les mock services sont dans `test > mocks`.
+
 
 ## Current status
 

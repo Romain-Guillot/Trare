@@ -1,6 +1,8 @@
-
 import 'package:geolocator/geolocator.dart';
 
+
+/// TODO
+///
 class Geocoding {
 
   static final Geocoding _instance = Geocoding._();

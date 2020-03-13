@@ -2,6 +2,8 @@ import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+
+/// TODO
 class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,6 +14,7 @@ class LoadingPage extends StatelessWidget {
     );
   }
 }
+
 
 
 /// this is a simple [CircularProgressIndicator] that will be displayed when the

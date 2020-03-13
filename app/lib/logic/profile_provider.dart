@@ -8,6 +8,20 @@ import 'package:app/services/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
+/// State enum used to represent the current state of the [ProfileProvider]
+enum ProfileProviderState {
+  /// Not yet initialized
+  not_initialized,
+
+  /// An error occured to load the connected user
+  error,
+
+  /// The provider is initialized, all processes finished
+  initialized
+}
+
+
+
 /// [ChangeNotifier] used to handle the current connected [user] 
 /// 
 /// [user] is the current connected user.
@@ -110,18 +124,4 @@ class ProfileProvider extends ChangeNotifier {
       return false;
     }
   }
-}
-
-
-
-/// State enum used to represent the current state of the [ProfileProvider]
-enum ProfileProviderState {
-  /// Not yet initialized
-  not_initialized,
-
-  /// An error occured to load the connected user
-  error,
-
-  /// The provider is initialized, all processes finished
-  initialized
 }

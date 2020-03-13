@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 enum _FlexSpacerType {normal, big, small}
 
+
 /// Widget used to add spacing (padding) between widgets
 /// 
 /// Used typically in [Row] or [Column].

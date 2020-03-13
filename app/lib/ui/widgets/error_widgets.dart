@@ -4,7 +4,7 @@ import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
+/// TODO
 class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
