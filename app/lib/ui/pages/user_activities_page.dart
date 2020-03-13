@@ -43,14 +43,17 @@ class UserActivitiesPage extends StatelessWidget {
               child: Consumer<ActivityUserProvider>(
                 builder: (_, userActivitiesProvider, __) {
                   switch (userActivitiesProvider.state) {
-                    case ActivityUserProviderState.activitiesLoaded:
+                    case ActivityUserProviderState.loading:
                       return ListItemsActivities(
                         key: GlobalKey(),
                         activities: userActivitiesProvider.activities,
                       );
-                    case ActivityUserProviderState.loadingInProgress:
+
+                    case ActivityUserProviderState.loading:
                      return LoadingWidget();
-                    case ActivityUserProviderState.dataBaseError:
+                     
+                    case ActivityUserProviderState.error:
+                    case ActivityUserProviderState.idle:
                     default:
                      return ErrorWidgetWithReload(
                        message: Strings.userActivitiesError,

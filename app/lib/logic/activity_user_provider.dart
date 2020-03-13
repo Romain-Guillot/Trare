@@ -1,3 +1,7 @@
+// Authors: Romain Guillot and Mamadou Diouldé Diallo
+//
+// Doc: TODO
+// Tests: Done
 import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/activity_service.dart';
@@ -6,41 +10,47 @@ import 'package:flutter/cupertino.dart';
 
 /// State to represent the provider state
 enum ActivityUserProviderState {
-  activitiesLoaded,
-  loadingInProgress,
-  dataBaseError,
+  idle,
+  loaded,
+  loading,
+  error,
 }
 
 
+///
+/// The [activities] is null if the activities are not yet loaded or if an error
+/// occured
 class ActivityUserProvider extends ChangeNotifier {
 
   IActivityService _activityService;
   IProfileService _profileService;
 
-  var state = ActivityUserProviderState.loadingInProgress;
+  var state = ActivityUserProviderState.idle;
   List<Activity> activities;
 
   ActivityUserProvider({
     @required IActivityService activityService,
     @required IProfileService profileService,
   }) : this._activityService = activityService,
-      this._profileService = profileService;
+       this._profileService = profileService;
 
 
   /// Load activities created by the [current user]
   loadActivities() async {
-    state = ActivityUserProviderState.loadingInProgress;
+    state = ActivityUserProviderState.loading;
 
     var currentUser = await _getCurrentUser();
 
     if (currentUser == null) {
-      state = ActivityUserProviderState.dataBaseError;
+      state = ActivityUserProviderState.error;
+      activities = null;
     } else {
       try {
         activities = await _activityService.retreiveActivitiesUser(user: currentUser);
-        state = ActivityUserProviderState.activitiesLoaded;
+        state = ActivityUserProviderState.loaded;
       } catch (_) {
-        state = ActivityUserProviderState.dataBaseError;
+        state = ActivityUserProviderState.error;
+        activities = null;
       }
     }
     notifyListeners();
