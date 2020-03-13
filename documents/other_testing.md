@@ -52,14 +52,14 @@ Donc, pour écrire nos tests unitaires, sachant que nos providers (business logi
 
 ## Current status
 
-Providers | Covered |
----|---|
-AuthenticationProvider | ❌ |
-ProfileProvider | ❌ |
-ActivityUserProvider | ✔️ |
-ActivityExploreProvider | ✔️|
-ActivityCreationProvider | ❌ |
-LocationPermissionProvider | ❌ |
+Providers | Documented | Covered by unit tests |
+---|---|---|
+AuthenticationProvider | ✔️ | ❌ |
+ProfileProvider | ✔️ | ❌ |
+ActivityUserProvider | ✔️ | ✔️ |
+ActivityExploreProvider | ✔️| ✔️ |
+ActivityCreationProvider | ✔️ | ❌ |
+LocationPermissionProvider | ✔️ | ❌ |
 
 
 ## Références
