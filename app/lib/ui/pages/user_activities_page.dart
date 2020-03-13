@@ -43,7 +43,7 @@ class UserActivitiesPage extends StatelessWidget {
               child: Consumer<ActivityUserProvider>(
                 builder: (_, userActivitiesProvider, __) {
                   switch (userActivitiesProvider.state) {
-                    case ActivityUserProviderState.loading:
+                    case ActivityUserProviderState.loaded:
                       return ListItemsActivities(
                         key: GlobalKey(),
                         activities: userActivitiesProvider.activities,
