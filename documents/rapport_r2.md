@@ -7,6 +7,8 @@ Ce rapport prélimaire R2 a pour objectif de présenter notre méthode de travai
 
 En fin de rapport, nous avons aussi joint le résumé des 6 sprints effectués depuis le début.
 
+**Il est préférable de lire le README du projet sur Github pour une meilleure mise en page et des liens fonctionnels.**
+
 ## Le Github
 
 Tous les documents ainsi que, bien sûr, le code peuvent être retrouvés sur le [Github du projet](https://github.com/Romain-Guillot/Trare).

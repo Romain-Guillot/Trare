@@ -70,23 +70,32 @@ Trare is a social network application for connecting travellers who want to do a
 **Preferably resolve one issue per commit.** It's easier for code review.
 
 ## How to install it ?
-There are two ways to install and use the project, either you just want to download the application to your phone (simpler), or you want to build the application from the source code (more complicated).
+There are three ways to install and use the project, either you just want to download the application to your phone from the play store (simpler), or you want to download the application from the Github releases, or you want to build the application from the source code (more complicated).
 
 We do not yet support iOS because we don't have a Mac or an iPhone to build and test the application.
 
-### 1. Use the application directly (Android)
+### 1. Download the application on the Google Play (Android)
 
-To use the application on your smartphone you need to download the `.apk` file on your smartphone.
+⚠️ **Ask us to be part of the internal testers.**
+
+<div style="width:250px">
+<a href='https://play.google.com/store/apps/details?id=com.trare.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+</div>
+
+
+### 2. Download the application from the Github releases (Android)
+
+Go to [the latest releases](https://github.com/Romain-Guillot/Trare/releases) and download apks (`.apks`) file. Then follow these instructions :
+1. If you haven’t done so already, download bundletool from the [GitHub repository](https://github.com/google/bundletool/releases/tag/0.13.3)
+2. [Deploy the APKs to connected devices](https://developer.android.com/studio/command-line/bundletool#deploy_with_bundletool).
 
 > Android Package (APK)[1] is the package file format used by the Android operating system for distribution and installation of mobile apps, mobile games and middleware.
 > **Wikipedia**
 
-Go to [the latest releases](https://github.com/Romain-Guillot/Trare/releases) and download the `.apk` file and open it on your smartphone. It will launch the default installation procedure.
-
 **For this, you will need to have previously authorized the installation of the application from unknown sources - [tutorial](https://www.androidauthority.com/how-to-install-apks-31494/)**
 
 
-### 2. Build the application on your computer
+### 3. Build the application on your computer
 Build the application directly from the source code is more complicated because to use some services (Firebase, Maps, Facebook Auth) the application HAS to be signed with an autorized certificate (that you don't have)
 
 1. First, you need to set-up your environment
