@@ -64,7 +64,6 @@ enum ActivityUserProviderState {
 ///     // statement
 ///   }
 /// )
-/// 
 /// ```
 class ActivityUserProvider extends ChangeNotifier {
 

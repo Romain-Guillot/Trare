@@ -23,6 +23,8 @@ L'architecture utilisé pour le projet permet de facilement tester les différen
 Les tests doivent être créés dans le package `test` de l'application, puis la structure naturelle est la suivante :
 ```
 test/
+    mocks/
+        myservice_mock.dart
     units/
         myfile_test.dart
         ...
@@ -37,8 +39,12 @@ Les fichiers de tests doivent être suffixé par `_test.dart` comme l'indique la
 > **Source : [Flutter - An introduction to unit testing](https://flutter.dev/docs/cookbook/testing/unit/introduction)**
 
 De plus, pour les tests unitaires la racine du nom du fichier, par convention, doit être la même que le fichier testé.   
-Exemple :
+Exemple :  
 `activity_user_provider.dart`, et son fichier de test : `activity_user_provider_test.dart`
+
+Les services mocks doivent être placé dans le `mocks` package et, comme avec les fichiers de tests unitaires, les fichiers de mock doivent être préfixés avec `_mock.dart`.  
+Exemple:  
+`profile_service.dart`, et son fichier mock : `profile_service_mock.dart`
 
 ## Mocking
 

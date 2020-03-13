@@ -9,7 +9,7 @@ import '../mocks/shared_models.dart';
 
 /// Unit tests for [ActivityUserProvider]
 void main() async {
-  group("description", () {
+  group("ActivityUserProvider", () {
     var mockActivityService = MockActivityService();
     var mockProfileService = MockProfileService();
 
@@ -18,6 +18,8 @@ void main() async {
         activityService: mockActivityService,
         profileService: mockProfileService,
       );
+      mockProfileService.willReturnError = false;
+      mockActivityService.willReturnError = false;
       expect(provider.state, ActivityUserProviderState.idle);
       expect(provider.activities, isNull);
     });
@@ -26,6 +28,8 @@ void main() async {
     var listener = () => listenerCalled = true;
 
     test("Activities normally returned", () async {
+      mockProfileService.willReturnError = false;
+      mockActivityService.willReturnError = false;
       var provider = ActivityUserProvider(
         activityService: mockActivityService,
         profileService: mockProfileService,
@@ -33,7 +37,9 @@ void main() async {
       expect(provider.state, ActivityUserProviderState.idle);
       provider.addListener(listener);
       for (int i = 0; i < 2; i++) {
-        await provider.loadActivities();
+        var future = provider.loadActivities();
+        expect(provider.state, ActivityUserProviderState.loading);
+        await future;
 
         expect(provider.state, ActivityUserProviderState.loaded);
         expect(provider.activities.length, 2);
@@ -49,6 +55,7 @@ void main() async {
       
     listenerCalled = false;
     test("Database error occured caused by IActivityService", () async {
+      mockProfileService.willReturnError = false;
       mockActivityService.willReturnError = true;
       var provider = ActivityUserProvider(
           activityService: mockActivityService,
@@ -58,7 +65,9 @@ void main() async {
       await Future.delayed(Duration(microseconds: 100));
 
       for (int i = 0; i < 2; i++) {
-        await provider.loadActivities();
+        var future = provider.loadActivities();
+        expect(provider.state, ActivityUserProviderState.loading);
+        await future;
 
         expect(provider.state, ActivityUserProviderState.error);
         expect(provider.activities, isNull);
@@ -73,6 +82,8 @@ void main() async {
     listenerCalled = false;
     test("Database error occured caused by IProfileService", () async {
       mockProfileService.willReturnError = true;
+      mockActivityService.willReturnError = false;
+
       var provider = ActivityUserProvider(
           activityService: mockActivityService,
           profileService: mockProfileService,

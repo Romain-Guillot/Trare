@@ -22,6 +22,7 @@ final defaultRadius = 300.0;
 class ActivitiesConfig {
   double radius;
   Position position;
+
   ActivitiesConfig({this.radius, this.position});
 }
 
@@ -29,39 +30,73 @@ class ActivitiesConfig {
 
 /// State to represent the provider state
 enum ActivityExploreProviderState {
+  /// Nothing happened, activities are not loaded and loading is not in progress
   idle,
+  
+  /// Activities are loaded and can be accessed
   loaded,
+
+  /// Activities loading are in progress
   inProgress,
+
+  /// Activities cannot be loaded because of the permission location not granted
   locationPermissionNotGranted,
+  
+  /// An error occured to load the activities (e.g. database error)
   error,
 }
 
 
 
-/// Used to retrieve activities that that may be relevant to the user.
+/// Used to retrieve activities that that may be relevant to the user
+/// 
+/// An activity is considered as revelant if it is near the [config.prosition]
+/// (near defined by [config.radius]).
+/// 
+/// It contains the following state :
+/// - [state] : current state ofthe provider (see [ActivityExploreProviderState])
+/// - [config] : last config used to retrieve the activities
+/// - [activities] : relevant activities
+/// 
+/// The [activities] list is null if the activities are not yet loaded or if an 
+/// error occured. Else, it is filled with the relevant activities.
+/// 
+/// When the [ActivityExploreProvider] is created, its state is 
+/// [ActivityExploreProviderState.idle] and no process are triggered. Consider to
+/// call the unique public method [loadActivities()] that will load the
+/// activities AND notify clients when process finished.
 ///
 /// It's a [ChangeNotifier] so it can notify clients (UI typically) when
-/// changment occured. In praticular the provider holds three properties that
-/// can be interesting for the UI :
-///   - [config] the current [ActivitiesConfig] used to perform the search
-///   - [state] the current provider state
-///   - [activities] the list of activities results of a database query
+/// changement occured (typically client will listen the [state] property)
 /// 
-/// If state is [ActivityExploreProviderState.loaded] the [activities] will
-/// NOT be null. Else, it can (and will probably) be null.
+/// Usage :
+/// 
+/// ```dart
+/// // UI -> create ChangeNotifierProvider widget that wraps this provider
+/// ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
+///   ActivityExploreProvider(
+///     activityService: ..., 
+///     locationService: ...,
+///   )..loadActivities()
+/// ),
+/// 
+/// 
+/// // UI -> Subscribe to the provider
+/// Consumer<ActivityExploreProvider>(
+///   builder: (context, provider, child) {
+///     // here you can be notified when the provider state changed
+///     // you can for example build widget acconrdingly by using a switch case
+///     // statement
+///   }
+/// )
+/// ```
 class ActivityExploreProvider extends ChangeNotifier {
 
    final IActivityService _activityService;
    final IUserLocationService _locationService;
 
    final config = ActivitiesConfig(radius: defaultRadius);
-
-   var _state = ActivityExploreProviderState.idle;
-   ActivityExploreProviderState get state => _state;
-   set state(value) {
-     _state = value;
-     notifyListeners();
-   }
+   var state = ActivityExploreProviderState.idle;
    List<Activity> activities;
 
 
@@ -86,17 +121,20 @@ class ActivityExploreProvider extends ChangeNotifier {
     var userPosition = await _locationService.retrieveUserPosition();
     if (userPosition == null) {
       state = ActivityExploreProviderState.locationPermissionNotGranted;
+      activities = null;
     } else {
       config.position = userPosition;
       try {
-        this.activities = await _activityService.retreiveActivities(
+        activities = await _activityService.retreiveActivities(
           position: config.position,
           radius: config.radius,
         ); // null never returned
         state = ActivityExploreProviderState.loaded;
       } catch (_) {
         state = ActivityExploreProviderState.error;
+        activities = null;
       }
     }
+    notifyListeners();
   }
 }
