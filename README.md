@@ -5,6 +5,7 @@
 
 Trare is a social network application for connecting travellers who want to do activities with other people (have a drink, go hiking, play a board game, etc).
 
+
 ## Where are we now?
 - [x] User account : sign in, sign out, edit profile, delete profile, visualization
 - [x] Explore activities
@@ -41,6 +42,17 @@ Trare is a social network application for connecting travellers who want to do a
 
 <td>
 
+![](documents/src/screenR2.7.jpg)</td>
+</td></tr>
+<tr><td>
+
+![](documents/src/screenR2.8.jpg)</td><td>
+
+</td>
+
+<td>
+
+</td>
 </td></tr>
 </table>
 </div>

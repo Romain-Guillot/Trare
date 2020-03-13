@@ -52,9 +52,11 @@ class ExplorePage extends StatelessWidget {
                         return LoadingWidget(); 
                       
                       case ActivityExploreProviderState.locationPermissionNotGranted:
-                        return LocationPermissionRequester(
-                          textInformation: Strings.locationPermissionInfo,
-                          onPermissionGranted: () => loadActivites(context)
+                        return Center(
+                          child: LocationPermissionRequester(
+                            textInformation: Strings.locationPermissionInfo,
+                            onPermissionGranted: () => loadActivites(context)
+                          ),
                         );   
                       
                       case ActivityExploreProviderState.error: 
