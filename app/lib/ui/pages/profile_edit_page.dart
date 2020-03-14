@@ -239,6 +239,7 @@ class _ProfileFormState extends State<ProfileForm> {
             optional: true,
             minLength: Values.profileDescriptionMinLength,
             maxLength: Values.profileDescriptionMaxLength,
+            info: Text(Strings.profileDescriptionEditionInfo),
           ),
           FlexSpacer(),
           AppTextField(

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
+import 'package:app/ui/widgets/info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -33,6 +34,7 @@ class AppTextField extends StatelessWidget {
   final int minLength;
   final int minValue;
   final int maxValue;
+  final Widget info;
 
 
   AppTextField({
@@ -45,7 +47,8 @@ class AppTextField extends StatelessWidget {
     this.minLength,
     this.minValue,
     this.maxValue,
-    this.maxLines = Dimens.formMultiLinesDefaultLinesNumber
+    this.maxLines = Dimens.formMultiLinesDefaultLinesNumber,
+    this.info,
   });
 
 
@@ -62,6 +65,13 @@ class AppTextField extends StatelessWidget {
           labelText, 
           style: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
+        if (info != null)
+        ...[
+          FlexSpacer.small(),
+          InfoCardWidget(
+            child: info,
+          ),
+        ],
         FlexSpacer.small(),
         TextFormField(
           controller: controller,

@@ -66,7 +66,7 @@ class Strings {
   static const String profileDeleteVerificationLabel = "I'm sure";
   static const String profileDeleteButton = "Delete my account";
   static const String profileDeleteError = "Please log out and log in again to confirm your action.";
-
+  static const String profileDescriptionEditionInfo = "Consider translating your description into the languages you speak.";
 
   // Explore
   static const String exploreTitle = "Explore";
