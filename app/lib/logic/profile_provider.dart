@@ -25,9 +25,8 @@ enum ProfileProviderState {
 /// [ChangeNotifier] used to handle the current connected [user] 
 /// 
 /// [user] is the current connected user.
-/// 
-/// The user is automatically load thanks to the [AuthenticationProvider] given
-/// to the constructor.
+///  At the provider creation the [user] is null. Consider calling [loadUser()]
+/// method to load the user at the provider creation.
 /// 
 /// [state] is the current state of the provider, it can take the following
 /// values :
@@ -41,6 +40,27 @@ enum ProfileProviderState {
 /// The pattern Observer is used to define a subscription mecanisme to notify
 /// objects when a new [user] is available.
 /// The method [notfifListeners()] has to be used to notify listeners
+/// 
+/// Usage :
+/// 
+/// ```dart
+/// // UI -> Create the widget that wraps the provider
+/// ChangeNotifierProvider<ProfileProvider>( 
+///   create: (_) => ProfileProvider(
+///   profileService: locator<IProfileService>(),
+/// )..loadUser()
+/// 
+/// 
+/// // Use a consomer to listen its state
+/// Consumer<ProfileProvider>(
+///   builder: (context, provider, child) {
+///     // do whatever accordingly to the provider state
+///   }
+/// )
+/// 
+/// // Call the provider to do an action
+/// Provider.of<ProfileProvider>(context, listen: false).editUser(user);
+/// ```
 /// 
 /// See https://refactoring.guru/design-patterns/observer to know more about the
 /// Observer pattern
@@ -72,16 +92,6 @@ class ProfileProvider extends ChangeNotifier {
   ProfileProvider({
     @required IProfileService profileService,
   }) : this._profileService = profileService;
-
-
-  init(AuthenticationProvider authenticationProvider) {
-    // if the user is already connected, we load his information
-    if (authenticationProvider.isConnected)
-      loadUser();
-    // in any case we subsribe to the authentication provider to respond to
-    // connection status (log out, re sign in, etc.)
-    authenticationProvider.addListener(() => loadUser());
-  }
 
 
   /// Load the current user and update the [state] accordingly

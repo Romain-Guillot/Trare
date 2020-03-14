@@ -1,8 +1,19 @@
+import 'package:app/logic/activity_creation_provider.dart';
+import 'package:app/logic/activity_explore_provider.dart';
+import 'package:app/logic/activity_user_provider.dart';
+import 'package:app/logic/authentication_provider.dart';
+import 'package:app/logic/permissions_provider.dart';
+import 'package:app/logic/profile_provider.dart';
+import 'package:app/service_locator.dart';
+import 'package:app/services/activity_service.dart';
+import 'package:app/services/profile_service.dart';
+import 'package:app/services/user_location_service.dart';
 import 'package:app/ui/pages/explore_page.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:app/ui/pages/user_activities_page.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 

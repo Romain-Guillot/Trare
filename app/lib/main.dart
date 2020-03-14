@@ -21,66 +21,43 @@ import 'package:provider/provider.dart';
 
 
 
+
 /// Entry point for the app.
 /// 
-/// First, setup serices used in the app with [setupServiceLocator()].
+/// Services used in the app are initialized with [setupServiceLocator()], it
+/// will use `get_it` package to simulate DI.
 /// 
-/// Our providers will only deal with interfaces instead of concreate 
-/// implementations. 
+/// Then we launch the app thanks to the [runApp()] convenient method. We wrap
+/// the app inside a [ChangeNotifierProvider] to provide the 
+/// [AuthenticationProvivder] down the tree to handle the authenatication
+/// business logic.
 /// 
-/// Then, we inflate our main widget app and attach it to the screen thanks to
-/// the [runApp] method (framework method). Our root widget is a 
-/// [MultiProvider] that contains all our providers that can be used in the app
-/// to deal with the business logic.
+/// Note : the providers used in the app (except this authentication provider)
+/// are declared in [MyApp] widget. We declared our providers in [MyApp] because
+/// it will recreate new providers evertimes the user status changes (so after
+/// every log in, it will recreate new provider to not keep dirty states)
+/// 
+/// The app is [MyApp]
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   setupServiceLocator();
 
-  var authProvider = AuthenticationProvider(
-    authService: locator<IAuthenticationService>()
-  )..init();
-  var profileProvider = ProfileProvider(
-    profileService: locator<IProfileService>(),
-  )..init(authProvider);
-
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<AuthenticationProvider>.value( 
-        value: authProvider
-      ),
-      ChangeNotifierProvider<ProfileProvider>.value( 
-        value: profileProvider
-      ),
-      ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
-        ActivityExploreProvider(
-          activitiesService: locator<IActivityService>(),
-          locationService: locator<IUserLocationService>()
-        )..loadActivities()
-      ),
-      ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
-        ActivityCreationProvider(
-          iActivityService: locator<IActivityService>()
-        )
-      ),
-      ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
-        ActivityUserProvider(
-          activityService: locator<IActivityService>(), 
-          profileService: locator<IProfileService>() 
-        )..loadActivities()
-      ),
-      ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
-        LocationPermissionProvider()
-      ),
-    ],
-    child: MyApp()
-  ));
+  runApp(
+    ChangeNotifierProvider<AuthenticationProvider>( 
+      create: (_) => AuthenticationProvider(
+        authService: locator<IAuthenticationService>()
+      )..init(),
+      child: MyApp()
+    )
+  );
 }
 
 
 
-/// Main widget for our app (if we don't consider the [MultiProvider] widget 
-/// that wrapped our app).
+/// Main widget for our app 
+/// 
+/// (if we don't consider the [MultiProvider] widget that wrapped our app).
 /// 
 /// It builds a [MaterialApp] to defines our app (with title, theme, and so on)
 /// 
@@ -91,6 +68,10 @@ void main() {
 ///   - user not connected => Authentication page
 ///   - error occured => error page
 ///   - inprogress => loading page
+/// 
+/// We use [MyMaterialApp] widget to build our MaterialApp. This widget takes
+/// the providers used by the material app. So it is here that we add the
+/// app providers.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -105,11 +86,45 @@ class MyApp extends StatelessWidget {
         builder: (_, authProvider, __) {
           switch (authProvider.state) {
             case AuthProviderState.notconnected:
-              return AuthenticationPage();
+              return MyMaterialApp(
+                child: AuthenticationPage(),
+              );
+
             case AuthProviderState.connected:
-              return AppLayout();
+              return MyMaterialApp(
+                providers: [
+                  ChangeNotifierProvider<ProfileProvider>( 
+                    create: (_) => ProfileProvider(
+                      profileService: locator<IProfileService>(),
+                    )..loadUser()
+                  ),
+                  ChangeNotifierProvider<ActivityExploreProvider>(create: (context) => 
+                    ActivityExploreProvider(
+                      activitiesService: locator<IActivityService>(),
+                      locationService: locator<IUserLocationService>()
+                    )..loadActivities()
+                  ),
+                  ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
+                    ActivityCreationProvider(
+                      iActivityService: locator<IActivityService>()
+                    )
+                  ),
+                  ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
+                    ActivityUserProvider(
+                      activityService: locator<IActivityService>(), 
+                      profileService: locator<IProfileService>() 
+                    )..loadActivities()
+                  ),
+                  ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
+                    LocationPermissionProvider()
+                  ),
+                ],
+                child: AppLayout()
+              );
+
             case AuthProviderState.inprogress:
               return LoadingPage();
+
             case AuthProviderState.error:
             default:
               return ErrorPage();
@@ -117,6 +132,38 @@ class MyApp extends StatelessWidget {
         }
       ),
     );
+  }
+}
+
+
+class MyMaterialApp extends StatelessWidget {
+
+  final Widget child;
+  final List<ChangeNotifierProvider> providers;
+
+  MyMaterialApp({
+    @required this.child, 
+    this.providers
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return providers == null || providers.isEmpty
+      ? MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: Strings.appName,
+          theme: appTheme,
+          home: child
+        )
+      : MultiProvider(
+          providers: providers,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: Strings.appName,
+            theme: appTheme,
+            home: child
+          ),
+        );
   }
 }
 
