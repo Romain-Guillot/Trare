@@ -170,6 +170,9 @@ class MyMaterialApp extends StatelessWidget {
 
 extension ColorSchemeExt on ColorScheme {
   Color get onSurfaceLight => Colors.black.withOpacity(0.3);
+
+  Color get info => Colors.yellow[100];
+  Color get onInfo => Colors.yellow[900];
 }
 
 

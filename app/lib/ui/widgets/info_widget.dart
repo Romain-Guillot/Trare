@@ -3,6 +3,8 @@ import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:app/main.dart';
+
 class InfoCardWidget extends StatelessWidget {
 
   final Widget child;
@@ -11,17 +13,19 @@ class InfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var frontColor = Theme.of(context).colorScheme.onInfo;
+    var backColor = Theme.of(context).colorScheme.info;
     return Container(
       decoration: BoxDecoration(
         borderRadius: Dimens.borderRadius,
-        color: Colors.yellow[100],
+        color: backColor,
       ),
       padding: EdgeInsets.all(Dimens.normalSpacing),
       child: DefaultTextStyle(
-        style: TextStyle(color: Colors.yellow[900]),
+        style: TextStyle(color: frontColor),
         child: Row(
           children: <Widget>[
-            Icon(Icons.info_outline, color: Colors.yellow[900]),
+            Icon(Icons.info_outline, color: frontColor),
             FlexSpacer(),
             Expanded(
               child: child

@@ -12,7 +12,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 ///
 /// It will rendered a Google map view centered in the [position] with a circle
 /// around centered in the [position] to highlight the area.
-class GoogleMapView extends StatelessWidget {
+/// 
+/// There is also a button displayed at the bottom rigth corner that will recenter
+/// the camera on the [position] with the default zoom.
+class GoogleMapView extends StatefulWidget {
 
   final LatLng position;
 
@@ -21,21 +24,51 @@ class GoogleMapView extends StatelessWidget {
   }) : this.position = LatLng(position.latitude, position.longitude);
 
   @override
+  _GoogleMapViewState createState() => _GoogleMapViewState();
+}
+
+class _GoogleMapViewState extends State<GoogleMapView> {
+
+  GoogleMapController controller;
+
+  @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: Dimens.borderRadius,
-      child: GoogleMap(
-        compassEnabled: false,
-        initialCameraPosition: CameraPosition(
-          zoom: defaultZoom,
-          target: position
-        ),
-        circles: {
-          createCircle(context, position)
-        },
-        zoomGesturesEnabled: true,
-        gestureRecognizers: gestureRecognizers
+      child: Stack(
+        children: <Widget>[
+          GoogleMap(
+            compassEnabled: false,
+            initialCameraPosition: CameraPosition(
+              zoom: defaultZoom,
+              target: widget.position
+            ),
+            circles: {
+              createCircle(context, widget.position)
+            },
+            zoomGesturesEnabled: true,
+            gestureRecognizers: gestureRecognizers,
+            onMapCreated: (c) => controller = c,
+          ),
+          Positioned(
+            right: 0, bottom: 0,
+            child: MaterialButton(
+              child: Icon(Icons.location_searching),
+              color: Colors.white,
+              minWidth: 0,
+              shape: CircleBorder(),
+              onPressed: onRePositionned 
+            ),
+          )
+        ],
       )
     );
+  }
+
+  onRePositionned() {
+    controller?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: widget.position,
+      zoom: defaultZoom
+    )));
   }
 }
