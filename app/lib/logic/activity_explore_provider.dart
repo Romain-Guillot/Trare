@@ -118,6 +118,8 @@ class ActivityExploreProvider extends ChangeNotifier {
   /// [activities] list and [state] will be updated and clients notified
   loadActivities() async {
     state = ActivityExploreProviderState.inProgress;
+    if (activities == null || activities.isEmpty)
+      notifyListeners();
     var userPosition = await _locationService.retrieveUserPosition();
     if (userPosition == null) {
       state = ActivityExploreProviderState.locationPermissionNotGranted;

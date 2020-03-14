@@ -2,13 +2,10 @@
 //
 // Doc: Done
 // Tests: TODO
+import 'package:app/services/user_location_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:location/location.dart' as locationService;
 import 'package:permission_handler/permission_handler.dart';
-
-
-/// Represents a permission state
-enum PermissionState {granted, notGranted, neverAskAgain}
-
 
 
 /// Used to handle the location permission
@@ -24,10 +21,14 @@ enum PermissionState {granted, notGranted, neverAskAgain}
 ///   the user allow (et denied) the permission
 class LocationPermissionProvider extends ChangeNotifier {
 
-  PermissionState location;
+  IUserLocationService _locationService;
+
+  PermissionStatus location;
 
 
-  LocationPermissionProvider() {
+  LocationPermissionProvider({
+    @required IUserLocationService locationService
+  }) : _locationService = locationService {
     _checkLocationPermissionStatus();
   }
 
@@ -35,21 +36,7 @@ class LocationPermissionProvider extends ChangeNotifier {
   /// Check if the location permission is granted. Update the [location] state
   /// and notify clients
   Future _checkLocationPermissionStatus() async {
-    var permission = await PermissionHandler().checkPermissionStatus(
-      PermissionGroup.location
-    );
-    switch (permission) {
-      case PermissionStatus.granted:
-        location = PermissionState.granted;
-        break;
-      case PermissionStatus.denied:
-      case PermissionStatus.unknown:
-        location = PermissionState.notGranted;
-        break;
-      default:
-        location = PermissionState.neverAskAgain;
-    }
-    print(location);
+    location = await _locationService.getPermissionStatus();
     notifyListeners();
   }
 
@@ -65,13 +52,23 @@ class LocationPermissionProvider extends ChangeNotifier {
   /// After this, the location permission will be verified again (and clients
   /// will be notified)
   Future requestLocationPermission() async {
-    if (location == PermissionState.neverAskAgain) {
+    if (location == PermissionStatus.neverAskAgain) {
       await PermissionHandler().openAppSettings();
     } else {
       await PermissionHandler().requestPermissions([
         PermissionGroup.location
       ]);
     }
+    await _checkLocationPermissionStatus();
+  }
+
+
+  /// Request the activation of the location service on the user device
+  /// 
+  /// After the request done, the location permission will be verified again (and clients
+  /// will be notified)
+  Future enableLocation() async {
+    await locationService.Location().requestService();
     await _checkLocationPermissionStatus();
   }
 }

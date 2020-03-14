@@ -116,7 +116,9 @@ class MyApp extends StatelessWidget {
                     )..loadActivities()
                   ),
                   ChangeNotifierProvider<LocationPermissionProvider>(create: (context) => 
-                    LocationPermissionProvider()
+                    LocationPermissionProvider(
+                      locationService: locator<IUserLocationService>()
+                    )
                   ),
                 ],
                 child: AppLayout()

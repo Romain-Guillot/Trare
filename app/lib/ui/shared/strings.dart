@@ -14,9 +14,10 @@ class Strings {
   static const String unexpectedError = "This wasn't supposed to happen... 😳";
   static const String availableSoon = "Stay tuned, available soon 🙏";
   static const String enable = "Enable";
+  static const String grant = "Autorize";
   static const String accessibilityLoadingLabel = "Please wait...";
   static const String addActivity = "Add activity";
-  static const String reload = "Reload";
+  static const String reload = "Retry";
 
 
 
@@ -71,7 +72,6 @@ class Strings {
   // Explore
   static const String exploreTitle = "Explore";
   static const String exploreDescription = "Explore activities proposed by other users arround you.";
-  static const String locationPermissionInfo = "Enable the location permission to look for activities near you";
   static const String databaseErrorInfo = "Sorry there is an erro accessing the database";
 
 
@@ -126,4 +126,10 @@ class Strings {
   }
   static const String requiredMap = "Required";
   static const String requiredDate = "Required";
+
+
+  // Permissions
+  static const String locationPermissionDenied = "You have not granted the location permission";
+  static const String locationPermissionDisabled = "Please enable the location service";
+  static const String locationPermissionUnknonw = "Unable to retrieve your position";
 }
