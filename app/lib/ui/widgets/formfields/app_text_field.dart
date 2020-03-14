@@ -65,6 +65,7 @@ class AppTextField extends StatelessWidget {
         FlexSpacer.small(),
         TextFormField(
           controller: controller,
+          textCapitalization: TextCapitalization.sentences,
           keyboardType: keyboardType,
           maxLines: keyboardType == TextInputType.multiline ? null : 1,
           minLines: keyboardType == TextInputType.multiline ? max(maxLines, 5) : 1,

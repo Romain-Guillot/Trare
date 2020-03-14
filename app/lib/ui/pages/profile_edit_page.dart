@@ -282,6 +282,7 @@ class _ProfileFormState extends State<ProfileForm> {
         age: age, 
         spokenLanguages: languageController.text.trim(), 
         country: contryController.text.trim(),
+        urlPhoto: widget.initialUser.urlPhoto
       );
     }
     return null;
