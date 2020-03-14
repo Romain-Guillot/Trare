@@ -40,3 +40,5 @@ android/app/google-services.json
 
 android/key.properties
 test/.test_coverage.dart
+
+pubspec.lock
