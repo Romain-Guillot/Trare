@@ -257,31 +257,17 @@ class _ActivityFormState extends State<ActivityForm> {
   /// 
   /// It returns null if the form is not valid
   Activity makeActivity() {
-    var currentUser = Provider.of<ProfileProvider>(context, listen: false).user;
-    if (currentUser != null && _formKey.currentState.validate()) {
-      return Activity(
+    if (_formKey.currentState.validate()) {
+      return Activity.create(
         title: _titleController.text,
         description: _descriptionController.text,
         createdDate: DateTime.now(),
-        user: currentUser,
         beginDate: _beginDatePickerKey.currentState.value,
         endDate: _endDatePickerKey.currentState.value,
         location: _locationChooserKey.currentState.value,
       );
     }
-    if (currentUser == null)
-      _handeInvalidUserAccount();
     return null;
-  }
-  
-
-  /// Show a snackbar warn the user that an error occured
-  _handeInvalidUserAccount() {
-    showSnackbar(
-      context: context, 
-      content: Text(Strings.unexpectedError),
-      critical: true
-    );
   }
 }
 

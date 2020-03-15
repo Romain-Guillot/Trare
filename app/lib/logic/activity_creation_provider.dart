@@ -1,6 +1,7 @@
 
 import 'package:app/models/activity.dart';
 import 'package:app/services/activity_service.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:flutter/cupertino.dart';
 
 
@@ -9,10 +10,13 @@ import 'package:flutter/cupertino.dart';
 class ActivityCreationProvider extends ChangeNotifier {
   
   IActivityService _activityService;
+  IProfileService _profileService;
 
   ActivityCreationProvider({
-    @required IActivityService iActivityService,
-  }): this._activityService = iActivityService;
+    @required IActivityService activityService,
+    @required IProfileService profileService
+  }): this._activityService = activityService,
+      this._profileService = profileService;
     
   /// this function gives the new activity to the service class that have to map the activity in
   /// noSQL data  before to insert it  in the firestore
@@ -21,6 +25,8 @@ class ActivityCreationProvider extends ChangeNotifier {
   /// Returns null if an occured occured
   Future<Activity> createActivity(Activity newActivity) async {
     try {
+      var profile = await _profileService.getUser();
+      newActivity.user = profile;
       var activity = await _activityService.createActivity(newActivity);
       return activity;
     } catch (_) {

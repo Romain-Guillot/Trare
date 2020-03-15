@@ -32,4 +32,13 @@ class Activity {
     @required this.endDate,
     @required this.location,
   }); 
+
+  Activity.create({
+    @required this.title,
+    @required this.description,
+    @required this.createdDate,
+    @required this.beginDate,
+    @required this.endDate,
+    @required this.location,
+  });
 }

@@ -106,7 +106,8 @@ class MyApp extends StatelessWidget {
                   ),
                   ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
                     ActivityCreationProvider(
-                      iActivityService: locator<IActivityService>()
+                      activityService: locator<IActivityService>(),
+                      profileService: locator<IProfileService>(),
                     )
                   ),
                   ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
