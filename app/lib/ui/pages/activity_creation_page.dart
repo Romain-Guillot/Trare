@@ -261,7 +261,7 @@ class _ActivityFormState extends State<ActivityForm> {
     if (currentUser != null && _formKey.currentState.validate()) {
       return Activity(
         title: _titleController.text,
-        description: _titleController.text,
+        description: _descriptionController.text,
         createdDate: DateTime.now(),
         user: currentUser,
         beginDate: _beginDatePickerKey.currentState.value,
