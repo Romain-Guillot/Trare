@@ -35,9 +35,9 @@ dependencies:
   intl: ^0.16.1
   get_it: ^3.1.0
   geoflutterfire: ^2.1.0
-  permission_handler: ^4.2.0+hotfix.3
   cached_network_image: ^2.0.0
   location: ^2.5.4
+  permission_handler: ^4.2.0+hotfix.3
 
 dev_dependencies:
   mockito: ^4.1.1

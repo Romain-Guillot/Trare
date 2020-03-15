@@ -1,5 +1,6 @@
 import 'package:app/services/user_location_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/src/permission_enums.dart';
 
 class MockLocationService implements IUserLocationService {
 
@@ -12,6 +13,12 @@ class MockLocationService implements IUserLocationService {
     if (willReturnError)
       return null;
     return position;
+  }
+
+  @override
+  Future<PermissionStatus> getPermissionStatus() {
+    // TODO: implement getPermissionStatus
+    throw UnimplementedError();
   }
 
 }
