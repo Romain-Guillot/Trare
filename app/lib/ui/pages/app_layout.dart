@@ -1,3 +1,4 @@
+import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:app/ui/pages/explore_page.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:app/ui/pages/user_activities_page.dart';
@@ -31,12 +32,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _selectedIndex = 0;
 
-  var _widgetOptions = <Widget>[
-    ExplorePage(),
-    Container(),
-    UserActivitiesPage(),
-    ConnectedUserProfileView(),
-  ];
+  var _widgetOptions = <Widget>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      ExplorePage(),
+      Center(child:RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity,))),)),
+      UserActivitiesPage(),
+      ConnectedUserProfileView(),
+    ];
+  }
+
+
 
 
 

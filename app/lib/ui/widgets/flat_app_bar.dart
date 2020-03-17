@@ -24,12 +24,17 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
   static double padding = 5.0;
 
   final Widget action;
+  final Widget title;
 
-  FlatAppBar({this.action});
+  FlatAppBar({this.action, this.title});
 
   @override
   Widget build(BuildContext context) {
     var elemsPadding = EdgeInsets.all(padding);
+    var theme = Theme.of(context);
+    var titleStyle = theme.textTheme.headline1
+        .copyWith(fontSize: theme.primaryTextTheme.headline6.fontSize);
+    
     return AppBar(
       actions: <Widget>[
         Padding(
@@ -40,6 +45,10 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading:  Padding(
         padding: elemsPadding,
         child: NavigatorBackButton()
+      ),
+      title: DefaultTextStyle(
+        style: titleStyle,
+        child: title
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,

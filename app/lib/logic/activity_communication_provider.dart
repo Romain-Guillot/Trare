@@ -1,6 +1,7 @@
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
 import 'package:app/services/activity_communication_service.dart';
+import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -43,14 +44,11 @@ class ActivityCommunicationProvider extends ChangeNotifier {
   }) : this._communicationService = communicationService;
 
 
-  ///
+  /// TODO(romain)
   ///
   ///
   load() async {
-    try {
-      activityCommunication =
-          await _communicationService.retreiveActivityCommunication(activity);
-    } catch (_) {}
+    activityCommunication = mockActivityCommunication;
   }
 
 
