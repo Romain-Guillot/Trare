@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart' as locationService;
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -15,6 +16,9 @@ abstract class IUserLocationService {
   /// Returns the current user location, or null if we cannot determine his
   /// location
   Future<Position> retrieveUserPosition();
+
+  /// Request the activation of the location service on the user device
+  Future enableLocationServiceIfNecessary();
 } 
 
 
@@ -35,11 +39,19 @@ class UserLocationService implements IUserLocationService {
     return permission;
   }
 
+  @override
+  Future enableLocationServiceIfNecessary() async {
+    var serviceStatus = await PermissionHandler().checkServiceStatus(PermissionGroup.location);
+    if (serviceStatus == ServiceStatus.disabled)
+      await locationService.Location().requestService();
+  }
+
   /// A timeout timer is used to complete the future with the null value after
   /// the [locationTimeout] duration because if we do not do that, it will
   /// infinitly look for the user position
   @override
   Future<Position> retrieveUserPosition() async {
+    await enableLocationServiceIfNecessary();
     var completer = Completer<Position>();
     var accuracy = LocationAccuracy.medium;
     var locationStatus = await getPermissionStatus();

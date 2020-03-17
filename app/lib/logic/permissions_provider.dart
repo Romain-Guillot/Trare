@@ -4,7 +4,6 @@
 // Tests: TODO
 import 'package:app/services/user_location_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:location/location.dart' as locationService;
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -68,7 +67,7 @@ class LocationPermissionProvider extends ChangeNotifier {
   /// After the request done, the location permission will be verified again (and clients
   /// will be notified)
   Future enableLocation() async {
-    await locationService.Location().requestService();
-    await _checkLocationPermissionStatus();
+    await _locationService.enableLocationServiceIfNecessary();
+    _checkLocationPermissionStatus();
   }
 }

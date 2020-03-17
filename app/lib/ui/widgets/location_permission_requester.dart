@@ -41,7 +41,6 @@ class LocationPermissionRequester extends StatelessWidget {
               ),
             );
           case PermissionStatus.restricted:
-          case PermissionStatus.disabled:
             return PermissionCardRequester(
               label: Text(Strings.locationPermissionDisabled),
               button: Button(

@@ -2,7 +2,6 @@
 //
 // Doc: Done.
 // Tests: TODO
-import 'package:app/logic/authentication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:flutter/widgets.dart';
