@@ -46,7 +46,7 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: elemsPadding,
         child: NavigatorBackButton()
       ),
-      title: DefaultTextStyle(
+      title: title == null ? Container() : DefaultTextStyle(
         style: titleStyle,
         child: title
       ),
