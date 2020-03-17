@@ -26,7 +26,7 @@ enum ActivityUserProviderState {
 
 
 
-/// Provider used to load and read the activities created by the connected user
+/// Provider used to manage activities created by the connected user
 /// 
 /// It contains the following state (public variables) :
 /// - [state] representes the actual provider state (see [ActivityUserProviderState])
@@ -38,8 +38,11 @@ enum ActivityUserProviderState {
 /// 
 /// When the [ActivityUserProvider] is created, its state is 
 /// [ActivityUserProviderState.idle] and no process are triggered. Consider to
-/// call the unique public method [loadActivities()] that will load the
+/// call the public method [loadActivities()] that will load the
 /// activities AND notify clients.
+/// 
+/// To create a new activity you can call [createActivity()], it will after call
+/// [loadActivity()] to update the user activities list and notify client.
 /// 
 /// Indeed, this provider is a [ChangeNotifier], so client can substribe to 
 /// listen the [state].
