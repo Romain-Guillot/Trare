@@ -3,6 +3,7 @@ import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/geocoding.dart';
 import 'package:app/ui/utils/snackbar_handler.dart';
+import 'package:app/ui/widgets/activities_widgets.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:app/ui/widgets/flex_spacer.dart';
@@ -112,15 +113,22 @@ class ActivityViewHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        if (activity.isEnded)
+          ...[
+            ActivityEndedBadge(),
+            FlexSpacer.small(),
+          ],
         if (dateRange != null)
-          Text(
-            dateRange.toUpperCase(), 
-            style: TextStyle(
-              fontWeight: Dimens.weightBold, 
-              color: Theme.of(context).textTheme.caption.color
+          ...[
+            Text(
+              dateRange.toUpperCase(), 
+              style: TextStyle(
+                fontWeight: Dimens.weightBold, 
+                color: Theme.of(context).textTheme.caption.color
+              ),
             ),
-          ),
-        FlexSpacer.small(),
+            FlexSpacer.small(),
+          ],
         PageHeader(
           title: Text(activity.title),
         ),

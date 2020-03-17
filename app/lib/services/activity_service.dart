@@ -154,7 +154,7 @@ class FirestoreActivityService implements IActivityService {
 /// 
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
-class _FirestoreActivityAdapter implements Activity {
+class _FirestoreActivityAdapter extends Activity {
   
   @override DateTime createdDate;
   @override String title;

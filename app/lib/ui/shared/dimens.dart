@@ -20,7 +20,7 @@ class Dimens {
     bottom: Dimens.screenPaddingValue
   );
   static const double smallSpacing = 5;
-  static const double normalSpacing = 15;
+  static const double normalSpacing = 10;
   static const double bigSpacing = 45;
 
   static const FontWeight weightLight = FontWeight.w300;
@@ -54,5 +54,6 @@ class Dimens {
 
   // Activity
   static const double activityViewMapRatio = 4/3;
+  static const double profilePictureSizeInListItem = 55;
 
 }

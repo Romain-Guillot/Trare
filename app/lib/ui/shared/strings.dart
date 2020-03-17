@@ -90,6 +90,7 @@ class Strings {
   }
   static const String iAmInterested = "I'm interested";
   static const String unknownLocation = "Unknown location";
+  static const String activityEnded = "Ended";
 
 
   // Activity creation

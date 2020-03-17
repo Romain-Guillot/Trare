@@ -4,9 +4,13 @@ import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/geocoding.dart';
+import 'package:app/ui/widgets/flex_spacer.dart';
 import 'package:app/ui/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:app/main.dart';
+
 
 /// Display a list of activities
 /// 
@@ -47,8 +51,8 @@ class ListItemsActivities extends StatelessWidget {
 
 /// List item to display information about an activity
 ///
-/// It is a [ListTile] with the title of the activity, the location and the
-/// dates.
+/// It simulate the [ListTile] layout with the title of the activity, the 
+/// location, the dates and the user profile picture are trailing icon.
 /// 
 /// It is a [Stateful] because the geocoding operation to retreive to 
 /// location information (country, city, etc.) from a position (lat, lon) is
@@ -61,7 +65,6 @@ class ItemActivity extends StatefulWidget {
 
   final Activity activity;
   final Function onPressed;
-  
 
   ItemActivity({
     @required this.activity,
@@ -96,24 +99,92 @@ class _ItemActivityState extends State<ItemActivity> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: Dimens.screenPaddingValue,
-      ),
-      isThreeLine: true, // title, location, date
-      title: Text(widget.activity.title),
-      subtitle: Text("${location??Strings.unknownLocation}\n$dates"),
-      trailing: LayoutBuilder(
-        builder: (_, constraints) => SizedBox(
-          height: constraints.maxHeight,
-          width: constraints.maxHeight,
-          child: ProfilePicture(
-            url: widget.activity.user?.urlPhoto,
-            rounded: true,
-          ),
-        )
-      ),
+    var theme = Theme.of(context);
+    var textLightColor = theme.textTheme.caption.color;
+    return InkWell(
       onTap: widget.onPressed,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: Dimens.screenPaddingValue,
+          vertical: Dimens.normalSpacing
+        ),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      if (widget.activity.isEnded)
+                        ...[
+                        ActivityEndedBadge(),
+                        FlexSpacer.small()
+                        ],
+                      Expanded(
+                        child: _getText(
+                          widget.activity.title,
+                          style: theme.textTheme.subtitle1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  _getText(
+                    location??Strings.unknownLocation,
+                    style: theme.textTheme.bodyText2.copyWith(color: textLightColor),
+                  ),
+                  _getText(
+                    dates,
+                    style: theme.textTheme.bodyText2.copyWith(color: textLightColor),
+                  )
+                ],
+              ),
+            ),
+            FlexSpacer.small(),
+            SizedBox(
+              height: Dimens.profilePictureSizeInListItem,
+              width: Dimens.profilePictureSizeInListItem,
+              child: ProfilePicture(
+                url: widget.activity.user?.urlPhoto,
+                rounded: true,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getText(text, {style}) => Text(
+    text,
+    style: style,
+    maxLines: 1,
+    softWrap: false,
+    overflow: TextOverflow.fade,
+  );
+}
+
+
+
+/// Badge to indicate that an activity is finished
+class ActivityEndedBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.warning,
+        borderRadius: BorderRadius.circular(3)
+      ),
+      padding: EdgeInsets.all(3),
+      child: Text(
+        Strings.activityEnded, 
+        style: TextStyle(
+          color: theme.colorScheme.onWarning, 
+          fontWeight: Dimens.weightBold, 
+          fontSize: theme.textTheme.caption.fontSize
+        ),
+      ),
     );
   }
 }

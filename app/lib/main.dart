@@ -169,6 +169,9 @@ extension ColorSchemeExt on ColorScheme {
 
   Color get info => Colors.yellow[100];
   Color get onInfo => Colors.yellow[900];
+
+  Color get warning => Colors.orange[100];
+  Color get onWarning => Colors.orange[900];
 }
 
 

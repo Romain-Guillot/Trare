@@ -23,6 +23,9 @@ class Activity {
   DateTime endDate;
   Position location;
 
+  bool get isEnded => endDate?.isAfter(DateTime.now())??false;
+
+
   Activity({
     @required this.title,
     @required this.user,
