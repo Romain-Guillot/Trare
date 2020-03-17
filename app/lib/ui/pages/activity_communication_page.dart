@@ -59,11 +59,11 @@ class ActivityCommunicationPage extends StatelessWidget {
         child: Scaffold(
           appBar: FlatAppBar(title: Text(activity.title),),
           body: SafeArea(
-            child: Padding(
-              padding: Dimens.screenPaddingBodyWithAppBar,
-              child: Column(
-                children: <Widget>[
-                  TabBar(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: Dimens.screenPaddingBodyWithAppBar,
+                  child: TabBar(
                     indicatorColor: Theme.of(context).colorScheme.primary,
                     unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
                     labelColor: Theme.of(context).colorScheme.primary,
@@ -76,16 +76,16 @@ class ActivityCommunicationPage extends StatelessWidget {
                       Tab(icon: Icon(Icons.info)),
                     ]
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      children: <Widget>[
-                        Text("TODO DIOUL"), // replace by your widget
-                        ActivityCommunicationDetails(),
-                      ],
-                    ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: <Widget>[
+                      Text("TODO DIOUL"), // replace by your widget
+                      ActivityCommunicationDetails(),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
