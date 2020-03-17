@@ -1,5 +1,4 @@
-import 'package:app/logic/activity_creation_provider.dart';
-import 'package:app/logic/profile_provider.dart';
+import 'package:app/logic/activity_user_provider.dart';
 import 'package:app/models/activity.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
@@ -124,7 +123,7 @@ class _ActivityCreationButtonState extends State<ActivityCreationButton> {
     var activity = widget.activityCreationFormKey.currentState.makeActivity();
     if (activity != null) {
       setState(() => inProgress = true);
-      var provider = Provider.of<ActivityCreationProvider>(context, listen: false);
+      var provider = Provider.of<ActivityUserProvider>(context, listen: false);
       activity = await provider.createActivity(activity);
       bool success = activity != null;
       setState(() => inProgress = false);

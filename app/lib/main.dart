@@ -1,4 +1,3 @@
-import 'package:app/logic/activity_creation_provider.dart';
 import 'package:app/logic/activity_explore_provider.dart';
 import 'package:app/logic/activity_user_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
@@ -103,12 +102,6 @@ class MyApp extends StatelessWidget {
                       activitiesService: locator<IActivityService>(),
                       locationService: locator<IUserLocationService>()
                     )..loadActivities()
-                  ),
-                  ChangeNotifierProvider<ActivityCreationProvider>(create: (context) =>
-                    ActivityCreationProvider(
-                      activityService: locator<IActivityService>(),
-                      profileService: locator<IProfileService>(),
-                    )
                   ),
                   ChangeNotifierProvider<ActivityUserProvider>(create: (context) =>
                     ActivityUserProvider(

@@ -120,4 +120,21 @@ class ActivityUserProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  /// this function gives the new activity to the service class that have to map the activity in
+  /// noSQL data  before to insert it  in the firestore
+  /// 
+  /// Returns the created activity if succeed
+  /// Returns null if an occured occured
+  Future<Activity> createActivity(Activity newActivity) async {
+    try {
+      var profile = await _profileService.getUser();
+      newActivity.user = profile;
+      var activity = await _activityService.createActivity(newActivity);
+      loadActivities();
+      return activity;
+    } catch (_) {
+      return null;
+    }
+  }
 }
