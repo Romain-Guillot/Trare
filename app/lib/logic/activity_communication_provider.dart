@@ -1,5 +1,6 @@
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
+import 'package:app/models/user.dart';
 import 'package:app/services/activity_communication_service.dart';
 import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:flutter/widgets.dart';
@@ -53,6 +54,24 @@ class ActivityCommunicationProvider extends ChangeNotifier {
     activityCommunication = mockActivityCommunication;
     state = ActivityCommunicationState.loaded;
     notifyListeners();
+  }
+
+  Future<bool> acceptParticipant(User user) async {
+    try {
+      await _communicationService.acceptParticipant(activity, user);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> rejectParticipant(User user) async {
+    try {
+      await _communicationService.rejectParticipant(activity, user);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
 

@@ -1,5 +1,6 @@
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
+import 'package:app/models/user.dart';
 
 
 
@@ -13,6 +14,16 @@ abstract class IActivityCommunicationService {
   /// Throw an exception in an error occured
   Future<ActivityCommunication> retreiveActivityCommunication(Activity activity);
 
+  ///
+  ///
+  ///
+  Future acceptParticipant(Activity activity, User user);
+
+  ///
+  ///
+  ///
+  Future rejectParticipant(Activity activity, User user);
+  
   /// TODO(dioul) : Add new message
 }
 
@@ -29,4 +40,13 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     throw UnimplementedError();
   }
 
+  @override
+  Future acceptParticipant(Activity activity, User user) async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
+  @override
+  Future rejectParticipant(Activity activity, User user) async {
+    await Future.delayed(Duration(seconds: 3));
+  }
 }

@@ -92,11 +92,13 @@ class ActivityCommunicationDetails extends StatelessWidget {
   }
 
   Future onAcceptUser(context, user) async {
-    await Future.delayed(Duration(seconds: 2));
+    var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
+    await provider.acceptParticipant(user);
   }
 
   Future onRejectUser(context, user) async {
-    await Future.delayed(Duration(seconds: 3));
+    var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
+    await provider.acceptParticipant(user);
   }
 }
 
@@ -143,6 +145,10 @@ class UserList extends StatelessWidget {
 }
 
 
+
+///
+///
+///
 class AcceptRejectButtonBar extends StatefulWidget {
 
   final User user;
