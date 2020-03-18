@@ -53,6 +53,7 @@ class ActivityChatNotifier extends ChangeNotifier {
     try{
       var message = await _communicationService.addMessage(activity, newMessage);
       init();
+      return message;
     } catch(_) {
       return null;
     }
