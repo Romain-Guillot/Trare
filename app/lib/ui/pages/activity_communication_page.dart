@@ -30,18 +30,14 @@ final mockActivity = Activity(
 );
 
 
-// TODO(dioul) : tu peux completer cette instance fictive pour tester
-// ton UI
-final mockActivityCommunication = ActivityCommunication(
-  activity: mockActivity,
-  participants: [User(name: "Paul", age: 17), User(name: "Jena", age: 34), User(name: "Dania", age: 65), User(name: "Mike", age: 56)],
-  interestedUsers: [User(name: "Robert", age: 21, uid:"5"), User(name: "Jean", age: 56, uid:"6")],
-);
-
 
 class ActivityCommunicationPage extends StatelessWidget {
 
   final Activity activity;
+  final List<Widget> pages = [
+    Text("TODO DIOUL"), // replace with your widget
+    ActivityCommunicationDetails(),
+  ];
 
   ActivityCommunicationPage({
     Key key, 
@@ -102,10 +98,7 @@ class ActivityCommunicationPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: TabBarView(
-                    children: <Widget>[
-                      Text("TODO DIOUL"), // replace by your widget
-                      ActivityCommunicationDetails(),
-                    ],
+                    children: pages
                   ),
                 ),
               ],
