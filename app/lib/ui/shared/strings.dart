@@ -129,6 +129,13 @@ class Strings {
   static const String requiredDate = "Required";
 
 
+  // Activity communication details
+  static const String participantRequestsTitle = "Requests";
+  static const String participantsTitle = "Participants";
+  static const String participantAcceptRequest = "Accept";
+  static const String participantRejectRequest = "Reject";
+
+
   // Permissions
   static const String locationPermissionDenied = "You have not granted the location permission";
   static const String locationPermissionDisabled = "Please enable the location service";

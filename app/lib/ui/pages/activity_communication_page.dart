@@ -31,8 +31,8 @@ final mockActivity = Activity(
 // ton UI
 final mockActivityCommunication = ActivityCommunication(
   activity: mockActivity,
-  participants: [],
-  interestedUsers: [],
+  participants: [User(name: "Paul", age: 17), User(name: "Jena", age: 34), User(name: "Dania", age: 65), User(name: "Mike", age: 56)],
+  interestedUsers: [User(name: "Robert", age: 21), User(name: "Jean", age: 56)],
   messages: [],
 );
 

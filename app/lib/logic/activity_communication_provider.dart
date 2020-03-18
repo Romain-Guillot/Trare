@@ -48,7 +48,11 @@ class ActivityCommunicationProvider extends ChangeNotifier {
   ///
   ///
   load() async {
+    state = ActivityCommunicationState.inProgress;
+    await Future.delayed(Duration(seconds: 2));
     activityCommunication = mockActivityCommunication;
+    state = ActivityCommunicationState.loaded;
+    notifyListeners();
   }
 
 

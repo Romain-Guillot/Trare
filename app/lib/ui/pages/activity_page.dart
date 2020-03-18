@@ -192,7 +192,7 @@ class _ActivityLocationState extends State<ActivityLocation> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(location),
+        Text(location??Strings.unknownLocation),
         LayoutBuilder(
           builder: (_, constraints) => SizedBox(
             height: constraints.maxWidth / Dimens.activityViewMapRatio,

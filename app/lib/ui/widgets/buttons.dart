@@ -10,19 +10,22 @@ class Button extends StatelessWidget {
   final Widget child;
   final Function onPressed;
   final bool critical;
+  final Color color;
 
   Button({
     @required this.child, 
     @required this.onPressed, 
     this.icon,
-    this.critical = false
+    this.critical = false,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textColor = critical ? colorScheme.onError : colorScheme.primary;
-    final backColor = critical ? colorScheme.error : Colors.transparent;
+    var colorScheme = Theme.of(context).colorScheme;
+    var textColor = critical ? colorScheme.onError : colorScheme.primary;
+    textColor = color != null ? color : textColor;
+    var backColor = critical ? colorScheme.error : Colors.transparent;
     if (icon != null) {
       return FlatButton.icon(
         color: backColor,
