@@ -92,7 +92,11 @@ class FirestoreActivityService implements IActivityService {
           var userUID = docSnap[_Identifiers.ACTIVITY_USER];
           if (userUID != null) {
             var user = await _profileService.getUser(userUID: userUID);
-            var activity = _FirestoreActivityAdapter(data: docSnap.data, user: user);
+            var activity = _FirestoreActivityAdapter(
+              id: docSnap.documentID,
+              data: docSnap.data, 
+              user: user
+            );
             activities.add(activity);
           }
         } catch (e) { print(e);}
@@ -113,7 +117,11 @@ class FirestoreActivityService implements IActivityService {
     if (activityData != null) {
       var activityDoc = _firestore.collection(_Identifiers.ACTIVITIES_COL);
       await activityDoc.add(activityData);
-      return _FirestoreActivityAdapter(data: activityData, user: activity.user);
+      return _FirestoreActivityAdapter(
+        id: activityDoc.id,
+        data: activityData, 
+        user: activity.user
+      );
     }
     return Future.error(null);   
   }
@@ -133,7 +141,11 @@ class FirestoreActivityService implements IActivityService {
     activitiesUsercollection.then((QuerySnapshot snapshot) async {
       snapshot.documents.forEach((docsnap) {
         try{
-          var activity = _FirestoreActivityAdapter(data: docsnap.data, user: user);
+          var activity = _FirestoreActivityAdapter(
+            id: docsnap.documentID,
+            data: docsnap.data, 
+            user: user
+          );
           activities.add(activity);
         } catch(_) { }
       });
@@ -163,11 +175,11 @@ class _FirestoreActivityAdapter extends Activity {
   @override DateTime beginDate;
   @override DateTime endDate;
   @override Position location;
+  @override String id;
 
-  _FirestoreActivityAdapter({@required Map<String, dynamic> data, @required User user}) {
+  _FirestoreActivityAdapter({@required this.id, @required Map<String, dynamic> data, @required this.user}) {
     this.createdDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_CREATED_DATE]);
     this.title = data[_Identifiers.ACTIVITY_TITLE];
-    this.user = user;
     this.description = data[_Identifiers.ACTIVITY_DESCRIPTION];
     this.beginDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_BEGIN_DATE]);
     this.endDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_END_DATE]);

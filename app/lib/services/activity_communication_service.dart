@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -34,6 +37,8 @@ abstract class IActivityCommunicationService {
 /// 
 class FirestoreActivityCommunicationService implements IActivityCommunicationService {
 
+  var _firestore = Firestore.instance;
+
   @override
   Future<ActivityCommunication> retreiveActivityCommunication(Activity activity) {
     // TODO(romain)
@@ -42,11 +47,18 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
   @override
   Future acceptParticipant(Activity activity, User user) async {
-    await Future.delayed(Duration(seconds: 3));
+    var doc = _firestore.collection("actvities").document(activity.id);
+    await doc.updateData({
+      "participants": FieldValue.arrayUnion([user.uid]),
+      "interested_users": FieldValue.arrayRemove([user.uid])
+    });
   }
 
   @override
   Future rejectParticipant(Activity activity, User user) async {
-    await Future.delayed(Duration(seconds: 3));
+    var doc = _firestore.collection("actvities").document(activity.id);
+    await doc.updateData({
+      "interested_users": FieldValue.arrayRemove([user.uid])
+    });
   }
 }

@@ -38,6 +38,7 @@ dependencies:
   cached_network_image: ^2.0.0
   location: ^2.5.4
   permission_handler: ^4.4.0+hotfix.2
+  badges: ^1.1.1
 
 dev_dependencies:
   mockito: ^4.1.1

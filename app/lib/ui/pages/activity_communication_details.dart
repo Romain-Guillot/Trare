@@ -3,6 +3,8 @@ import 'package:app/logic/activity_communication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
+import 'package:app/ui/shared/strings.dart';
+import 'package:app/ui/utils/snackbar_handler.dart';
 import 'package:app/ui/widgets/activities_widgets.dart';
 import 'package:app/ui/widgets/buttons.dart';
 import 'package:app/ui/widgets/error_widgets.dart';
@@ -93,12 +95,24 @@ class ActivityCommunicationDetails extends StatelessWidget {
 
   Future onAcceptUser(context, user) async {
     var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
-    await provider.acceptParticipant(user);
+    bool status = await provider.acceptParticipant(user);
+    if (status)
+      _handleError(context);
   }
 
   Future onRejectUser(context, user) async {
     var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
-    await provider.acceptParticipant(user);
+    bool status = await provider.rejectParticipant(user);
+    if (status)
+      _handleError(context);
+  }
+
+  _handleError(context) {
+    showSnackbar(
+      context: context, 
+      content: Text(Strings.unexpectedError),
+      critical: true
+    );
   }
 }
 

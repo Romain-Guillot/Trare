@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 final user = User(uid: "uid");
 
 final a1 = Activity(
+  id: "uid1",
   title: "a1",
   beginDate: DateTime.fromMicrosecondsSinceEpoch(0),
   endDate: DateTime.fromMicrosecondsSinceEpoch(10000),
@@ -17,6 +18,7 @@ final a1 = Activity(
 );
 
 final a2 = Activity(
+  id: "uid2",
   title: "a2",
   beginDate: DateTime.fromMicrosecondsSinceEpoch(100),
   endDate: DateTime.fromMicrosecondsSinceEpoch(500),

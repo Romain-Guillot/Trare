@@ -7,6 +7,7 @@ import 'package:app/services/activity_communication_service.dart';
 import 'package:app/ui/pages/activity_communication_details.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/widgets/flat_app_bar.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,6 +15,7 @@ import 'package:provider/provider.dart';
 
 
 final mockActivity = Activity(
+  id: "ee",
   title: "Mock activity",
   description: "Mock description",
   beginDate: DateTime.now(),
@@ -73,7 +75,17 @@ class ActivityCommunicationPage extends StatelessWidget {
                     ),
                     tabs: [
                       Tab(icon: Icon(Icons.chat)),
-                      Tab(icon: Icon(Icons.info)),
+                      Consumer<ActivityCommunicationProvider>(
+                        builder: (_, provider, __) {
+                          var nbInterested = provider.activityCommunication?.interestedUsers?.length;
+                          return Badge(
+                            badgeContent: Text(nbInterested?.toString()??"", style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+                            showBadge: nbInterested != null,
+                            badgeColor: Theme.of(context).colorScheme.error,
+                            child: Tab(icon: Icon(Icons.info))
+                          );
+                        }
+                      ),
                     ]
                   ),
                 ),

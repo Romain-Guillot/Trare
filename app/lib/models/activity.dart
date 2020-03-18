@@ -15,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 /// strucutre (name of fields). These transformations are directly applied 
 /// in the corresponding services (through adapters)
 class Activity {
+  String id;
   String title;
   User user;
   String description;
@@ -27,6 +28,7 @@ class Activity {
 
 
   Activity({
+    @required this.id,
     @required this.title,
     @required this.user,
     @required this.description,
