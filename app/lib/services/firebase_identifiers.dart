@@ -27,5 +27,8 @@ class FBQualifiers {
 
   // Message (MSG)
   static const MSG_COL = "messages";
-
+  static const MSG_DATE = "publication_date";
+  static const MSG_USER = "user";
+  static const MSG_CONTENT = "content";
+  static const MSG_ACTIVITY_ID = "id_activity";
 }

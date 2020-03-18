@@ -18,13 +18,11 @@ class MockLocationService implements IUserLocationService {
 
   @override
   Future<PermissionStatus> getPermissionStatus() {
-    // TODO: implement getPermissionStatus
     throw UnimplementedError();
   }
 
   @override
   Future enableLocationServiceIfNecessary() {
-    // TODO: implement enableLocationServiceIfNecessary
     throw UnimplementedError();
   }
 
