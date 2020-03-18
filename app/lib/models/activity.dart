@@ -28,7 +28,6 @@ class Activity {
 
 
   Activity({
-    @required this.id,
     @required this.title,
     @required this.user,
     @required this.description,
