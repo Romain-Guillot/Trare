@@ -44,6 +44,21 @@ class ActivityChatNotifier extends ChangeNotifier {
     messages = _communicationService.retrieveMessages(activity);
   }
 
+ /// this function gives the new [message] to the service class that have to map the it in
+  /// noSQL data  before to insert it  in the database
+  /// 
+  /// Returns the created [message] if succeed
+  /// Returns null if an occured occured
+  Future<Message> addMessage( Message newMessage) async {
+    try{
+      var message = await _communicationService.addMessage(activity, newMessage);
+      init();
+    } catch(_) {
+      return null;
+    }
+  }
+
 
   // add message
+
 }
