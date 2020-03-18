@@ -28,20 +28,22 @@ enum ActivityCommunicationState {
 
 
 
+/// Handle the communication system related to the [activity]
 ///
-///
+/// State :
+///   - [state] of the current status concerning the loading of the 
+///     [activityCommunication]
+///   - [activity] the current activity
+///   - [activityCommunication] the communication system related to the [activity]
 ///
 class ActivityCommunicationProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
-
   StreamSubscription _streamComm;
-  StreamSubscription _streamMessages;
 
   ActivityCommunicationState state = ActivityCommunicationState.idle;
   Activity activity;
   ActivityCommunication activityCommunication;
-  Stream<List<Message>> messages;
 
 
   ActivityCommunicationProvider({
@@ -53,14 +55,11 @@ class ActivityCommunicationProvider extends ChangeNotifier {
   @override
   dispose() {
     _streamComm?.cancel();
-    _streamMessages?.cancel();
     super.dispose();
   }
 
-  /// TODO(romain)
-  ///
-  ///
-  load() async {
+  /// Init the listeners (communication system and messages)
+  init() async {
     state = ActivityCommunicationState.inProgress;
     notifyListeners();
 
@@ -73,9 +72,8 @@ class ActivityCommunicationProvider extends ChangeNotifier {
       .onError((e) {
         state = ActivityCommunicationState.error;
       });
-    
-    this.messages = _communicationService.retrieveMessages(activity);
   }
+
 
   Future<bool> acceptParticipant(User user) async {
     try {
@@ -86,6 +84,7 @@ class ActivityCommunicationProvider extends ChangeNotifier {
     }
   }
 
+
   Future<bool> rejectParticipant(User user) async {
     try {
       await _communicationService.rejectParticipant(activity, user);
@@ -94,8 +93,4 @@ class ActivityCommunicationProvider extends ChangeNotifier {
       return false;
     }
   }
-
-
-  // TODO(dioul) add message method
-
 }

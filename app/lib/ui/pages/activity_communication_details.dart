@@ -83,7 +83,7 @@ class ActivityCommunicationDetails extends StatelessWidget {
 
   reloadCommunicationSystem(context) {
     var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
-    provider.load();
+    provider.init();
   }
 
   openActivity(context, activity) {

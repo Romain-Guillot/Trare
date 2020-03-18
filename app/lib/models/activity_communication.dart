@@ -19,13 +19,11 @@ class ActivityCommunication {
   Activity activity;
   List<User> participants;
   List<User> interestedUsers;
-  List<Message> messages;
 
   ActivityCommunication({
     @required this.activity,
     this.participants,
     this.interestedUsers,
-    this.messages,
   });
 }
 

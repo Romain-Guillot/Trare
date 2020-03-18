@@ -1,3 +1,4 @@
+import 'package:app/logic/activity_chat_provider.dart';
 import 'package:app/logic/activity_communication_provider.dart';
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
@@ -35,7 +36,6 @@ final mockActivityCommunication = ActivityCommunication(
   activity: mockActivity,
   participants: [User(name: "Paul", age: 17), User(name: "Jena", age: 34), User(name: "Dania", age: 65), User(name: "Mike", age: 56)],
   interestedUsers: [User(name: "Robert", age: 21, uid:"5"), User(name: "Jean", age: 56, uid:"6")],
-  messages: [],
 );
 
 
@@ -51,11 +51,22 @@ class ActivityCommunicationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ActivityCommunicationProvider(
-        activity: activity,
-        communicationService: locator<IActivityCommunicationService>()
-      )..load(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ActivityCommunicationProvider>(
+          create: (_) => ActivityCommunicationProvider(
+            activity: activity,
+            communicationService: locator<IActivityCommunicationService>()
+          )..init(),
+        ),
+        ChangeNotifierProvider<ActivityChatNotifier>(
+          create: (_) => ActivityChatNotifier(
+            activity: activity,
+            communicationService: locator<IActivityCommunicationService>()
+          )..init(),
+        )
+      ],
+
       child: DefaultTabController(
         length: 2,
         child: Scaffold(

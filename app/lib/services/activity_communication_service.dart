@@ -20,19 +20,21 @@ abstract class IActivityCommunicationService {
   /// Throw an exception in an error occured
   Stream<ActivityCommunication> retreiveActivityCommunication(Activity activity);
 
+  /// Returns a stream that contains the list of [Message] of the [activity]
   ///
-  ///
-  ///
+  /// Note: the stream is automatically update with new messages
   Stream<List<Message>> retrieveMessages(Activity activity);
 
+  /// Update the database to accept a new user as participant
   ///
-  ///
-  ///
+  /// Nothing returned if the operation succeed
+  /// An exception is throwed if an error occured
   Future acceptParticipant(Activity activity, User user);
 
+  /// Update the database to reject a user request to be part of the particpants
   ///
-  ///
-  ///
+  /// Nothing returned if the operation succeed
+  /// An exception is throwed if an error occured
   Future rejectParticipant(Activity activity, User user);
 }
 
