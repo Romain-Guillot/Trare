@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/activity_communication_service.dart';
-import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -34,9 +35,13 @@ class ActivityCommunicationProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
 
+  StreamSubscription _streamComm;
+  StreamSubscription _streamMessages;
+
   ActivityCommunicationState state = ActivityCommunicationState.idle;
   Activity activity;
   ActivityCommunication activityCommunication;
+  Stream<List<Message>> messages;
 
 
   ActivityCommunicationProvider({
@@ -45,15 +50,31 @@ class ActivityCommunicationProvider extends ChangeNotifier {
   }) : this._communicationService = communicationService;
 
 
+  @override
+  dispose() {
+    _streamComm?.cancel();
+    _streamMessages?.cancel();
+    super.dispose();
+  }
+
   /// TODO(romain)
   ///
   ///
   load() async {
     state = ActivityCommunicationState.inProgress;
-    await Future.delayed(Duration(seconds: 2));
-    activityCommunication = mockActivityCommunication;
-    state = ActivityCommunicationState.loaded;
     notifyListeners();
+
+    _communicationService.retreiveActivityCommunication(activity)
+      .listen((activityCommunication) {
+        this.activityCommunication = activityCommunication;
+        state = ActivityCommunicationState.loaded;
+        notifyListeners();
+       })
+      .onError((e) {
+        state = ActivityCommunicationState.error;
+      });
+    
+    this.messages = _communicationService.retrieveMessages(activity);
   }
 
   Future<bool> acceptParticipant(User user) async {

@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:app/models/activity.dart';
 import 'package:app/models/user.dart';
+import 'package:app/services/firebase_identifiers.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -79,17 +80,17 @@ class FirestoreActivityService implements IActivityService {
       latitude: position.latitude, 
       longitude: position.longitude
     );
-    var activitiesCol = _firestore.collection(_Identifiers.ACTIVITIES_COL);
+    var activitiesCol = _firestore.collection(FBQualifiers.ACT_COL);
     subscribtion = _geo.collection(collectionRef: activitiesCol).within(
       center: geoPosition, 
       radius: radius, 
-      field: _Identifiers.ACTIVITY_LOCATION,
+      field: FBQualifiers.ACT_LOCATION,
       strictMode: true
     ).listen((docSnaps) async {
       var activities = List<Activity>();
       for (var docSnap in docSnaps) {
         try {
-          var userUID = docSnap[_Identifiers.ACTIVITY_USER];
+          var userUID = docSnap[FBQualifiers.ACT_USER];
           if (userUID != null) {
             var user = await _profileService.getUser(userUID: userUID);
             var activity = _FirestoreActivityAdapter(
@@ -115,7 +116,7 @@ class FirestoreActivityService implements IActivityService {
   Future<Activity> createActivity(Activity activity) async {
     var activityData = _FirestoreActivityAdapter.toMap(activity);
     if (activityData != null) {
-      var activityDoc = _firestore.collection(_Identifiers.ACTIVITIES_COL);
+      var activityDoc = _firestore.collection(FBQualifiers.ACT_COL);
       await activityDoc.add(activityData);
       return _FirestoreActivityAdapter(
         id: activityDoc.id,
@@ -134,8 +135,8 @@ class FirestoreActivityService implements IActivityService {
   Future<List<Activity>> retreiveActivitiesUser({User user}) {
     var completer = Completer<List<Activity>>();
     var activities = List<Activity>();
-    var activitiesUsercollection = _firestore.collection(_Identifiers.ACTIVITIES_COL)
-      .where(_Identifiers.ACTIVITY_USER, isEqualTo: user.uid)
+    var activitiesUsercollection = _firestore.collection(FBQualifiers.ACT_COL)
+      .where(FBQualifiers.ACT_USER, isEqualTo: user.uid)
       .getDocuments();
 
     activitiesUsercollection.then((QuerySnapshot snapshot) async {
@@ -178,12 +179,12 @@ class _FirestoreActivityAdapter extends Activity {
   @override String id;
 
   _FirestoreActivityAdapter({@required this.id, @required Map<String, dynamic> data, @required this.user}) {
-    this.createdDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_CREATED_DATE]);
-    this.title = data[_Identifiers.ACTIVITY_TITLE];
-    this.description = data[_Identifiers.ACTIVITY_DESCRIPTION];
-    this.beginDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_BEGIN_DATE]);
-    this.endDate = dateFromTimestamp(data[_Identifiers.ACTIVITY_END_DATE]);
-    this.location = _buildPosition(data[_Identifiers.ACTIVITY_LOCATION]);
+    this.createdDate = dateFromTimestamp(data[FBQualifiers.ACT_CREATED_DATE]);
+    this.title = data[FBQualifiers.ACT_TITLE];
+    this.description = data[FBQualifiers.ACT_DESCRIPTION];
+    this.beginDate = dateFromTimestamp(data[FBQualifiers.ACT_BEGIN_DATE]);
+    this.endDate = dateFromTimestamp(data[FBQualifiers.ACT_END_DATE]);
+    this.location = _buildPosition(data[FBQualifiers.ACT_LOCATION]);
   }
 
   DateTime dateFromTimestamp(dynamic data) {
@@ -210,30 +211,12 @@ class _FirestoreActivityAdapter extends Activity {
   }
 
   static Map<String, Object> toMap(Activity activity) => {
-    _Identifiers.ACTIVITY_CREATED_DATE: Timestamp.fromDate(DateTime.now()),
-    _Identifiers.ACTIVITY_TITLE: activity.title,
-    _Identifiers.ACTIVITY_USER: activity.user.uid,
-    _Identifiers.ACTIVITY_DESCRIPTION: activity.description,
-    _Identifiers.ACTIVITY_BEGIN_DATE: Timestamp.fromDate(activity.beginDate),
-    _Identifiers.ACTIVITY_END_DATE: Timestamp.fromDate(activity.endDate),
-    _Identifiers.ACTIVITY_LOCATION: _FirestoreActivityAdapter._buildGeoPosition(activity.location)
+    FBQualifiers.ACT_CREATED_DATE: Timestamp.fromDate(DateTime.now()),
+    FBQualifiers.ACT_TITLE: activity.title,
+    FBQualifiers.ACT_USER: activity.user.uid,
+    FBQualifiers.ACT_DESCRIPTION: activity.description,
+    FBQualifiers.ACT_BEGIN_DATE: Timestamp.fromDate(activity.beginDate),
+    FBQualifiers.ACT_END_DATE: Timestamp.fromDate(activity.endDate),
+    FBQualifiers.ACT_LOCATION: _FirestoreActivityAdapter._buildGeoPosition(activity.location)
   };
-}
-
-
-
-/// Identifiers (name of collections / fields) used in the Cloud Firestore
-/// noSQL database to store activities
-/// 
-/// See the corresponding specification `documents > archi_server.md` (french)
-class _Identifiers {
-  static const ACTIVITIES_COL = "activities";
-
-  static const ACTIVITY_CREATED_DATE = "createdDate";
-  static const ACTIVITY_TITLE = "title";
-  static const ACTIVITY_USER = "user";
-  static const ACTIVITY_DESCRIPTION = "description";
-  static const ACTIVITY_BEGIN_DATE = "beginDate";
-  static const ACTIVITY_END_DATE = "endDate";
-  static const ACTIVITY_LOCATION = "location";
 }

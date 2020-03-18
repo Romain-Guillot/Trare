@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:app/models/user.dart';
+import 'package:app/services/firebase_identifiers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -77,7 +78,7 @@ class FirestoreProfileService implements IProfileService {
           try {
             final user = FirestoreUserAdapter(
               uid: userDoc.documentID, 
-              userData: userData?.data??{}
+              userData: userData?.data
             );
             completer.complete(user);
           } catch (_) {
@@ -123,7 +124,7 @@ class FirestoreProfileService implements IProfileService {
       uid = fbUser?.uid;
     }
     if (uid != null)
-      return _firestore.collection(Identifiers.USERS_COL).document(uid);
+      return _firestore.collection(FBQualifiers.USE_COL).document(uid);
     return null;
   }
 }
@@ -157,39 +158,23 @@ class FirestoreUserAdapter implements User {
   FirestoreUserAdapter({@required String uid, @required Map<String, Object> userData}) {
     if (userData != null) {
       this.uid = uid;
-      this.name = userData[Identifiers.USER_NAME];
-      this.description = userData[Identifiers.USER_DESCRIPTION];
-      this.country = userData[Identifiers.USER_LOCATION];
-      this.spokenLanguages = userData[Identifiers.USER_LANGUAGES];
-      this.urlPhoto = userData[Identifiers.USER_PHOTO];
-      this.age = userData[Identifiers.USER_AGE];
+      this.name = userData[FBQualifiers.USE_NAME];
+      this.description = userData[FBQualifiers.USE_DESCRIPTION];
+      this.country = userData[FBQualifiers.USE_LOCATION];
+      this.spokenLanguages = userData[FBQualifiers.USE_LANGUAGES];
+      this.urlPhoto = userData[FBQualifiers.USE_PHOTO];
+      this.age = userData[FBQualifiers.USE_AGE];
+    } else {
+      throw Exception();
     }
   }
 
   static Map<String, Object> toMap(User user) => {
-    Identifiers.USER_NAME: user.name,
-    Identifiers.USER_DESCRIPTION: user.description,
-    Identifiers.USER_LOCATION: user.country,
-    Identifiers.USER_AGE: user.age,
-    Identifiers.USER_LANGUAGES: user.spokenLanguages,
-    Identifiers.USER_PHOTO: user.urlPhoto
+    FBQualifiers.USE_NAME: user.name,
+    FBQualifiers.USE_DESCRIPTION: user.description,
+    FBQualifiers.USE_LOCATION: user.country,
+    FBQualifiers.USE_AGE: user.age,
+    FBQualifiers.USE_LANGUAGES: user.spokenLanguages,
+    FBQualifiers.USE_PHOTO: user.urlPhoto
   };
-}
-
-
-
-/// Identifiers (name of collections / fields) used in the Cloud Firestore
-/// noSQL database to store user information
-/// 
-/// See the corresponding specification `documents > archi_server.md` (french)
-@visibleForTesting
-class Identifiers {
-  static const USERS_COL = "users";
-
-  static const USER_NAME = "name";
-  static const USER_DESCRIPTION = "description";
-  static const USER_AGE = "age";
-  static const USER_LOCATION = "country";
-  static const USER_LANGUAGES = "languages";
-  static const USER_PHOTO = "photoURL";
 }

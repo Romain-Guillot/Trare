@@ -1,4 +1,3 @@
-
 import 'package:app/logic/activity_communication_provider.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/pages/activity_page.dart';
@@ -42,7 +41,7 @@ class ActivityCommunicationDetails extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
                   child: PageHeader(
-                    title: Text("Requests"),
+                    title: Text(Strings.participantRequestsTitle),
                   ),
                 ),
                 FlexSpacer(),
@@ -58,7 +57,7 @@ class ActivityCommunicationDetails extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
                   child: PageHeader(
-                    title: Text("Participants"),
+                    title: Text(Strings.participantsTitle),
                   ),
                 ),
                 FlexSpacer(),
@@ -96,14 +95,14 @@ class ActivityCommunicationDetails extends StatelessWidget {
   Future onAcceptUser(context, user) async {
     var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
     bool status = await provider.acceptParticipant(user);
-    if (status)
+    if (!status)
       _handleError(context);
   }
 
   Future onRejectUser(context, user) async {
     var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
     bool status = await provider.rejectParticipant(user);
-    if (status)
+    if (!status)
       _handleError(context);
   }
 
@@ -193,14 +192,14 @@ class _AcceptRejectButtonBarState extends State<AcceptRejectButtonBar> {
           Expanded(
             child: Button(
               icon: Icon(Icons.check),
-              child: Text("Accept"),
+              child: Text(Strings.participantAcceptRequest),
               onPressed: inProgress ? null : () => onAction(widget.onAccept),
             ),
           ),
           Expanded(
             child: Button(
               icon: Icon(Icons.close),
-              child: Text("Reject"),
+              child: Text(Strings.participantRejectRequest),
               color: Theme.of(context).colorScheme.onSurfaceLight,
               onPressed: inProgress ? null : () => onAction(widget.onReject),
             ),

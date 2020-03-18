@@ -28,6 +28,8 @@ void setupServiceLocator() {
     () => UserLocationService()
   );
   locator.registerLazySingleton<IActivityCommunicationService>(
-    () => FirestoreActivityCommunicationService()
+    () => FirestoreActivityCommunicationService(
+      profileService: locator<IProfileService>()
+    )
   );
 }

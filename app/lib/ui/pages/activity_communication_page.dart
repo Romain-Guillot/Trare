@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 
 final mockActivity = Activity(
-  id: "ee",
+  id: "4FiW8TngKJFlbjOW2C80",
   title: "Mock activity",
   description: "Mock description",
   beginDate: DateTime.now(),
@@ -34,7 +34,7 @@ final mockActivity = Activity(
 final mockActivityCommunication = ActivityCommunication(
   activity: mockActivity,
   participants: [User(name: "Paul", age: 17), User(name: "Jena", age: 34), User(name: "Dania", age: 65), User(name: "Mike", age: 56)],
-  interestedUsers: [User(name: "Robert", age: 21), User(name: "Jean", age: 56)],
+  interestedUsers: [User(name: "Robert", age: 21, uid:"5"), User(name: "Jean", age: 56, uid:"6")],
   messages: [],
 );
 
