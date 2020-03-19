@@ -1,7 +1,6 @@
 import 'package:app/logic/activity_chat_provider.dart';
 import 'package:app/logic/activity_communication_provider.dart';
 import 'package:app/models/activity.dart';
-import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/services/activity_communication_service.dart';
@@ -104,7 +103,7 @@ class ActivityCommunicationPage extends StatelessWidget {
               ],
             ),
           ),
-        ),
+        )
       ),
     );
   }
