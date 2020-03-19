@@ -12,22 +12,37 @@ import 'package:flutter/widgets.dart';
 /// State :
 /// l'activité courrante
 /// les messages du chats (mient à jour en temps réel)
-/// 
+enum ActivityChatState {
+
+  /// The current [ActivityChat] is loaded and available
+  loaded,
+
+  /// the messages of the current [ActivityChat] is loaded and available
+  loadedMessages,
+
+  /// The current [ActivityChat] loading is in progress
+  inProgress,
+
+  /// An error occured to load the [ActivityChat]
+  error,
+
+}
 /// Contient 2 methodes :
 /// 1 pour load les messages (déjà faite)
 /// 1 pour ajouter un message (à faire)
 ///
 ///
-class ActivityChatNotifier extends ChangeNotifier {
+class ActivityChatProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
+  ActivityChatState state = ActivityChatState.inProgress;
 
   Activity activity;
   Stream<List<Message>> messages;
 
 
-  ActivityChatNotifier({
+  ActivityChatProvider({
     @required this.activity,
     @required IActivityCommunicationService communicationService
   }) : this._communicationService = communicationService;
@@ -42,6 +57,9 @@ class ActivityChatNotifier extends ChangeNotifier {
 
   init() {
     messages = _communicationService.retrieveMessages(activity);
+    if(messages != null){
+      state = ActivityChatState.loadedMessages;
+    }
   }
 
  /// this function gives the new [message] to the service class that have to map the it in
@@ -55,6 +73,7 @@ class ActivityChatNotifier extends ChangeNotifier {
       init();
       return message;
     } catch(_) {
+      state = ActivityChatState.error;
       return null;
     }
   }

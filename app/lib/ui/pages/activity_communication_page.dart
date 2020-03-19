@@ -55,8 +55,8 @@ class ActivityCommunicationPage extends StatelessWidget {
             communicationService: locator<IActivityCommunicationService>()
           )..init(),
         ),
-        ChangeNotifierProvider<ActivityChatNotifier>(
-          create: (_) => ActivityChatNotifier(
+        ChangeNotifierProvider<ActivityChatProvider>(
+          create: (_) => ActivityChatProvider(
             activity: activity,
             communicationService: locator<IActivityCommunicationService>()
           )..init(),
