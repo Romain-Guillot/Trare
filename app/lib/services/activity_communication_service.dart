@@ -6,6 +6,7 @@ import 'package:app/models/user.dart';
 import 'package:app/services/firebase_identifiers.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -67,20 +68,37 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id);
 
-    activityDoc.snapshots().listen((docSnap) async {      
-      var interestedUsersIds = docSnap.data[FBQualifiers.ACT_INTERESTED] as List;
-      var interestedUsers = await _idsToUsers(interestedUsersIds.cast<String>());
-      
-      var participantsIds = docSnap.data[FBQualifiers.ACT_PARTICIPANTS] as List;
-      var participants = await _idsToUsers(participantsIds.cast<String>());
-      
-      var comm = ActivityCommunication(
-        activity: activity,
-        interestedUsers: interestedUsers,
-        participants: participants
-      );
-      streamController.add(comm);
-    });
+    FirebaseAuth.instance.currentUser().then((fbUser) {
+      if (fbUser == null) {
+        streamController.addError(null);
+        return ;
+      }
+      activityDoc.snapshots().listen((doc) async {
+        try {
+          var interested = <User>[], participants = <User>[];
+
+          if (fbUser.uid == activity.user.uid) {
+            var interestedUids = doc.data[FBQualifiers.ACT_INTERESTED] as List;
+            interested = await _idsToUsers(interestedUids?.cast<String>());
+          }
+        
+          var participantsIds = doc.data[FBQualifiers.ACT_PARTICIPANTS] as List;
+          participants = await _idsToUsers(participantsIds?.cast<String>());
+          
+          var comm = ActivityCommunication(
+            activity: activity,
+            interestedUsers: interested,
+            participants: participants
+          );
+          streamController.add(comm);
+        } catch (_) {
+          streamController.addError(null);
+        }
+      }).onError((_) {
+        streamController.addError(null);});
+    }).catchError((_) {
+      streamController.addError(null);
+    } );
 
     return streamController.stream;
   }
@@ -143,12 +161,13 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
   Future<List<User>> _idsToUsers(List<String> ids) async {
     var res = <User>[];
-    for (var id in ids) {
+    for (var id in ids??[]) {
       try {
         var user = await _profileService.getUser(userUID: id);
         res.add(user);
       } catch (_) { }
     }
+    print("");
     return res;
   }
 

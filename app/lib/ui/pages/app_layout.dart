@@ -39,7 +39,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _widgetOptions = <Widget>[
       ExplorePage(),
-      Center(child:RaisedButton(child: Text("TEST"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity,))),)),
+      Center(child:Column(
+        children: <Widget>[
+          RaisedButton(child: Text("TEST1"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity,))),),
+          RaisedButton(child: Text("TEST2"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity2,))),),
+        ],
+      )),
       UserActivitiesPage(),
       ConnectedUserProfileView(),
     ];

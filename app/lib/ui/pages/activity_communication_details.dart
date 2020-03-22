@@ -38,31 +38,20 @@ class ActivityCommunicationDetails extends StatelessWidget {
                   onPressed: () => openActivity(context, provider.activity),
                 ),
                 FlexSpacer(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
-                  child: PageHeader(
-                    title: Text(Strings.participantRequestsTitle),
-                  ),
-                ),
-                FlexSpacer(),
                 UserList(
+                  title: Text(Strings.participantRequestsTitle),
                   users: provider.activityCommunication.interestedUsers,
-                  actionBuilder: (u) => AcceptRejectButtonBar(
+                  actionBarBuilder: (u) => AcceptRejectButtonBar(
                     user: u,
                     onAccept: () async => await onAcceptUser(context, u),
                     onReject: () async => await onRejectUser(context, u),
                   ),
                 ),
                 FlexSpacer(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
-                  child: PageHeader(
-                    title: Text(Strings.participantsTitle),
-                  ),
-                ),
-                FlexSpacer(),
                 UserList(
+                  title: Text(Strings.participantsTitle),
                   users: provider.activityCommunication.participants,
+                  empty: Text("No participant yet"),
                 ),
               ],
             );
@@ -74,7 +63,7 @@ class ActivityCommunicationDetails extends StatelessWidget {
           default:
             return ErrorWidgetWithReload(
               message: "Unable to load data",
-              onReload: ( ) {},
+              onReload: ( ) => provider.init()
             );
         }
       }
@@ -122,22 +111,40 @@ class ActivityCommunicationDetails extends StatelessWidget {
 ///
 class UserList extends StatelessWidget {
 
+  final Widget title;
+  final Widget empty;
   final List<User> users;
-  final Widget Function(User) actionBuilder;
+  final Widget Function(User) actionBarBuilder;
 
   UserList({
     Key key, 
+    @required this.title,
     @required this.users,
-    this.actionBuilder
+     this.empty,
+    this.actionBarBuilder
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (empty == null && (users == null || users.isEmpty))
+      return Container();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
+          child: PageHeader(
+            title: title,
+          ),
+        ),
+        if (users == null || users.isEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
+            child: empty
+          ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: users.length,
+          itemCount: users?.length??0,
           physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.only(bottom: Dimens.normalSpacing),
           separatorBuilder: (_, __) => SizedBox(height: Dimens.normalSpacing,),
@@ -147,8 +154,8 @@ class UserList extends StatelessWidget {
                 user: users[index], 
                 isClickable: true,
               ),
-              if (actionBuilder != null)
-                actionBuilder(users[index]),
+              if (actionBarBuilder != null)
+                actionBarBuilder(users[index]),
             ],
           )
         ),

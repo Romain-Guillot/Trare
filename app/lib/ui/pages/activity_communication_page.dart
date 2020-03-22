@@ -24,6 +24,21 @@ final mockActivity = Activity(
   createdDate: DateTime.now(),
   location: Position(latitude: 0, longitude: 0),
   user: User(
+    uid: "sYP3lIJjCqTexUjQ1q3gOOUUjdo2",
+    age: 21,
+    name: "Mock user",
+  )
+);
+
+final mockActivity2 = Activity(
+  id: "4Er6x2hmZ2wZYcy2Uy37",
+  title: "Mock activity",
+  description: "Mock description",
+  beginDate: DateTime.now(),
+  endDate: DateTime.now(),
+  createdDate: DateTime.now(),
+  location: Position(latitude: 0, longitude: 0),
+  user: User(
     age: 21,
     name: "Mock user",
   )

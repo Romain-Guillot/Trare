@@ -63,15 +63,16 @@ class ActivityCommunicationProvider extends ChangeNotifier {
     state = ActivityCommunicationState.inProgress;
     notifyListeners();
 
-    _communicationService.retreiveActivityCommunication(activity)
+    _streamComm = _communicationService.retreiveActivityCommunication(activity)
       .listen((activityCommunication) {
         this.activityCommunication = activityCommunication;
         state = ActivityCommunicationState.loaded;
         notifyListeners();
-       })
-      .onError((e) {
-        state = ActivityCommunicationState.error;
-      });
+       });
+    _streamComm.onError((e) {
+      state = ActivityCommunicationState.error;
+      notifyListeners();
+    });
   }
 
 
