@@ -119,6 +119,7 @@ class MyApp extends StatelessWidget {
                   ChangeNotifierProvider<UserChatsProvider>(create: (context) =>
                     UserChatsProvider(
                       profileService: locator<IProfileService>(),
+                      activityService: locator<IActivityService>(),
                       communicationService: locator<IActivityCommunicationService>() 
                     )..init()
                   ),

@@ -48,6 +48,8 @@ abstract class IActivityCommunicationService {
 
 
   Future<List<Activity>> findUserChats(User user);
+
+  Future registerInterestedUser(User user, Activity activity);
 }
 
 
@@ -180,7 +182,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     var activities = <Activity>[];
     var docRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
     var doc = await docRef.get();
-    var chats = (doc.data["chats"] as List)?.cast<String>();
+    var chats = (doc.data[FBQualifiers.USE_CHATS] as List)?.cast<String>();
     for (var id in chats??[]) {
       try {
         var actRef = _firestore.collection(FBQualifiers.ACT_COL).document(id);
@@ -196,6 +198,22 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
       } catch(_) {}
     }
     return activities;
+  }
+
+  @override
+  Future registerInterestedUser(User user, Activity activity) async {
+    var batch = _firestore.batch();
+    
+    var userDocRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
+    var actDocRef = _firestore.collection(FBQualifiers.ACT_COL).document(activity.id);
+    batch.updateData(userDocRef, {
+      FBQualifiers.USE_CHATS : FieldValue.arrayUnion([activity.id])
+    });
+    batch.updateData(actDocRef, {
+      FBQualifiers.ACT_INTERESTED : FieldValue.arrayUnion([user.uid])
+    });
+
+    batch.commit();
   }
 
 }

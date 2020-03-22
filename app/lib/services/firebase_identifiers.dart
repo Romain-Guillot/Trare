@@ -12,6 +12,7 @@ class FBQualifiers {
   static const USE_LOCATION = "country";
   static const USE_LANGUAGES = "languages";
   static const USE_PHOTO = "photoURL";
+  static const USE_CHATS = "chats";
 
   // Activity (ACT)
   static const ACT_COL = "activities";

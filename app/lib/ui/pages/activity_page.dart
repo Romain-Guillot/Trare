@@ -128,12 +128,17 @@ class ParticipationButton extends StatelessWidget {
     ));
   }
 
-  handleParticipation(context) {
-    showSnackbar(
-      context: context, 
-      content: Text(Strings.availableSoon),
-      critical: true,
-    );
+  handleParticipation(context) async {
+    var chatProvider = Provider.of<UserChatsProvider>(context, listen: false);
+    bool success = await chatProvider.onInterested(activity);
+    if (success)
+      openChat(context, activity);
+    else
+      showSnackbar(
+        context: context, 
+        content: Text(Strings.unexpectedError), 
+        critical: true
+      );
   }
 }
 
