@@ -1,4 +1,4 @@
-import 'package:app/chats/messages_provider.dart';
+import 'package:app/chats/messages/messages_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

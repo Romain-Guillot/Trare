@@ -1,5 +1,5 @@
 import 'package:app/activities/activity_page.dart';
-import 'package:app/chats/participants_provider.dart';
+import 'package:app/chats/participants/participants_provider.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/models/user.dart';

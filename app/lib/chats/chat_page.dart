@@ -1,9 +1,9 @@
 import 'package:app/activities/activity_page.dart';
-import 'package:app/chats/participants_page.dart';
-import 'package:app/chats/participants_provider.dart';
 import 'package:app/chats/chat_service.dart';
-import 'package:app/chats/messages_page.dart';
-import 'package:app/chats/messages_provider.dart';
+import 'package:app/chats/messages/messages_page.dart';
+import 'package:app/chats/messages/messages_provider.dart';
+import 'package:app/chats/participants/participants_page.dart';
+import 'package:app/chats/participants/participants_provider.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';

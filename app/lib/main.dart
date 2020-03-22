@@ -6,7 +6,7 @@ import 'package:app/authentication/authentication_page.dart';
 import 'package:app/authentication/authentication_provider.dart';
 import 'package:app/authentication/authentication_service.dart';
 import 'package:app/chats/chat_service.dart';
-import 'package:app/chats/user_chats_provider.dart';
+import 'package:app/chats/user_chats/user_chats_provider.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/shared/providers/permissions_provider.dart';
 import 'package:app/shared/res/dimens.dart';

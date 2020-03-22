@@ -1,5 +1,5 @@
 import 'package:app/chats/chat_page.dart';
-import 'package:app/chats/user_chats_provider.dart';
+import 'package:app/chats/user_chats/user_chats_provider.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/res/strings.dart';
 import 'package:app/shared/utils/snackbar_handler.dart';

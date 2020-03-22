@@ -1,4 +1,4 @@
-import 'package:app/chats/participation_button.dart';
+import 'package:app/chats/participants/participation_button.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/res/dimens.dart';
 import 'package:app/shared/res/strings.dart';

@@ -1,5 +1,5 @@
 import 'package:app/activities/explore_page.dart';
-import 'package:app/chats/user_chats_page.dart';
+import 'package:app/chats/user_chats/user_chats_page.dart';
 import 'package:app/shared/res/strings.dart';
 import 'package:app/user/profile_visualisation_page.dart';
 import 'package:app/user/user_activities_page.dart';

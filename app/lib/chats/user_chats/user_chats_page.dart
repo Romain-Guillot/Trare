@@ -1,5 +1,5 @@
 import 'package:app/chats/chat_page.dart';
-import 'package:app/chats/user_chats_provider.dart';
+import 'package:app/chats/user_chats/user_chats_provider.dart';
 import 'package:app/shared/res/dimens.dart';
 import 'package:app/shared/widgets/activities_widgets.dart';
 import 'package:app/shared/widgets/error_widgets.dart';
