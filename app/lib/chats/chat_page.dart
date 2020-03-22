@@ -1,6 +1,6 @@
 import 'package:app/activities/activity_page.dart';
-import 'package:app/chats/activity_communication_provider.dart';
-import 'package:app/chats/chat_details.dart';
+import 'package:app/chats/participants_page.dart';
+import 'package:app/chats/participants_provider.dart';
 import 'package:app/chats/chat_service.dart';
 import 'package:app/chats/messages_page.dart';
 import 'package:app/chats/messages_provider.dart';
@@ -36,8 +36,8 @@ class ActivityCommunicationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ActivityCommunicationProvider>(
-          create: (_) => ActivityCommunicationProvider(
+        ChangeNotifierProvider<ParticipantsProvider>(
+          create: (_) => ParticipantsProvider(
             activity: activity,
             communicationService: locator<IActivityCommunicationService>(),
             profileService: locator<IProfileService>(),
@@ -55,10 +55,10 @@ class ActivityCommunicationPage extends StatelessWidget {
         appBar: FlatAppBar(title: Text(activity.title),),
         body: SafeArea(
           child: Builder(
-            builder: (context) => Consumer<ActivityCommunicationProvider>(
+            builder: (context) => Consumer<ParticipantsProvider>(
               builder: (_, commProvider, __) {
                 switch (commProvider.state) {
-                  case ActivityCommunicationState.loaded:
+                  case PaticipantsProviderState.loaded:
                     switch (commProvider.userGroup) {
                       case UserGroup.participant:
                       case UserGroup.creator:
@@ -75,11 +75,11 @@ class ActivityCommunicationPage extends StatelessWidget {
                     }
                     break;
 
-                  case ActivityCommunicationState.inProgress:
+                  case PaticipantsProviderState.inProgress:
                     return LoadingWidget();
 
-                  case ActivityCommunicationState.idle:
-                  case ActivityCommunicationState.error:
+                  case PaticipantsProviderState.idle:
+                  case PaticipantsProviderState.error:
                   default:
                     return ErrorWidgetWithReload(
                       message: "Unable to load data",
@@ -125,7 +125,7 @@ class ActivityCommunicationLayout extends StatelessWidget {
               ),
               tabs: [
                 Tab(icon: Icon(Icons.chat)),
-                Consumer<ActivityCommunicationProvider>(
+                Consumer<ParticipantsProvider>(
                   builder: (_, provider, __) {
                     var nbInterested = provider.activityCommunication?.interestedUsers?.length;
                     return Badge(

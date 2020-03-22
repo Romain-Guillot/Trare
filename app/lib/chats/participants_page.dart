@@ -1,5 +1,5 @@
 import 'package:app/activities/activity_page.dart';
-import 'package:app/chats/activity_communication_provider.dart';
+import 'package:app/chats/participants_provider.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/models/user.dart';
@@ -70,14 +70,14 @@ class ActivityCommunicationDetails extends StatelessWidget {
   }
 
   Future onAcceptUser(context, user) async {
-    var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
+    var provider = Provider.of<ParticipantsProvider>(context, listen: false);
     bool status = await provider.acceptParticipant(user);
     if (!status)
       _handleError(context);
   }
 
   Future onRejectUser(context, user) async {
-    var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
+    var provider = Provider.of<ParticipantsProvider>(context, listen: false);
     bool status = await provider.rejectParticipant(user);
     if (!status)
       _handleError(context);

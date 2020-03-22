@@ -9,11 +9,11 @@ import 'package:flutter/widgets.dart';
 
 
 
-/// Represent the current state of the [ActivityCommunicationProvider]
+/// Represent the current state of the [ParticipantsProvider]
 ///
 /// It concerns particularly the state of the loading of the [ActivityCommunication]
 /// instance
-enum ActivityCommunicationState {
+enum PaticipantsProviderState {
   /// Nothing happen, the [ActivityCommunication] is not in loading or loded
   idle,
 
@@ -48,20 +48,20 @@ enum UserGroup {
 ///   - [activity] the current activity
 ///   - [activityCommunication] the communication system related to the [activity]
 ///
-class ActivityCommunicationProvider extends ChangeNotifier {
+class ParticipantsProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
   IProfileService _profileService;
   StreamSubscription _streamComm;
   User _user;
 
-  ActivityCommunicationState state = ActivityCommunicationState.idle;
+  PaticipantsProviderState state = PaticipantsProviderState.idle;
   UserGroup userGroup =  UserGroup.unknown;
   Activity activity;
   ActivityCommunication activityCommunication;
 
 
-  ActivityCommunicationProvider({
+  ParticipantsProvider({
     @required this.activity,
     @required IActivityCommunicationService communicationService,
     @required IProfileService profileService,
@@ -77,7 +77,7 @@ class ActivityCommunicationProvider extends ChangeNotifier {
 
   /// Init the listeners (communication system and messages)
   init() async {
-    state = ActivityCommunicationState.inProgress;
+    state = PaticipantsProviderState.inProgress;
     notifyListeners();
     try {
       _user = await _profileService.getUser();
@@ -86,11 +86,11 @@ class ActivityCommunicationProvider extends ChangeNotifier {
       .listen((activityCommunication) {
         this.activityCommunication = activityCommunication;
         _updateUserGroup();
-        state = ActivityCommunicationState.loaded;
+        state = PaticipantsProviderState.loaded;
         notifyListeners();
        });
     _streamComm.onError((e) {
-      state = ActivityCommunicationState.error;
+      state = PaticipantsProviderState.error;
       notifyListeners();
     });
   }

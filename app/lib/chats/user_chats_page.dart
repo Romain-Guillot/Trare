@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 
 
-class ChatsPage extends StatelessWidget {
+class UserChatsPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
