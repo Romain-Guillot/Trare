@@ -146,14 +146,7 @@ class FirestoreProfileService implements IProfileService {
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
 @visibleForTesting
-class FirestoreUserAdapter implements User {
-  String uid;
-  String country;
-  String description;
-  String name;
-  String spokenLanguages;
-  String urlPhoto;
-  int age;
+class FirestoreUserAdapter extends User {
 
   FirestoreUserAdapter({@required String uid, @required Map<String, Object> userData}) {
     if (userData != null) {

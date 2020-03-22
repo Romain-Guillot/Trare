@@ -228,10 +228,6 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 /// adapter pattern.
 class _FirestoreMessageAdapter extends Message {
 
-  @override DateTime publicationDate;
-  @override String content;
-  @override User user;
-
   _FirestoreMessageAdapter({@required Map<String, dynamic> data, User user }) {
     this.publicationDate = dateFromTimestamp(data[FBQualifiers.MSG_DATE]);
     this.content = data[FBQualifiers.MSG_CONTENT];

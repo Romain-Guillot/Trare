@@ -1,4 +1,6 @@
 import 'package:app/logic/activity_communication_provider.dart';
+import 'package:app/models/activity.dart';
+import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
 import 'package:app/ui/pages/activity_page.dart';
 import 'package:app/ui/shared/dimens.dart';
@@ -24,56 +26,44 @@ import 'package:app/main.dart';
 ///
 class ActivityCommunicationDetails extends StatelessWidget {
   
+  final ActivityCommunication activityCommunication;
+  Activity get activity => activityCommunication.activity;
+
+  ActivityCommunicationDetails({
+    Key key, 
+    @required this.activityCommunication
+  }) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<ActivityCommunicationProvider>(
-      builder: (_, provider, __) {
-        switch (provider.state) {
-          case ActivityCommunicationState.loaded:
-            return ListView(
-              key: GlobalKey(), // because the items can changed
-              children: <Widget>[
-                ItemActivity(
-                  activity: provider.activity,
-                  onPressed: () => openActivity(context, provider.activity),
-                ),
-                FlexSpacer(),
-                UserList(
-                  title: Text(Strings.participantRequestsTitle),
-                  users: provider.activityCommunication.interestedUsers,
-                  actionBarBuilder: (u) => AcceptRejectButtonBar(
-                    user: u,
-                    onAccept: () async => await onAcceptUser(context, u),
-                    onReject: () async => await onRejectUser(context, u),
-                  ),
-                ),
-                FlexSpacer(),
-                UserList(
-                  title: Text(Strings.participantsTitle),
-                  users: provider.activityCommunication.participants,
-                  empty: Text("No participant yet"),
-                ),
-              ],
-            );
-          case ActivityCommunicationState.inProgress:
-            return LoadingWidget();
-
-          case ActivityCommunicationState.idle:
-          case ActivityCommunicationState.error:
-          default:
-            return ErrorWidgetWithReload(
-              message: "Unable to load data",
-              onReload: ( ) => provider.init()
-            );
-        }
-      }
+    return ListView(
+      key: GlobalKey(), // because the items can changed
+      children: <Widget>[
+        ItemActivity(
+          activity: activity,
+          onPressed: () => openActivity(context, activity),
+        ),
+        FlexSpacer(),
+        UserList(
+          title: Text(Strings.participantRequestsTitle),
+          users: activityCommunication.interestedUsers,
+          actionBarBuilder: (u) => AcceptRejectButtonBar(
+            user: u,
+            onAccept: () async => await onAcceptUser(context, u),
+            onReject: () async => await onRejectUser(context, u),
+          ),
+        ),
+        FlexSpacer(),
+        UserList(
+          title: Text(Strings.participantsTitle),
+          users: activityCommunication.participants,
+          empty: Text("No participant yet"),
+        ),
+      ],
     );
   }
 
-  reloadCommunicationSystem(context) {
-    var provider = Provider.of<ActivityCommunicationProvider>(context, listen: false);
-    provider.init();
-  }
+
 
   openActivity(context, activity) {
     Navigator.push(context, MaterialPageRoute(

@@ -29,7 +29,13 @@ class User {
     this.country, 
     this.urlPhoto
   });
-
+  
   @override
   String toString() => "Name : $name";
+
+  @override
+  bool operator ==(other) => (other is User) && other.uid == uid;
+
+  @override
+  int get hashCode => uid.hashCode;
 }

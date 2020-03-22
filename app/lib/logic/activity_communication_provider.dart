@@ -4,6 +4,7 @@ import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
 import 'package:app/services/activity_communication_service.dart';
+import 'package:app/services/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -26,6 +27,17 @@ enum ActivityCommunicationState {
   error,
 }
 
+enum UserGroup {
+
+  creator,
+
+  participant,
+
+  interested,
+
+  unknown,
+}
+
 
 
 /// Handle the communication system related to the [activity]
@@ -39,17 +51,22 @@ enum ActivityCommunicationState {
 class ActivityCommunicationProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
+  IProfileService _profileService;
   StreamSubscription _streamComm;
+  User _user;
 
   ActivityCommunicationState state = ActivityCommunicationState.idle;
+  UserGroup userGroup =  UserGroup.unknown;
   Activity activity;
   ActivityCommunication activityCommunication;
 
 
   ActivityCommunicationProvider({
     @required this.activity,
-    @required IActivityCommunicationService communicationService
-  }) : this._communicationService = communicationService;
+    @required IActivityCommunicationService communicationService,
+    @required IProfileService profileService,
+  }) : _communicationService = communicationService,
+       _profileService = profileService;
 
 
   @override
@@ -62,10 +79,13 @@ class ActivityCommunicationProvider extends ChangeNotifier {
   init() async {
     state = ActivityCommunicationState.inProgress;
     notifyListeners();
-
+    try {
+      _user = await _profileService.getUser();
+    } catch (_) {}
     _streamComm = _communicationService.retreiveActivityCommunication(activity)
       .listen((activityCommunication) {
         this.activityCommunication = activityCommunication;
+        _updateUserGroup();
         state = ActivityCommunicationState.loaded;
         notifyListeners();
        });
@@ -73,6 +93,17 @@ class ActivityCommunicationProvider extends ChangeNotifier {
       state = ActivityCommunicationState.error;
       notifyListeners();
     });
+  }
+
+  _updateUserGroup() {
+    if (activity.user == _user)
+      userGroup = UserGroup.creator;
+    else if (activityCommunication.interestedUsers.contains(_user))
+      userGroup = UserGroup.interested;
+    else if (activityCommunication.participants.contains(_user))
+      userGroup = UserGroup.participant;
+    else
+      userGroup = UserGroup.unknown;
   }
 
 

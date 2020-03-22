@@ -168,17 +168,10 @@ class FirestoreActivityService implements IActivityService {
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
 class FirestoreActivityAdapter extends Activity {
-  
-  @override DateTime createdDate;
-  @override String title;
-  @override User user;
-  @override String description;
-  @override DateTime beginDate;
-  @override DateTime endDate;
-  @override Position location;
-  @override String id;
 
-  FirestoreActivityAdapter({@required this.id, @required Map<String, dynamic> data, @required this.user}) {
+  FirestoreActivityAdapter({@required String id, @required Map<String, dynamic> data, @required User user}) {
+    this.id = id;
+    this.user = user;
     this.createdDate = dateFromTimestamp(data[FBQualifiers.ACT_CREATED_DATE]);
     this.title = data[FBQualifiers.ACT_TITLE];
     this.description = data[FBQualifiers.ACT_DESCRIPTION];
