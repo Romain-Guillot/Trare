@@ -1,8 +1,8 @@
-import 'package:app/services/activity_communication_service.dart';
-import 'package:app/services/activity_service.dart';
-import 'package:app/services/authentication_service.dart';
-import 'package:app/services/profile_service.dart';
-import 'package:app/services/user_location_service.dart';
+import 'package:app/activities/activity_service.dart';
+import 'package:app/authentication/authentication_service.dart';
+import 'package:app/chats/chat_service.dart';
+import 'package:app/shared/services/user_location_service.dart';
+import 'package:app/user/profile_service.dart';
 import 'package:get_it/get_it.dart';
 
 /// Service locator to retrieve services

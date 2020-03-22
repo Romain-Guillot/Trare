@@ -1,7 +1,7 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
-import 'package:app/models/activity.dart';
-import 'package:app/models/user.dart';
-import 'package:app/services/activity_service.dart';
+import 'package:app/activities/activity_service.dart';
+import 'package:app/shared/models/activity.dart';
+import 'package:app/shared/models/user.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'shared_models.dart';

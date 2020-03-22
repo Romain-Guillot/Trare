@@ -1,5 +1,5 @@
 // Authors: Romain Guillot and Mamadou Diouldé Diallo
-import 'package:app/logic/activity_explore_provider.dart';
+import 'package:app/activities/activity_explore_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mocks/activity_service_mock.dart';
