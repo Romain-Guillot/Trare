@@ -1,4 +1,6 @@
+import 'package:app/logic/user_chats_provider.dart';
 import 'package:app/models/activity.dart';
+import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/shared/strings.dart';
 import 'package:app/ui/utils/geocoding.dart';
@@ -13,6 +15,7 @@ import 'package:app/ui/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -40,7 +43,9 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FlatAppBar(
-        action: ParticipationButton()
+        action: ParticipationButton(
+          activity: activity,
+        )
       ),
 
       body: SingleChildScrollView(
@@ -80,13 +85,47 @@ class ActivityPage extends StatelessWidget {
 /// It will initiate the communication system between the current user (the 
 /// user who click on this button) and the creator of the activity.
 class ParticipationButton extends StatelessWidget {
+
+  final Activity activity;
+
+  ParticipationButton({Key key, @required this.activity}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    return Button(
-        child: Text(Strings.iAmInterested),
-        onPressed: () => handleParticipation(context),
+    return Consumer<UserChatsProvider>(
+      builder: (_, chatsProvider, __) {
+        switch (chatsProvider.state) {
+          case UserChatsState.loaded:
+            var isAlreadyInterested = chatsProvider.activities.contains(activity);
+            if (isAlreadyInterested)
+              return Button(
+                child: Text("Chat"),
+                icon: Icon(Icons.chat),
+                onPressed: () => openChat(context, activity),
+              );
+            // else
+            return Button(
+              child: Text(Strings.iAmInterested),
+              onPressed: () => handleParticipation(context),
+            );
+          
+          case UserChatsState.inProgress:
+            return Text(Strings.loading);
+
+          case UserChatsState.idle:
+          case UserChatsState.error:
+          default:
+            return Text("Error");
+        }
+
+      } 
     );
+  }
+
+  openChat(context, activity) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => ActivityCommunicationPage(activity: activity),
+    ));
   }
 
   handleParticipation(context) {

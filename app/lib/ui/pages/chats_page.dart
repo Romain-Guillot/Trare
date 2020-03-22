@@ -1,5 +1,4 @@
 import 'package:app/logic/user_chats_provider.dart';
-import 'package:app/ui/pages/activity_communication_details.dart';
 import 'package:app/ui/pages/activity_communication_page.dart';
 import 'package:app/ui/shared/dimens.dart';
 import 'package:app/ui/widgets/activities_widgets.dart';

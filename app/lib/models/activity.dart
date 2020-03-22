@@ -46,4 +46,10 @@ class Activity {
     @required this.endDate,
     @required this.location,
   });
+
+  @override
+  int get hashCode => this.id == null ? super.hashCode : this.id.hashCode;
+
+  @override
+  bool operator ==(other) => other is Activity && other.id == this.id;
 }
