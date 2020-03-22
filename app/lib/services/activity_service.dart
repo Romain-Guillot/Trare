@@ -69,7 +69,7 @@ class FirestoreActivityService implements IActivityService {
   /// then the query is perfomed with the tranformed position and [radius]
   /// 
   /// Then, we retreive all activities data that we adapt with 
-  /// [_FirestoreActivityAdapter] adapter to obtain [Activity] objects.
+  /// [FirestoreActivityAdapter] adapter to obtain [Activity] objects.
   /// We use [Completer] to complete the future once we retreive all activities
   @override
   Future<List<Activity>> retreiveActivities({@required Position position, @required double radius}) async {
@@ -93,7 +93,7 @@ class FirestoreActivityService implements IActivityService {
           var userUID = docSnap[FBQualifiers.ACT_USER];
           if (userUID != null) {
             var user = await _profileService.getUser(userUID: userUID);
-            var activity = _FirestoreActivityAdapter(
+            var activity = FirestoreActivityAdapter(
               id: docSnap.documentID,
               data: docSnap.data, 
               user: user
@@ -114,11 +114,11 @@ class FirestoreActivityService implements IActivityService {
   ///
   @override
   Future<Activity> createActivity(Activity activity) async {
-    var activityData = _FirestoreActivityAdapter.toMap(activity);
+    var activityData = FirestoreActivityAdapter.toMap(activity);
     if (activityData != null) {
       var activityDoc = _firestore.collection(FBQualifiers.ACT_COL);
       await activityDoc.add(activityData);
-      return _FirestoreActivityAdapter(
+      return FirestoreActivityAdapter(
         id: activityDoc.id,
         data: activityData, 
         user: activity.user
@@ -142,7 +142,7 @@ class FirestoreActivityService implements IActivityService {
     activitiesUsercollection.then((QuerySnapshot snapshot) async {
       snapshot.documents.forEach((docsnap) {
         try{
-          var activity = _FirestoreActivityAdapter(
+          var activity = FirestoreActivityAdapter(
             id: docsnap.documentID,
             data: docsnap.data, 
             user: user
@@ -167,7 +167,7 @@ class FirestoreActivityService implements IActivityService {
 /// 
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
-class _FirestoreActivityAdapter extends Activity {
+class FirestoreActivityAdapter extends Activity {
   
   @override DateTime createdDate;
   @override String title;
@@ -178,7 +178,7 @@ class _FirestoreActivityAdapter extends Activity {
   @override Position location;
   @override String id;
 
-  _FirestoreActivityAdapter({@required this.id, @required Map<String, dynamic> data, @required this.user}) {
+  FirestoreActivityAdapter({@required this.id, @required Map<String, dynamic> data, @required this.user}) {
     this.createdDate = dateFromTimestamp(data[FBQualifiers.ACT_CREATED_DATE]);
     this.title = data[FBQualifiers.ACT_TITLE];
     this.description = data[FBQualifiers.ACT_DESCRIPTION];
@@ -217,6 +217,6 @@ class _FirestoreActivityAdapter extends Activity {
     FBQualifiers.ACT_DESCRIPTION: activity.description,
     FBQualifiers.ACT_BEGIN_DATE: Timestamp.fromDate(activity.beginDate),
     FBQualifiers.ACT_END_DATE: Timestamp.fromDate(activity.endDate),
-    FBQualifiers.ACT_LOCATION: _FirestoreActivityAdapter._buildGeoPosition(activity.location)
+    FBQualifiers.ACT_LOCATION: FirestoreActivityAdapter._buildGeoPosition(activity.location)
   };
 }

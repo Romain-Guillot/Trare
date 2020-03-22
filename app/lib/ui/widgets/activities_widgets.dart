@@ -19,11 +19,18 @@ import 'package:app/main.dart';
 /// 
 /// When the user tap on an activity item, it will open it in a new page :
 /// [ActivityPage]
+/// If you want to override this behavior you can provide you own [onItemTap]
+/// function
 class ListItemsActivities extends StatelessWidget {
 
   final List<Activity> activities;
+  final Function(Activity) onItemTap;
 
-  ListItemsActivities({Key key, @required this.activities}) : super(key: key);
+  ListItemsActivities({
+    Key key, 
+    @required this.activities,
+    this.onItemTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,9 @@ class ListItemsActivities extends StatelessWidget {
         var activity = activities[position];
         return ItemActivity(
           activity: activity,
-          onPressed: () => openActivity(context, activity),
+          onPressed: onItemTap == null
+          ? () => openActivity(context, activity)
+          : () => onItemTap(activity)
         );
       } 
     );

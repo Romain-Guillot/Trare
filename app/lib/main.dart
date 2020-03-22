@@ -3,7 +3,9 @@ import 'package:app/logic/activity_user_provider.dart';
 import 'package:app/logic/authentication_provider.dart';
 import 'package:app/logic/permissions_provider.dart';
 import 'package:app/logic/profile_provider.dart';
+import 'package:app/logic/user_chats_provider.dart';
 import 'package:app/service_locator.dart';
+import 'package:app/services/activity_communication_service.dart';
 import 'package:app/services/activity_service.dart';
 import 'package:app/services/authentication_service.dart';
 import 'package:app/services/profile_service.dart';
@@ -113,6 +115,12 @@ class MyApp extends StatelessWidget {
                     LocationPermissionProvider(
                       locationService: locator<IUserLocationService>()
                     )
+                  ),
+                  ChangeNotifierProvider<UserChatsProvider>(create: (context) =>
+                    UserChatsProvider(
+                      profileService: locator<IProfileService>(),
+                      communicationService: locator<IActivityCommunicationService>() 
+                    )..init()
                   ),
                 ],
                 child: AppLayout()

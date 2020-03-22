@@ -24,7 +24,7 @@ class Activity {
   DateTime endDate;
   Position location;
 
-  bool get isEnded => endDate?.isAfter(DateTime.now())??false;
+  bool get isEnded => endDate?.isBefore(DateTime.now())??false;
 
 
   Activity({

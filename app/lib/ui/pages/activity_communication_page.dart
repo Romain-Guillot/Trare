@@ -1,8 +1,6 @@
 import 'package:app/logic/activity_chat_provider.dart';
 import 'package:app/logic/activity_communication_provider.dart';
 import 'package:app/models/activity.dart';
-import 'package:app/models/activity_communication.dart';
-import 'package:app/models/user.dart';
 import 'package:app/service_locator.dart';
 import 'package:app/services/activity_communication_service.dart';
 import 'package:app/ui/pages/activity_communication_details.dart';
@@ -11,38 +9,9 @@ import 'package:app/ui/widgets/flat_app_bar.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 
-final mockActivity = Activity(
-  id: "4FiW8TngKJFlbjOW2C80",
-  title: "Mock activity",
-  description: "Mock description",
-  beginDate: DateTime.now(),
-  endDate: DateTime.now(),
-  createdDate: DateTime.now(),
-  location: Position(latitude: 0, longitude: 0),
-  user: User(
-    uid: "sYP3lIJjCqTexUjQ1q3gOOUUjdo2",
-    age: 21,
-    name: "Mock user",
-  )
-);
-
-final mockActivity2 = Activity(
-  id: "4Er6x2hmZ2wZYcy2Uy37",
-  title: "Mock activity",
-  description: "Mock description",
-  beginDate: DateTime.now(),
-  endDate: DateTime.now(),
-  createdDate: DateTime.now(),
-  location: Position(latitude: 0, longitude: 0),
-  user: User(
-    age: 21,
-    name: "Mock user",
-  )
-);
 
 
 

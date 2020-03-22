@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/models/activity.dart';
 import 'package:app/models/activity_communication.dart';
 import 'package:app/models/user.dart';
+import 'package:app/services/activity_service.dart';
 import 'package:app/services/firebase_identifiers.dart';
 import 'package:app/services/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,6 +45,9 @@ abstract class IActivityCommunicationService {
   /// null is never return
   /// An exception can be throwed if an error occured
   Future<Message> addMessage(Activity activity, Message message);
+
+
+  Future<List<Activity>> findUserChats(User user);
 }
 
 
@@ -169,6 +173,29 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     }
     print("");
     return res;
+  }
+
+  @override
+  Future<List<Activity>> findUserChats(User user) async {
+    var activities = <Activity>[];
+    var docRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
+    var doc = await docRef.get();
+    var chats = (doc.data["chats"] as List)?.cast<String>();
+    for (var id in chats??[]) {
+      try {
+        var actRef = _firestore.collection(FBQualifiers.ACT_COL).document(id);
+        var actDoc = await actRef.get();
+        var actData = actDoc.data;
+        var user = await _profileService.getUser(userUID: actData[FBQualifiers.ACT_USER]);
+        var activity = FirestoreActivityAdapter(
+          id: actDoc.documentID,
+          data: actData, 
+          user: user,
+        );
+        activities.add(activity);
+      } catch(_) {}
+    }
+    return activities;
   }
 
 }

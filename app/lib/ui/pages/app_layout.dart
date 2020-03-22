@@ -1,4 +1,4 @@
-import 'package:app/ui/pages/activity_communication_page.dart';
+import 'package:app/ui/pages/chats_page.dart';
 import 'package:app/ui/pages/explore_page.dart';
 import 'package:app/ui/pages/profile_visualisation_page.dart';
 import 'package:app/ui/pages/user_activities_page.dart';
@@ -39,12 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _widgetOptions = <Widget>[
       ExplorePage(),
-      Center(child:Column(
-        children: <Widget>[
-          RaisedButton(child: Text("TEST1"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity,))),),
-          RaisedButton(child: Text("TEST2"), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ActivityCommunicationPage(activity: mockActivity2,))),),
-        ],
-      )),
+      ChatsPage(),
       UserActivitiesPage(),
       ConnectedUserProfileView(),
     ];
