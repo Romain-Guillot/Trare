@@ -130,7 +130,7 @@ class ActivityCommunicationLayout extends StatelessWidget {
                     var nbInterested = provider.activityCommunication?.interestedUsers?.length;
                     return Badge(
                       badgeContent: Text(nbInterested?.toString()??"", style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-                      showBadge: nbInterested != null,
+                      showBadge: nbInterested != null && nbInterested >= 1,
                       badgeColor: Theme.of(context).colorScheme.error,
                       child: Tab(icon: Icon(Icons.info))
                     );
