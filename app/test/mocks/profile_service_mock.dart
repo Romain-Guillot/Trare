@@ -1,6 +1,5 @@
-// Authors: Romain Guillot and Mamadou Diouldé Diallo
-import 'package:app/models/user.dart';
-import 'package:app/services/profile_service.dart';
+import 'package:app/shared/models/user.dart';
+import 'package:app/user/profile_service.dart';
 
 import 'shared_models.dart';
 

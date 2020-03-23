@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:app/models/activity_communication.dart';
+import 'package:app/activities/activity_service.dart';
 import 'package:app/shared/models/activity.dart';
+import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/models/user.dart';
 import 'package:app/shared/res/firebase_identifiers.dart';
 import 'package:app/user/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -43,6 +45,11 @@ abstract class IActivityCommunicationService {
   /// null is never return
   /// An exception can be throwed if an error occured
   Future<Message> addMessage(Activity activity, Message message);
+
+
+  Future<List<Activity>> findUserChats(User user);
+
+  Future registerInterestedUser(User user, Activity activity);
 }
 
 
@@ -67,20 +74,37 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id);
 
-    activityDoc.snapshots().listen((docSnap) async {      
-      var interestedUsersIds = docSnap.data[FBQualifiers.ACT_INTERESTED] as List;
-      var interestedUsers = await _idsToUsers(interestedUsersIds.cast<String>());
-      
-      var participantsIds = docSnap.data[FBQualifiers.ACT_PARTICIPANTS] as List;
-      var participants = await _idsToUsers(participantsIds.cast<String>());
-      
-      var comm = ActivityCommunication(
-        activity: activity,
-        interestedUsers: interestedUsers,
-        participants: participants
-      );
-      streamController.add(comm);
-    });
+    FirebaseAuth.instance.currentUser().then((fbUser) {
+      if (fbUser == null) {
+        streamController.addError(null);
+        return ;
+      }
+      activityDoc.snapshots().listen((doc) async {
+        try {
+          var interested = <User>[], participants = <User>[];
+
+          if (fbUser.uid == activity.user.uid) {
+            var interestedUids = doc.data[FBQualifiers.ACT_INTERESTED] as List;
+            interested = await _idsToUsers(interestedUids?.cast<String>());
+          }
+        
+          var participantsIds = doc.data[FBQualifiers.ACT_PARTICIPANTS] as List;
+          participants = await _idsToUsers(participantsIds?.cast<String>());
+          
+          var comm = ActivityCommunication(
+            activity: activity,
+            interestedUsers: interested,
+            participants: participants
+          );
+          streamController.add(comm);
+        } catch (_) {
+          streamController.addError(null);
+        }
+      }).onError((_) {
+        streamController.addError(null);});
+    }).catchError((_) {
+      streamController.addError(null);
+    } );
 
     return streamController.stream;
   }
@@ -126,7 +150,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
   }
 
 
-  @override 
+  @override
   Future<Message> addMessage(Activity activity, Message message) async {
     var messageData = _FirestoreMessageAdapter.toMapMessageIntoNoSQL(message);
 
@@ -143,13 +167,53 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
   Future<List<User>> _idsToUsers(List<String> ids) async {
     var res = <User>[];
-    for (var id in ids) {
+    for (var id in ids??[]) {
       try {
         var user = await _profileService.getUser(userUID: id);
         res.add(user);
       } catch (_) { }
     }
+    print("");
     return res;
+  }
+
+  @override
+  Future<List<Activity>> findUserChats(User user) async {
+    var activities = <Activity>[];
+    var docRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
+    var doc = await docRef.get();
+    var chats = (doc.data[FBQualifiers.USE_CHATS] as List)?.cast<String>();
+    for (var id in chats??[]) {
+      try {
+        var actRef = _firestore.collection(FBQualifiers.ACT_COL).document(id);
+        var actDoc = await actRef.get();
+        var actData = actDoc.data;
+        var user = await _profileService.getUser(userUID: actData[FBQualifiers.ACT_USER]);
+        var activity = FirestoreActivityAdapter(
+          id: actDoc.documentID,
+          data: actData, 
+          user: user,
+        );
+        activities.add(activity);
+      } catch(_) {}
+    }
+    return activities;
+  }
+
+  @override
+  Future registerInterestedUser(User user, Activity activity) async {
+    var batch = _firestore.batch();
+    
+    var userDocRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
+    var actDocRef = _firestore.collection(FBQualifiers.ACT_COL).document(activity.id);
+    batch.updateData(userDocRef, {
+      FBQualifiers.USE_CHATS : FieldValue.arrayUnion([activity.id])
+    });
+    batch.updateData(actDocRef, {
+      FBQualifiers.ACT_INTERESTED : FieldValue.arrayUnion([user.uid])
+    });
+
+    batch.commit();
   }
 
 }
@@ -163,10 +227,6 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 /// See https://refactoring.guru/design-patterns/adapter to know more about the
 /// adapter pattern.
 class _FirestoreMessageAdapter extends Message {
-
-  @override DateTime publicationDate;
-  @override String content;
-  @override User user;
 
   _FirestoreMessageAdapter({@required Map<String, dynamic> data, User user }) {
     this.publicationDate = dateFromTimestamp(data[FBQualifiers.MSG_DATE]);

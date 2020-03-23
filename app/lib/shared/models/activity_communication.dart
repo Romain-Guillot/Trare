@@ -3,6 +3,7 @@ import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/user.dart';
 import 'package:flutter/foundation.dart';
 
+
 /// Model to represent the communication system of an activity
 /// 
 /// See the documentation `documents > archi_models.md` for more information
@@ -11,20 +12,18 @@ import 'package:flutter/foundation.dart';
 /// it's responsability it's just a representation of an activity.
 /// Some project used the models to convert the model to json ([Map]) of to
 /// convert the json to the model for noSQL database. We decided to NOT do that 
-/// here because these transformations are dependents of the noSQL database
+/// here because these transformations are dependents of the noSQL dataabse
 /// strucutre (name of fields). These transformations are directly applied 
 /// in the corresponding services (through adapters)
 class ActivityCommunication {
   Activity activity;
   List<User> participants;
   List<User> interestedUsers;
-  List<Message> messages;
 
   ActivityCommunication({
     @required this.activity,
     this.participants,
     this.interestedUsers,
-    this.messages,
   });
 }
 
@@ -38,7 +37,7 @@ class ActivityCommunication {
 /// it's responsability it's just a representation of an activity.
 /// Some project used the models to convert the model to json ([Map]) of to
 /// convert the json to the model for noSQL database. We decided to NOT do that 
-/// here because these transformations are dependents of the noSQL database
+/// here because these transformations are dependents of the noSQL dataabse
 /// strucutre (name of fields). These transformations are directly applied 
 /// in the corresponding services (through adapters)
 class Message {

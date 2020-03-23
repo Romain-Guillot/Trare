@@ -1,19 +1,21 @@
-import 'package:app/logic/activity_explore_provider.dart';
-import 'package:app/logic/activity_user_provider.dart';
-import 'package:app/logic/authentication_provider.dart';
-import 'package:app/logic/permissions_provider.dart';
-import 'package:app/logic/profile_provider.dart';
+import 'package:app/activities/activity_explore_provider.dart';
+import 'package:app/activities/activity_service.dart';
+import 'package:app/activities/activity_user_provider.dart';
+import 'package:app/app_layout.dart';
+import 'package:app/authentication/authentication_page.dart';
+import 'package:app/authentication/authentication_provider.dart';
+import 'package:app/authentication/authentication_service.dart';
+import 'package:app/chats/chat_service.dart';
+import 'package:app/chats/user_chats/user_chats_provider.dart';
 import 'package:app/service_locator.dart';
-import 'package:app/services/activity_service.dart';
-import 'package:app/services/authentication_service.dart';
-import 'package:app/services/profile_service.dart';
-import 'package:app/services/user_location_service.dart';
-import 'package:app/ui/pages/app_layout.dart';
-import 'package:app/ui/pages/authentication_page.dart';
-import 'package:app/ui/shared/strings.dart';
-import 'package:app/ui/shared/dimens.dart';
-import 'package:app/ui/widgets/error_widgets.dart';
-import 'package:app/ui/widgets/loading_widgets.dart';
+import 'package:app/shared/providers/permissions_provider.dart';
+import 'package:app/shared/res/dimens.dart';
+import 'package:app/shared/res/strings.dart';
+import 'package:app/shared/services/user_location_service.dart';
+import 'package:app/shared/widgets/error_widgets.dart';
+import 'package:app/shared/widgets/loading_widgets.dart';
+import 'package:app/user/profile_provider.dart';
+import 'package:app/user/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -113,6 +115,13 @@ class MyApp extends StatelessWidget {
                     LocationPermissionProvider(
                       locationService: locator<IUserLocationService>()
                     )
+                  ),
+                  ChangeNotifierProvider<UserChatsProvider>(create: (context) =>
+                    UserChatsProvider(
+                      profileService: locator<IProfileService>(),
+                      activityService: locator<IActivityService>(),
+                      communicationService: locator<IActivityCommunicationService>() 
+                    )..init()
                   ),
                 ],
                 child: AppLayout()
