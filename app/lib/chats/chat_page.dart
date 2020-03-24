@@ -100,10 +100,11 @@ class ActivityCommunicationPage extends StatelessWidget {
 class ActivityCommunicationLayout extends StatelessWidget {
 
   final ActivityCommunication activityCommunication;
+  final MessagesProvider messagesProvider;
 
   ActivityCommunicationLayout({
     Key key, 
-    @required this.activityCommunication
+    @required this.activityCommunication, this.messagesProvider
   }) : super(key: key);
 
 
@@ -142,7 +143,9 @@ class ActivityCommunicationLayout extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: <Widget>[
-                MessagesPage(), // replace with your widget
+                MessagesPage(
+                  messagesProvider: messagesProvider ,
+                ), // replace with your widget
                 ActivityCommunicationDetails(
                   activityCommunication: activityCommunication,
                 ),
