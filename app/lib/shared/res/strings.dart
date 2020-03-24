@@ -127,6 +127,7 @@ class Strings {
   }
   static const String requiredMap = "Required";
   static const String requiredDate = "Required";
+  static const String messageTextfield = "Type your message";
 
 
   // Activity communication details
