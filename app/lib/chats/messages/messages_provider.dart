@@ -40,8 +40,8 @@ class MessagesProvider extends ChangeNotifier {
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
   MessagesState state = MessagesState.inProgress;
-   Activity _activity;
-   static Stream<List<Message>> messages;
+  Activity activity;
+  Stream<List<Message>> messages;
 
 
 
@@ -49,10 +49,8 @@ class MessagesProvider extends ChangeNotifier {
     @required Activity activity,
     @required IActivityCommunicationService communicationService
   }) : 
-      this._communicationService = communicationService,
-      this._activity = activity;
-  
-  Activity get activity => _activity;
+      this._communicationService = communicationService;
+
        
 
 

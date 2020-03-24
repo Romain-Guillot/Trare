@@ -1,74 +1,40 @@
-import 'package:app/chats/chat_service.dart';
+
 import 'package:app/chats/messages/messages_provider.dart';
 import 'package:app/shared/models/activity.dart';
 //import 'package:app/models/activity_communication.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/res/strings.dart';
-import 'package:app/user/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 
 
 class MessagesPage extends StatelessWidget {
   static  Activity activity;
-  static IProfileService _profileService;
-  static IActivityCommunicationService communicationService = FirestoreActivityCommunicationService(profileService: _profileService);
-   MessagesProvider messagesProvider = new MessagesProvider(activity: activity, communicationService: communicationService);
-  
-
-  MessagesPage({Key key, @required this.messagesProvider}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ChatScreen(messagesProvider: this.messagesProvider),
-    );
-
-
-  
-  }
-
-
-
-}
-
-class ChatScreen extends StatefulWidget {
-   final MessagesProvider messagesProvider;
-
-   ChatScreen({Key key, @required this.messagesProvider}) : super(key: key);
-
-  @override
-  State createState() => new ChatScreenState(messages: MessagesProvider.messages);
-
-}
-
-class ChatScreenState extends State<ChatScreen> {
-  final Stream<List<Message>> messages;
   final TextEditingController textEditingController = new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
   final FocusNode focusNode = new FocusNode();
+  
 
-  ChatScreenState({Key key, @required this.messages});
-
+  
   @override
   Widget build(BuildContext context) {
+    var messages = Provider.of<MessagesProvider>(context, listen: false).messages;
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              // List of messages
-              buildListMessage(),
+          // buildListMessages
+          buildListMessage(messages),
 
-              // Input content
-              buildInput(),
-            ],
-          ),
-
-          // Loading
+          // buildInput
+          buildInput(),
         ],
-      ),
+      )
     );
+
+    
+  
   }
 
   Widget buildInput() {
@@ -116,7 +82,7 @@ class ChatScreenState extends State<ChatScreen> {
     
   }
 
-  Widget buildItem(Message message) {
+   Widget buildItem(Message message) {
     return Container(
       child: Column(
         children: <Widget>[
@@ -133,11 +99,9 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget buildListMessage() {
+   Widget buildListMessage(Stream<List<Message>> messages) {
     return Flexible(
-      child: messages == null 
-           ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.green)))
-           : StreamBuilder(
+      child: StreamBuilder<List<Message>>(
              stream: messages,
              builder: (context, snapshot) {
                if(!snapshot.hasData) {
@@ -147,7 +111,7 @@ class ChatScreenState extends State<ChatScreen> {
                } else {
                  return ListView.builder(
                    padding: EdgeInsets.all(10.0),
-                   itemBuilder: (context, index) => buildItem(snapshot.data),
+                   itemBuilder: (context, index) => buildItem(snapshot.data[index]),
                    );
                }
              },
@@ -155,7 +119,4 @@ class ChatScreenState extends State<ChatScreen> {
     );
 
   }
-
-
 }
-
