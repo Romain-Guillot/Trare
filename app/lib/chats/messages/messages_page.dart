@@ -1,7 +1,6 @@
 
 import 'package:app/chats/messages/messages_provider.dart';
 import 'package:app/shared/models/activity.dart';
-//import 'package:app/models/activity_communication.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/res/strings.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +10,24 @@ import 'package:provider/provider.dart';
 
 
 class MessagesPage extends StatelessWidget {
-  static  Activity activity;
+  final ActivityCommunication activityCommunication;
+  Activity get activity => activityCommunication.activity;
+  MessagesPage({
+    Key key,
+    @required this.activityCommunication
+  }): super(key: key);
+  
   final TextEditingController textEditingController = new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
   final FocusNode focusNode = new FocusNode();
   
 
-  
+ 
   @override
   Widget build(BuildContext context) {
-    var messages = Provider.of<MessagesProvider>(context, listen: false).messages;
+     var provider = Provider.of<MessagesProvider>(context, listen: false);
+     provider.init();
+     var messages = provider.messages;
     return Scaffold(
       body: Column(
         children: <Widget>[

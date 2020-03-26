@@ -143,7 +143,9 @@ class ActivityCommunicationLayout extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: <Widget>[
-                MessagesPage(), // replace with your widget
+                MessagesPage(
+                  activityCommunication: activityCommunication,
+                ), // replace with your widget
                 ActivityCommunicationDetails(
                   activityCommunication: activityCommunication,
                 ),

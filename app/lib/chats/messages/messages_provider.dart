@@ -40,8 +40,10 @@ class MessagesProvider extends ChangeNotifier {
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
   MessagesState state = MessagesState.inProgress;
-  Activity activity;
+  
   Stream<List<Message>> messages;
+  List<Message> listMessages;
+  Activity activity;
 
 
 
@@ -50,6 +52,7 @@ class MessagesProvider extends ChangeNotifier {
     @required IActivityCommunicationService communicationService
   }) : 
       this._communicationService = communicationService;
+
 
        
 
@@ -62,9 +65,14 @@ class MessagesProvider extends ChangeNotifier {
   }
 
 
-  init() {
-    messages = _communicationService.retrieveMessages(activity);
-    if(messages != null){
+  init() async {
+    _streamMessages = _communicationService.retrieveMessages(activity)
+                .listen((listMessage) { 
+                    this.listMessages = listMessage;
+                    notifyListeners();
+                });
+    if(_streamMessages != null){
+      messages = _communicationService.retrieveMessages(activity);
       state = MessagesState.loadedMessages;
     }
   }
