@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app/chats/chat_service.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
+import 'package:app/shared/models/user.dart';
+import 'package:app/user/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
@@ -39,19 +41,22 @@ class MessagesProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
+  IProfileService _profileService;
+   User user;
   MessagesState state = MessagesState.inProgress;
   
   Stream<List<Message>> messages;
-  List<Message> listMessages;
   Activity activity;
+ 
 
 
 
   MessagesProvider({
-    @required Activity activity,
-    @required IActivityCommunicationService communicationService
-  }) : 
-      this._communicationService = communicationService;
+    @required this.activity,
+    @required IActivityCommunicationService communicationService,
+    @required IProfileService profileService
+  }) :_communicationService = communicationService,
+      _profileService = profileService;
 
 
        
@@ -66,9 +71,13 @@ class MessagesProvider extends ChangeNotifier {
 
 
   init() async {
+    state = MessagesState.inProgress;
+    notifyListeners();
+    try{
+      user = await _profileService.getUser();
+    } catch (_) {}
     _streamMessages = _communicationService.retrieveMessages(activity)
                 .listen((listMessage) { 
-                    this.listMessages = listMessage;
                     notifyListeners();
                 });
     if(_streamMessages != null){
@@ -84,8 +93,9 @@ class MessagesProvider extends ChangeNotifier {
   /// Returns null if an occured occured
   Future<Message> addMessage( Message newMessage) async {
     try{
-      var message = await _communicationService.addMessage(activity, newMessage);
       init();
+      //newMessage.setUser(user);
+      var message = await _communicationService.addMessage(activity, newMessage);
       return message;
     } catch(_) {
       state = MessagesState.error;

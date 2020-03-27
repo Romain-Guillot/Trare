@@ -48,7 +48,10 @@ class Message {
 
   Message({
     this.id,
+    this.user,
     @required this.content,
     @required this.publicationDate,
   });
+
+  void setUser(User user) {this.user = user;}
 }

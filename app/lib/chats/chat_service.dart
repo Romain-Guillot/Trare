@@ -114,14 +114,17 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     var messagesStreamController = StreamController<List<Message>>();
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id)
-                                .collection(FBQualifiers.MSG_COL);
+                                .collection(FBQualifiers.MSG_COL)
+                                .orderBy("publication_date", descending: false);
     
     activityDoc.snapshots().listen((querySnap) async {
       var messages = <Message>[];
       for (var doc in querySnap.documents) {
-        var user = await _profileService.getUser(userUID: doc["user"]);
-        var message = _FirestoreMessageAdapter(data: doc.data, user: user);
-        messages.add(message);
+        try {
+           var user = await _profileService.getUser(userUID: doc["user"]);
+           var message = _FirestoreMessageAdapter(data: doc.data, user: user);
+           messages.add(message);
+        } catch(e) {print(e);}
       }
       messagesStreamController.add(messages);
     });
@@ -246,7 +249,7 @@ class _FirestoreMessageAdapter extends Message {
   static Map<String, Object> toMapMessageIntoNoSQL(Message message) => {
     FBQualifiers.MSG_DATE: Timestamp.fromDate(DateTime.now()),
     FBQualifiers.MSG_CONTENT: message.content,
-    FBQualifiers.MSG_DATE: message.user,
+    FBQualifiers.MSG_USER: message.user,
     FBQualifiers.MSG_ACTIVITY_ID: message.id
   };
 }
