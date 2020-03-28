@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:bubble/bubble.dart';
 
 
 class MessagesPage extends StatelessWidget {
@@ -27,10 +28,7 @@ class MessagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
      var provider = Provider.of<MessagesProvider>(context, listen: false);
      var messages = provider.messages;
-     bool isSenderMessage(Message message) {
-       return message.user == provider.user;
-     }
-
+     
      void sendMessage(String content) {
 
     if(content.trim() != '') {
@@ -50,9 +48,6 @@ class MessagesPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          // buildListMessages
-          //buildListMessage(messages),
-
           Flexible(
             child: StreamBuilder<List<Message>>(
               stream: messages,
@@ -65,9 +60,9 @@ class MessagesPage extends StatelessWidget {
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
                     itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) => (snapshot.data[index].user == provider.user) ?
-                                                      buildItemSender(snapshot.data[index])
-                                                      : buildItemReceiver(snapshot.data[index]),
+                    itemBuilder: (context, index) => (snapshot.data[index].user.uid == activity.user.uid) ?
+                                                        buildItemSender(snapshot.data[index])
+                                                      : buildItemReceiver(snapshot.data[index])
                     );
                 }
               }
@@ -113,13 +108,19 @@ class MessagesPage extends StatelessWidget {
     
   
   }
-  /// widget that display a message 
-  /// if the de difference between the [publication_date] and the current date 
-  /// is more than 15 minutes the widget display also the date else the 
-  /// [publication_date] will not display
-  /// Display the messages send by me to the right with [color] and the messages
-  /// messages received to the left
+  /// widget that displays to right the messages sends by the current user
+  /// with [greenAccent color]
+  /// display also the [publication_date] to the message if the difference
+  /// between the [public_date] and the [current_date] is more than 15 minutes
    Widget buildItemSender(Message message) {
+
+     BubbleStyle styleMe = BubbleStyle(
+      nip: BubbleNip.rightTop,
+      color: Color.fromARGB(255, 225, 255, 199),
+      margin: BubbleEdges.only(top: 8.0, left: 50.0),
+      alignment: Alignment.topRight,
+    );
+
       String formattedDate = "";
       DateTime now = DateTime.now();
       var diffMinute = now.difference(message.publicationDate).inMinutes;
@@ -129,22 +130,29 @@ class MessagesPage extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          child: Text(
-            message.content,
-            style: TextStyle(color: Colors.white),
-          ) ,
-           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  width: 200.0,
-                  decoration: BoxDecoration(color: Colors.greenAccent, borderRadius: BorderRadius.circular(8.0)),
-                  margin: EdgeInsets.only(bottom: 10.0, right: 10.0),
+          child: Bubble(
+            style: styleMe,
+            child: Text(message.content),
+          ),
+           
           ),
           
           Text(formattedDate),
       ],
     );
   }
-
+  /// widget that displays to lef the messages received by the current user
+  /// with [grey color]
+  /// display also the [publication_date] to the message if the difference
+  /// between the [public_date] and the [current_date] is more than 15 minutes
   Widget buildItemReceiver(Message message) {
+
+    BubbleStyle styleSomebody = BubbleStyle(
+      nip: BubbleNip.leftTop,
+      color: Colors.white,
+      margin: BubbleEdges.only(top: 8.0, right: 50.0),
+      alignment: Alignment.topLeft,
+    );
       String formattedDate = "";
       DateTime now = DateTime.now();
       var diffMinute = now.difference(message.publicationDate).inMinutes;
@@ -154,15 +162,11 @@ class MessagesPage extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          child: Text(
-            message.content,
-            style: TextStyle(color: Colors.white),
-          ) ,
-           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  width: 200.0,
-                  decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(8.0)),
-                  margin: EdgeInsets.only(bottom: 10.0, right: 10.0),
-                  alignment: Alignment.topLeft,
+          child: Bubble(
+            style: styleSomebody,
+            child: Text(message.content),
+          ),
+           
           ),
           
           Text(formattedDate),
@@ -170,27 +174,6 @@ class MessagesPage extends StatelessWidget {
     );
   }
 
-   Widget buildListMessage(Stream<List<Message>> messages) {
-    return Flexible(
-      child: StreamBuilder<List<Message>>(
-             stream: messages,
-             builder: (context, snapshot) {
-               if(!snapshot.hasData) {
-                 return Center(
-                   child: CircularProgressIndicator(),
-                 );
-               } else {
-                 return ListView.builder(
-                   padding: EdgeInsets.all(10.0),
-                   itemCount: snapshot.data.length,
-                   itemBuilder: (context, index) => buildItemReceiver(snapshot.data[index]),
-                   );
-               }
-             },
-           )
-    );
-
-  }
-
+  
   
 }

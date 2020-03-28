@@ -9,11 +9,10 @@ import 'package:flutter/widgets.dart';
 
 
 
-/// Gère le chat d'une activité
-/// 
-/// State :
-/// l'activité courrante
-/// les messages du chats (mient à jour en temps réel)
+/// Represent the current state of the [MessagesProvider]
+///
+/// It concerns particularly the state of the loading of the [ActivityCommunication]
+/// instance
 enum MessagesState {
 
   /// The current [ActivityChat] is loaded and available
@@ -32,7 +31,7 @@ enum MessagesState {
 
 
 
-/// Contient 2 methodes :
+/// Contains two methods :
 /// 1 pour load les messages (déjà faite)
 /// 1 pour ajouter un message (à faire)
 ///
@@ -42,26 +41,23 @@ class MessagesProvider extends ChangeNotifier {
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
   IProfileService _profileService;
-   User user;
-  MessagesState state = MessagesState.inProgress;
+
   
+  User user;
+
+  MessagesState state = MessagesState.inProgress;
+  ActivityCommunication activityCommunication;
   Stream<List<Message>> messages;
   Activity activity;
- 
-
-
+  
 
   MessagesProvider({
     @required this.activity,
     @required IActivityCommunicationService communicationService,
-    @required IProfileService profileService
+    @required IProfileService profileService,
   }) :_communicationService = communicationService,
       _profileService = profileService;
-
-
-       
-
-
+      
 
   @override
   dispose() {
@@ -69,7 +65,7 @@ class MessagesProvider extends ChangeNotifier {
     super.dispose();
   }
 
-
+  /// Init the listeners (communication system and messages)
   init() async {
     state = MessagesState.inProgress;
     notifyListeners();
@@ -77,9 +73,13 @@ class MessagesProvider extends ChangeNotifier {
       user = await _profileService.getUser();
     } catch (_) {}
     _streamMessages = _communicationService.retrieveMessages(activity)
-                .listen((listMessage) { 
+                .listen((listMessage) {
+                    this.activityCommunication = activityCommunication;
                     notifyListeners();
                 });
+    _streamMessages.onError((e) {
+      state = MessagesState.error;
+    });
     if(_streamMessages != null){
       messages = _communicationService.retrieveMessages(activity);
       state = MessagesState.loadedMessages;
