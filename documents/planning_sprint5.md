@@ -1,5 +1,7 @@
 # Planning : Sprint 5
 
+**CECI EST UN DOCUMENT DE DEBUT DE SPRINT ! IL N'EST PAS MIS A JOUR AVEC LES CHANGEMENTS EFFECTUES AU COURS DU DEVELOPPEMENT. VEUILLEZ VOSU REFERER AUX AUTRES DOCUMENTS QUI EUX SONT MIS A JOUR.**
+
 ## Planning
 Pour ce sprint, nous avons légèrement modifié notre organisation d'interne de repartition des tâches : chaque tâche à effectué est maintenant repertorié par une issue et inclu dans un *Kandan board*.
 
