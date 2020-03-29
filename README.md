@@ -9,6 +9,7 @@ Trare is a social network application for connecting travellers who want to do a
 - [x] Explore activities
 - [x] View an activity
 - [x] Add new activities
+- [x] System for connecting users (activity chats, "I'm interested" butto, etc)
 
 <table style="border: none;">
 <tr><td>
@@ -57,9 +58,9 @@ Trare is a social network application for connecting travellers who want to do a
 
 ## What's next ?
 ![](documents/src/use_case.png)
-- [ ] Add photo to the user profile
-- [ ] System for connecting users (activity chats, "I'm interested" button)
-- [ ] Ability to change the activity search parameters (radius, position)
+
+**All major planned features have been implemented. See the [issues](https://github.com/Romain-Guillot/Trare/issues) to be aware of the next minor enhancements planned.**
+
 
 ## How to contribute ?
 - Make sure to read the contributing guide: [`CONTIBUTING.md`](CONTRIBUTING.md)
