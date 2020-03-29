@@ -76,7 +76,35 @@ Note: l'attribut `location` est composé de 2 éléments pour effectuer des requ
 > Geohash is a public domain geocode system invented in 2008 by Gustavo Niemeyer[1] and (similar work in 1966) G.M. Morton[2], which encodes a geographic location into a short string of letters and digits. It is a hierarchical spatial data structure which subdivides space into buckets of grid shape.
 
 
+### Chat / système de communication
 
+Il faut stocker les éléments suivants:
+- les utilisateurs intéressés
+- les participants
+- les messages
+
+Pour cela on rajoute les champs suivants à une activités : **interested_user** et **participants**. Pour stocker les messages on rajoute la collection **messages** qui contiendra des documents representant les messages échangés. Un message contiendra sa **date de publication**, son **contenu** et **l'uid de l'utilisateur du message**.
+```
+col:activities
+    doc:id#1
+        ... (see above)
+        
+        - interested_users: array of text
+        - participants: array of text
+        - col:messages
+            - doc:message#1
+                - publication_date: date
+                - content: text
+                - user: text
+            -doc:message#2
+                ...
+            -doc:message#3
+                ...
+
+    doc:id#2
+        ...
+    ...
+```
 
 
 
