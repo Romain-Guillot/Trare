@@ -138,6 +138,11 @@ class Strings {
   static const String participantRejectRequest = "Reject";
   static const String activityChat = "chat";
   static const String noParticipant = "No participant yet";
+  static const String chatUnableToLoad = "Unable to load chat";
+  static const String participationNotYetAccepted = "The user who created the activity has to validate your participation request.";
+  static const String participationNotYetAcceptedStayTuned = "Stay tuned !";
+
+  // User chats
   static const String userChatsTitle = "Chats";
   static const String userChatsLoadingError = "Unable to load your chats";
 

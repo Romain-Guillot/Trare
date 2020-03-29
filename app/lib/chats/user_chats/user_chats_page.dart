@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 
 
 
-/// Display the list of activities to which the user can have access to the chat
+/// Display the list of  activities that the user is interested, participant or 
+/// the creator are in progress
 /// 
 /// It used the [UserChatsProvider] to get this activities. Depending of the
 /// provider state the following widgets will be displayed :

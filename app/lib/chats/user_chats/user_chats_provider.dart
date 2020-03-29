@@ -13,19 +13,23 @@ enum UserChatsState {
   /// nothing happened
   idle,
 
-  /// The activities that the user can access to the chat are currently loading
+  /// The activities that the user is interested, paricipant or the creator are 
+  /// in progress
   inProgress,
 
-  /// The activities that the user can access to the chat are loaded
+  /// The activities that the user is interested, paricipant or the creator are 
+  /// loaded
   loaded,
 
-  /// an error occured while retrieving the activities that the user can access to the chat
+  /// An error occured while retrieving the activities that the user is 
+  /// interested, paricipant or the creator
   error,
 }
 
 
 
-/// Provider that handle the activities in which the user is a participant / creator
+/// Provider that handle the activities in which the user is interested, 
+/// participant or creator
 ///
 /// It contains the following state :
 ///   - [state]
@@ -63,7 +67,7 @@ class UserChatsProvider extends ChangeNotifier {
     notifyListeners();
     try {
       _user = await _profileService.getUser();
-      activities = await _communicationService.findUserChats(_user);
+      activities = await _communicationService.retrieveUserChats(_user);
       activities.addAll(
         await _activityService.retreiveActivitiesUser(user: _user)
       );
@@ -82,7 +86,7 @@ class UserChatsProvider extends ChangeNotifier {
     try {
       if (_user == null)
         _user = await _profileService.getUser();
-      _communicationService.registerInterestedUser(_user, activity);
+      _communicationService.requestParticipation(_user, activity);
       await init();
       return true;
     } catch (_) {

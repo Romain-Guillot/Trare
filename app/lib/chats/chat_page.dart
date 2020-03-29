@@ -8,6 +8,7 @@ import 'package:app/service_locator.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/res/dimens.dart';
+import 'package:app/shared/res/strings.dart';
 import 'package:app/shared/widgets/activities_widgets.dart';
 import 'package:app/shared/widgets/error_widgets.dart';
 import 'package:app/shared/widgets/flat_app_bar.dart';
@@ -22,6 +23,9 @@ import 'package:provider/provider.dart';
 
 
 
+///
+///
+///
 class ActivityCommunicationPage extends StatelessWidget {
 
   final Activity activity;
@@ -30,7 +34,6 @@ class ActivityCommunicationPage extends StatelessWidget {
     Key key, 
     @required this.activity
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class ActivityCommunicationPage extends StatelessWidget {
                       case UserGroup.interested:
                       case UserGroup.unknown:
                       default:
-                        return RequestValidationWaiting(
+                        return ParticipationRequestNotAccepted(
                           activity: activity,
                         );
                     }
@@ -82,7 +85,7 @@ class ActivityCommunicationPage extends StatelessWidget {
                   case PaticipantsProviderState.error:
                   default:
                     return ErrorWidgetWithReload(
-                      message: "Unable to load data",
+                      message: Strings.chatUnableToLoad,
                       onReload: ( ) => commProvider.init()
                     );
                 }
@@ -97,6 +100,9 @@ class ActivityCommunicationPage extends StatelessWidget {
 
 
 
+///
+///
+///
 class ActivityCommunicationLayout extends StatelessWidget {
 
   final ActivityCommunication activityCommunication;
@@ -105,7 +111,6 @@ class ActivityCommunicationLayout extends StatelessWidget {
     Key key, 
     @required this.activityCommunication
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -123,19 +128,9 @@ class ActivityCommunicationLayout extends StatelessWidget {
                 borderRadius: Dimens.borderRadius,
                 color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
               ),
-              tabs: [
-                Tab(icon: Icon(Icons.chat)),
-                Consumer<ParticipantsProvider>(
-                  builder: (_, provider, __) {
-                    var nbInterested = provider.activityCommunication?.interestedUsers?.length;
-                    return Badge(
-                      badgeContent: Text(nbInterested?.toString()??"", style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-                      showBadge: nbInterested != null && nbInterested >= 1,
-                      badgeColor: Theme.of(context).colorScheme.error,
-                      child: Tab(icon: Icon(Icons.info))
-                    );
-                  }
-                ),
+              tabs: <Widget>[
+                chatTab(),
+                detailsTab(context),
               ]
             ),
           ),
@@ -153,15 +148,39 @@ class ActivityCommunicationLayout extends StatelessWidget {
       ),
     );
   }
+
+  Widget chatTab() => Tab(
+    icon: Icon(Icons.chat)
+  );
+
+  Widget detailsTab(context) => Consumer<ParticipantsProvider>(
+    builder: (_, provider, __) {
+      var nbInterested = provider.activityCommunication?.interestedUsers?.length;
+      return Badge(
+        showBadge: nbInterested != null && nbInterested >= 1,
+        badgeColor: Theme.of(context).colorScheme.error,
+        badgeContent: Text(
+          nbInterested?.toString()??"", 
+          style: TextStyle(color: Theme.of(context).colorScheme.onError)
+        ),
+        child: Tab(
+          icon: Icon(Icons.info)
+        )
+      );
+    }
+  );
 }
 
 
 
-class RequestValidationWaiting extends StatelessWidget {
+///
+///
+///
+class ParticipationRequestNotAccepted extends StatelessWidget {
 
   final Activity activity;
 
-  RequestValidationWaiting({
+  ParticipationRequestNotAccepted({
     Key key, 
     @required this.activity
   }) : super(key: key);
@@ -177,9 +196,9 @@ class RequestValidationWaiting extends StatelessWidget {
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
-                  Text("The user who created the activity has to validate your participation request."),
+                  Text(Strings.participationNotYetAccepted),
                   FlexSpacer(),
-                  Text("Stay tuned !")
+                  Text(Strings.participationNotYetAcceptedStayTuned)
                 ],
               ),
             ),
