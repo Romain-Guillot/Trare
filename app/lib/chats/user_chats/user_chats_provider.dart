@@ -6,23 +6,47 @@ import 'package:app/user/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
+
+/// Represent the [UserChatsProvider] state, in particular the status related
+/// to the [UserChatsProvider.activities] state (loading, loaded, etc.)
 enum UserChatsState {
+  /// nothing happened
   idle,
+
+  /// The activities that the user can access to the chat are currently loading
   inProgress,
+
+  /// The activities that the user can access to the chat are loaded
   loaded,
+
+  /// an error occured while retrieving the activities that the user can access to the chat
   error,
 }
 
 
+
+/// Provider that handle the activities in which the user is a participant / creator
+///
+/// It contains the following state :
+///   - [state]
+///   - [activities]
+/// 
+/// Moreover, the method [requestParticipation] can be used to request a
+/// participation to an activity.
+/// 
+/// By default, the [state] is [UserChatsState.idle], consider calling the
+/// [init] method to load the [activities].
 class UserChatsProvider extends ChangeNotifier {
 
   final IActivityCommunicationService _communicationService;
   final IActivityService _activityService;
   final IProfileService _profileService;
+
   User _user;
 
-  List<Activity> activities;
   UserChatsState state = UserChatsState.idle;
+  List<Activity> activities;
+
 
   UserChatsProvider({
     @required IActivityCommunicationService communicationService,
@@ -33,6 +57,7 @@ class UserChatsProvider extends ChangeNotifier {
        _activityService = activityService;
 
 
+  /// Load the [activites], update the [state] and notify clients
   init() async {
     state = UserChatsState.inProgress;
     notifyListeners();
@@ -50,7 +75,10 @@ class UserChatsProvider extends ChangeNotifier {
   }
 
 
-  onInterested(Activity activity) async {
+  /// Request a participation to the [activity] for the current connected user
+  ///
+  /// Return true if the operation succeed, false if not
+  Future<bool> requestParticipation(Activity activity) async {
     try {
       if (_user == null)
         _user = await _profileService.getUser();

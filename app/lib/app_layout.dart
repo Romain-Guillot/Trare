@@ -18,7 +18,7 @@ class AppLayout extends StatelessWidget {
 
 
 
-/// TODO
+/// TODO(dioul)
 ///
 ///
 class MyHomePage extends StatefulWidget {
@@ -44,10 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ConnectedUserProfileView(),
     ];
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);

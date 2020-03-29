@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 
+
 /// [String] constants shared across our widgets.
 /// 
 /// Everything is constant, so the constructor is private
@@ -137,6 +138,8 @@ class Strings {
   static const String participantRejectRequest = "Reject";
   static const String activityChat = "chat";
   static const String noParticipant = "No participant yet";
+  static const String userChatsTitle = "Chats";
+  static const String userChatsLoadingError = "Unable to load your chats";
 
 
   // Permissions

@@ -1,6 +1,7 @@
 import 'package:app/chats/chat_page.dart';
 import 'package:app/chats/user_chats/user_chats_provider.dart';
 import 'package:app/shared/res/dimens.dart';
+import 'package:app/shared/res/strings.dart';
 import 'package:app/shared/widgets/activities_widgets.dart';
 import 'package:app/shared/widgets/error_widgets.dart';
 import 'package:app/shared/widgets/loading_widgets.dart';
@@ -11,7 +12,16 @@ import 'package:provider/provider.dart';
 
 
 
-
+/// Display the list of activities to which the user can have access to the chat
+/// 
+/// It used the [UserChatsProvider] to get this activities. Depending of the
+/// provider state the following widgets will be displayed :
+/// - activities loaded : [ListItemsActivities] 
+/// - loading in progress : [LoadingWidget]
+/// - error or idle : [ErrorWidgetWithReload]
+/// 
+/// When the user will clicked on an activity item, it will open the 
+/// [ActivityCommunicationPage] associated to this activity
 class UserChatsPage extends StatelessWidget {
   
   @override
@@ -24,7 +34,7 @@ class UserChatsPage extends StatelessWidget {
             Padding(
               padding: Dimens.screenPadding,
               child: PageHeader(
-                title: Text("My chats"),
+                title: Text(Strings.userChatsTitle),
               ),
             ),
             Consumer<UserChatsProvider>(
@@ -45,13 +55,12 @@ class UserChatsPage extends StatelessWidget {
                   case UserChatsState.error:
                   default:
                     return ErrorWidgetWithReload(
-                      message: "Cannot load",
+                      message: Strings.userChatsLoadingError,
                       onReload: () => chatsProvider.init(),
                     );
                 }
               }
             )
-            
           ],
         ),
       )

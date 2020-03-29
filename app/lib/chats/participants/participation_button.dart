@@ -71,7 +71,7 @@ class ParticipationButton extends StatelessWidget {
 
   handleParticipation(context) async {
     var chatsProvider = Provider.of<UserChatsProvider>(context, listen: false);
-    bool success = await chatsProvider.onInterested(activity);
+    bool success = await chatsProvider.requestParticipation(activity);
     if (success)
       openChat(context, activity);
     else

@@ -53,11 +53,20 @@ enum UserGroup {
 ///     [userGroup] the group in which the current user is for the [_activity]
 ///   - [activityCommunication] the communication system related to the [_activity]
 ///
+/// The default state is [PaticipantsProviderState.idle], consider calling
+/// the [init] method to load the [activityCommunication] associated to the
+/// activity
+/// 
+/// You can also handle the particpations to the [_activity] thanks to the 
+/// following methods :
+///   - [acceptParticipant]
+///   - [rejectParticipant]
 class ParticipantsProvider extends ChangeNotifier {
 
-  IActivityCommunicationService _communicationService;
-  IProfileService _profileService;
-  Activity _activity;
+  final IActivityCommunicationService _communicationService;
+  final IProfileService _profileService;
+  final Activity _activity;
+  
   StreamSubscription _streamComm;
   User _user;
 
