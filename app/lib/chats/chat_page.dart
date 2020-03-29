@@ -46,7 +46,8 @@ class ActivityCommunicationPage extends StatelessWidget {
         ChangeNotifierProvider<MessagesProvider>(
           create: (_) => MessagesProvider(
             activity: activity,
-            communicationService: locator<IActivityCommunicationService>()
+            communicationService: locator<IActivityCommunicationService>(),
+            profileService: locator<IProfileService>(),
           )..init(),
         )
       ],

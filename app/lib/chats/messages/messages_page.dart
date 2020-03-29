@@ -5,6 +5,7 @@ import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/res/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bubble/bubble.dart';
@@ -41,7 +42,7 @@ class MessagesPage extends StatelessWidget {
         provider.addMessage(newMessage);
         textEditingController.clear();
     } else {
-       Text("Nothing to send");
+       Fluttertoast.showToast(msg: 'Nothing to send');
     }
 
   }

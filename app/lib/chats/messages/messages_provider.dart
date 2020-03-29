@@ -14,6 +14,8 @@ import 'package:flutter/widgets.dart';
 /// It concerns particularly the state of the loading of the [ActivityCommunication]
 /// instance
 enum MessagesState {
+  /// Nothing happen, the [ActivityCommunication] is not in loading or loded
+  idle,
 
   /// The current [ActivityChat] is loaded and available
   loaded,
@@ -41,14 +43,14 @@ class MessagesProvider extends ChangeNotifier {
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
   IProfileService _profileService;
-
-  
   User user;
 
-  MessagesState state = MessagesState.inProgress;
-  ActivityCommunication activityCommunication;
+  
+  MessagesState state = MessagesState.idle;
   Stream<List<Message>> messages;
   Activity activity;
+  ActivityCommunication activityCommunication;
+  
   
 
   MessagesProvider({
@@ -94,7 +96,6 @@ class MessagesProvider extends ChangeNotifier {
   Future<Message> addMessage( Message newMessage) async {
     try{
       init();
-      //newMessage.setUser(user);
       var message = await _communicationService.addMessage(activity, newMessage);
       return message;
     } catch(_) {

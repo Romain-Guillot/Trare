@@ -249,7 +249,7 @@ class _FirestoreMessageAdapter extends Message {
   static Map<String, Object> toMapMessageIntoNoSQL(Message message) => {
     FBQualifiers.MSG_DATE: Timestamp.fromDate(DateTime.now()),
     FBQualifiers.MSG_CONTENT: message.content,
-    FBQualifiers.MSG_USER: message.user,
+    FBQualifiers.MSG_USER: message.user.uid,
     FBQualifiers.MSG_ACTIVITY_ID: message.id
   };
 }
