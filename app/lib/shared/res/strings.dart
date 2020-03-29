@@ -18,6 +18,7 @@ class Strings {
   static const String accessibilityLoadingLabel = "Please wait...";
   static const String addActivity = "Add activity";
   static const String reload = "Retry";
+  static const String error = "Error";
 
 
 
@@ -129,11 +130,13 @@ class Strings {
   static const String requiredDate = "Required";
 
 
-  // Activity communication details
+  // Activity communication
   static const String participantRequestsTitle = "Requests";
   static const String participantsTitle = "Participants";
   static const String participantAcceptRequest = "Accept";
   static const String participantRejectRequest = "Reject";
+  static const String activityChat = "chat";
+  static const String noParticipant = "No participant yet";
 
 
   // Permissions

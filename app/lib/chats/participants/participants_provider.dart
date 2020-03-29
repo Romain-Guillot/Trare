@@ -27,45 +27,51 @@ enum PaticipantsProviderState {
   error,
 }
 
-enum UserGroup {
 
+
+/// Represent the group in which an user is for an activity
+enum UserGroup {
+  /// the user IS the creator of the activity
   creator,
 
+  /// the suer IS a participant of the activity
   participant,
 
+  /// the user is interested to participate to the activity
   interested,
 
+  /// unknown group
   unknown,
 }
 
 
 
-/// Handle the communication system related to the [activity]
+/// Handle the communication system related to the [_activity]
 ///
 /// State :
 ///   - [state] of the current status concerning the loading of the 
-///     [activityCommunication]
-///   - [activity] the current activity
-///   - [activityCommunication] the communication system related to the [activity]
+///     [userGroup] the group in which the current user is for the [_activity]
+///   - [activityCommunication] the communication system related to the [_activity]
 ///
 class ParticipantsProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
   IProfileService _profileService;
+  Activity _activity;
   StreamSubscription _streamComm;
   User _user;
 
   PaticipantsProviderState state = PaticipantsProviderState.idle;
   UserGroup userGroup =  UserGroup.unknown;
-  Activity activity;
   ActivityCommunication activityCommunication;
 
 
   ParticipantsProvider({
-    @required this.activity,
+    @required Activity activity,
     @required IActivityCommunicationService communicationService,
     @required IProfileService profileService,
-  }) : _communicationService = communicationService,
+  }) : _activity = activity,
+       _communicationService = communicationService,
        _profileService = profileService;
 
 
@@ -76,13 +82,16 @@ class ParticipantsProvider extends ChangeNotifier {
   }
 
   /// Init the listeners (communication system and messages)
+  /// 
+  /// Listen stream that returned the [ActivityCommunication] related to the
+  /// [_activity] and update the state acconrdingly and notify clients
   init() async {
     state = PaticipantsProviderState.inProgress;
     notifyListeners();
     try {
       _user = await _profileService.getUser();
     } catch (_) {}
-    _streamComm = _communicationService.retreiveActivityCommunication(activity)
+    _streamComm = _communicationService.retreiveActivityCommunication(_activity)
       .listen((activityCommunication) {
         this.activityCommunication = activityCommunication;
         _updateUserGroup();
@@ -95,8 +104,35 @@ class ParticipantsProvider extends ChangeNotifier {
     });
   }
 
+
+  /// Add a participant to the participants list
+  ///
+  /// Returned true is the operaiton succeed, false else
+  Future<bool> acceptParticipant(User user) async {
+    try {
+      await _communicationService.acceptParticipant(_activity, user);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+
+  /// Reject a participation request 
+  /// 
+  /// Returned true is the operaiton succeed, false else
+  Future<bool> rejectParticipant(User user) async {
+    try {
+      await _communicationService.rejectParticipant(_activity, user);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+
   _updateUserGroup() {
-    if (activity.user == _user)
+    if (_activity.user == _user)
       userGroup = UserGroup.creator;
     else if (activityCommunication.interestedUsers.contains(_user))
       userGroup = UserGroup.interested;
@@ -104,25 +140,5 @@ class ParticipantsProvider extends ChangeNotifier {
       userGroup = UserGroup.participant;
     else
       userGroup = UserGroup.unknown;
-  }
-
-
-  Future<bool> acceptParticipant(User user) async {
-    try {
-      await _communicationService.acceptParticipant(activity, user);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-
-  Future<bool> rejectParticipant(User user) async {
-    try {
-      await _communicationService.rejectParticipant(activity, user);
-      return true;
-    } catch (_) {
-      return false;
-    }
   }
 }

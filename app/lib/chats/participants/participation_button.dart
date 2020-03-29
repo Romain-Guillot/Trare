@@ -8,15 +8,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Button to initiate the communication system
-///
-/// It will initiate the communication system between the current user (the 
-/// user who click on this button) and the creator of the activity.
+
+
+/// Button used to access to the chat of the activity
+/// 
+/// It uses the [UserChatsProvider] to know whever if the user is already a 
+/// participant of the activity :
+///   - if so, the button will redirect the user to the activity chat
+///   - if not, the button will ask the provdider to add the user to the
+///     interested users list
+/// 
+/// Of course, to know if the user is already a participant of the activity is
+/// an asynchronous operation (as the provider need to communicate with the
+/// database). SO, is the provider is not yet completly initialized or if an
+/// error occured during this asynchronous operation, an alternative text will
+/// be displayed
 class ParticipationButton extends StatelessWidget {
 
   final Activity activity;
 
-  ParticipationButton({Key key, @required this.activity}) : super(key: key);
+  ParticipationButton({
+    Key key, 
+    @required this.activity
+  }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -27,7 +41,7 @@ class ParticipationButton extends StatelessWidget {
             var isAlreadyInterested = chatsProvider.activities.contains(activity);
             if (isAlreadyInterested)
               return Button(
-                child: Text("Chat"),
+                child: Text(Strings.activityChat),
                 icon: Icon(Icons.chat),
                 onPressed: () => openChat(context, activity),
               );
@@ -38,14 +52,13 @@ class ParticipationButton extends StatelessWidget {
             );
           
           case UserChatsState.inProgress:
-            return Text(Strings.loading);
+            return Center(child: Text(Strings.loading));
 
           case UserChatsState.idle:
           case UserChatsState.error:
           default:
-            return Text("Error");
+            return Center(child: Text(Strings.error));
         }
-
       } 
     );
   }
@@ -57,8 +70,8 @@ class ParticipationButton extends StatelessWidget {
   }
 
   handleParticipation(context) async {
-    var chatProvider = Provider.of<UserChatsProvider>(context, listen: false);
-    bool success = await chatProvider.onInterested(activity);
+    var chatsProvider = Provider.of<UserChatsProvider>(context, listen: false);
+    bool success = await chatsProvider.onInterested(activity);
     if (success)
       openChat(context, activity);
     else

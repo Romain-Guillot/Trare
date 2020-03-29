@@ -9,7 +9,6 @@ import 'package:app/shared/utils/snackbar_handler.dart';
 import 'package:app/shared/widgets/activities_widgets.dart';
 import 'package:app/shared/widgets/buttons.dart';
 import 'package:app/shared/widgets/flex_spacer.dart';
-import 'package:app/shared/widgets/page_header.dart';
 import 'package:app/shared/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,15 +18,26 @@ import 'package:app/main.dart';
 
 
 
+/// Display the chat details for an activity
 ///
-///
-///
-class ActivityCommunicationDetails extends StatelessWidget {
+/// It take the [activityCommunciation] associated with the activity, and it
+/// will displayed the followwing componenet :
+/// - the [ItemActivity] to be able to see the activity page
+/// - the list of interested user 
+/// - the list of participants
+/// 
+/// Note: if the user IS NOT the creator of the activity, the interested users
+/// list will be empty, so nothing will be displayed (as only the creator can
+/// see the interested users)
+/// 
+/// Each interested user will be displayed with an [AcceptRejectButtonBar] to
+/// let the creator add or reject the user request.
+class ChatParticipantsPage extends StatelessWidget {
   
   final ActivityCommunication activityCommunication;
   Activity get activity => activityCommunication.activity;
 
-  ActivityCommunicationDetails({
+  ChatParticipantsPage({
     Key key, 
     @required this.activityCommunication
   }) : super(key: key);
@@ -55,13 +65,11 @@ class ActivityCommunicationDetails extends StatelessWidget {
         UserList(
           title: Text(Strings.participantsTitle),
           users: activityCommunication.participants,
-          empty: Text("No participant yet"),
+          empty: Text(Strings.noParticipant),
         ),
       ],
     );
   }
-
-
 
   openActivity(context, activity) {
     Navigator.push(context, MaterialPageRoute(
@@ -94,69 +102,11 @@ class ActivityCommunicationDetails extends StatelessWidget {
 
 
 
+/// Button bar to accept of reject an user as participant of the activity chat
 ///
-///
-///
-class UserList extends StatelessWidget {
-
-  final Widget title;
-  final Widget empty;
-  final List<User> users;
-  final Widget Function(User) actionBarBuilder;
-
-  UserList({
-    Key key, 
-    @required this.title,
-    @required this.users,
-     this.empty,
-    this.actionBarBuilder
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (empty == null && (users == null || users.isEmpty))
-      return Container();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
-          child: PageHeader(
-            title: title,
-          ),
-        ),
-        if (users == null || users.isEmpty)
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
-            child: empty
-          ),
-        ListView.separated(
-          shrinkWrap: true,
-          itemCount: users?.length??0,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.only(bottom: Dimens.normalSpacing),
-          separatorBuilder: (_, __) => SizedBox(height: Dimens.normalSpacing,),
-          itemBuilder: (_, index) => Column(
-            children: <Widget>[
-              UserCard(
-                user: users[index], 
-                isClickable: true,
-              ),
-              if (actionBarBuilder != null)
-                actionBarBuilder(users[index]),
-            ],
-          )
-        ),
-      ],
-    );
-  }
-}
-
-
-
-///
-///
-///
+/// Display two buttons, one to accept the request (it will called the [onAccept]
+/// function), and one to reject the user request (it will called the [onReject]
+/// function)
 class AcceptRejectButtonBar extends StatefulWidget {
 
   final User user;
@@ -207,7 +157,7 @@ class _AcceptRejectButtonBarState extends State<AcceptRejectButtonBar> {
   onAction(Future Function() action) async {
     setState(() => inProgress = true);
     await action();
-    if (mounted)
+    if (mounted) // at the end of the operation, the widget is maybe no longer in the tree 
       setState(() => inProgress = false);
   }
 }
