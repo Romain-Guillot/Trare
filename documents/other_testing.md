@@ -72,8 +72,10 @@ ProfileProvider | ✔️ | ❌ |
 ActivityUserProvider | ✔️ | ✔️ |
 ActivityExploreProvider | ✔️| ✔️ |
 ActivityCreationProvider | ✔️ | ❌ |
+MessagesProvider | ✔️ | ❌ |
+ParticipantsProvider | ✔️ | ❌ |
+UserChatsProvider | ✔️ | ❌ |
 LocationPermissionProvider | ✔️ | ❌ |
-
 
 ## Références
 - [Flutter - Testing Flutter apps](https://flutter.dev/docs/testing)
