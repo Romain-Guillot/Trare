@@ -54,8 +54,13 @@ Voici un diagramme de classe montrant l'architecture actuelle avec l'`Authentica
 
 ![](src/repo_provider_ex.png)
 
+### Ancienne architecture
 
+Voici l'ancien diagramme de package utilisé au début :
 
+![](src/archi_client.png)
+
+**Raisons de changement :** L'indépendance des fonctionnalité n'était pas clair avec ce package. De plus, avec l'augmentation du nombre de fonctionnalité, les packages devenaient gros (beaucoup de fichiers), c'était difficile de savoir qui utilisait quoi.
 
 
 
