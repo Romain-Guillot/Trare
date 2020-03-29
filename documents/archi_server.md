@@ -1,5 +1,5 @@
 # Architecture : server-side
-*Dernière modification : 12 fev 2020*
+*Dernière modification : 29 mar 2020*
 
 
 ## Technologies
@@ -88,7 +88,7 @@ Pour cela on rajoute les champs suivants à une activités : **interested_user**
 col:activities
     doc:id#1
         ... (see above)
-        
+
         - interested_users: array of text
         - participants: array of text
         - col:messages
