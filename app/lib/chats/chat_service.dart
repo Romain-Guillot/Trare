@@ -15,15 +15,22 @@ import 'package:flutter/foundation.dart';
 /// Service used to handle the activity chats (messages, participants, etc)
 abstract class IActivityCommunicationService {
   
-  /// Retreive the [ActivityCommunication] of the [activity]
+  /// Returns a stream updated with the [ActivityCommunication] associated to
+  /// the [activity]. Each time this activity communication will be modified,
+  /// a new instance of the activity communication will be inserted in the
+  /// returned stream
   /// 
-  /// Returns an [ActivityCommunication] if the operation succeed (never null)
-  /// Throw an exception in an error occured
+  /// Never return null, never throw an exception, but a Stream.error
+  /// can be set
   Stream<ActivityCommunication> retreiveActivityCommunication(Activity activity);
 
   /// Returns a stream that contains the list of [Message] of the [activity]
   ///
   /// Note: the stream is automatically update with new messages
+  /// The stream is automatically update with new messages
+  /// 
+  /// Never return null, never throw an exception, but a Stream.error
+  /// can be set
   Stream<List<Message>> retrieveMessages(Activity activity);
 
   /// Add a [Message] of the [activity] in database
@@ -45,10 +52,14 @@ abstract class IActivityCommunicationService {
   /// An exception is throwed if an error occured
   Future rejectParticipant(Activity activity, User user);
 
-  /// Returns the activities that the user is a participant or interested
+  /// Retrieve activities that the user is a participant / interested / creator
   ///
-  /// Never returned null. If an error occured, and exception will be throwed
-  Future<List<Activity>> retrieveUserChats(User user);
+  /// These activities are returnes through a stream, so when the user 
+  /// activities are updated, the new list will be inserted in the stream
+  /// 
+  /// Never return null, never throw an exception, but a Stream.error
+  /// can be set
+  Stream<List<Activity>> retrieveUserChats(User user);
 
   /// Add the [user] to the [activity] list of interested user
   ///
@@ -182,27 +193,50 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
 
   @override
-  Future<List<Activity>> retrieveUserChats(User user) async {
-    var activities = <Activity>[];
-    var docRef = _firestore.collection(FBQualifiers.USE_COL).document(user.uid);
-    var doc = await docRef.get();
-    var chats = (doc.data[FBQualifiers.USE_CHATS] as List)?.cast<String>();
-    for (var id in chats??[]) {
-      try {
-        var actRef = _firestore.collection(FBQualifiers.ACT_COL).document(id);
-        var actDoc = await actRef.get();
-        var actData = actDoc.data;
-        var user = await _profileService.getUser(userUID: actData[FBQualifiers.ACT_USER]);
-        var activity = FirestoreActivityAdapter(
-          id: actDoc.documentID,
-          data: actData, 
-          user: user,
-        );
-        activities.add(activity);
-      } catch(_) {}
+  Stream<List<Activity>> retrieveUserChats(User user) {
+    var activtiesStreamController = StreamController<List<Activity>>();
+    var ownerActivities = <Activity>[], guestActivities = <Activity>[];
+
+    Future<Activity> helper(Map data, String docID) async {
+      var user = await _profileService.getUser(userUID: data[FBQualifiers.ACT_USER]);
+      return FirestoreActivityAdapter(id: docID, data: data, user: user);
     }
-    return activities;
+
+    _firestore.collection(FBQualifiers.ACT_COL)
+    .where(FBQualifiers.ACT_USER, isEqualTo: user.uid).snapshots()
+    .listen((querySnap) async {
+      guestActivities = [];
+      for (var actDoc in querySnap.documents) { 
+        try {
+          var activity = await helper(actDoc.data, actDoc.documentID);
+          guestActivities.add(activity);
+        } catch (_) {}
+      }
+      activtiesStreamController.add(ownerActivities + guestActivities);   
+    });
+
+    _firestore
+    .collection(FBQualifiers.USE_COL)
+    .document(user.uid).snapshots()
+    .listen((doc) async {
+      ownerActivities = [];
+      var chats = <String>[];
+      try {
+        chats = (doc.data[FBQualifiers.USE_CHATS] as List)?.cast<String>();
+      }catch(_){}
+      for (var id in chats??[]) {
+        try {
+          var actRef = _firestore.collection(FBQualifiers.ACT_COL).document(id);
+          var actDoc = await actRef.get();
+          var activity = await helper(actDoc.data, actDoc.documentID);
+          ownerActivities.add(activity);
+        } catch(_) {}
+      }
+      activtiesStreamController.add(ownerActivities + guestActivities);   
+    });
+    return activtiesStreamController.stream;
   }
+
 
 
   @override

@@ -116,10 +116,10 @@ class FirestoreActivityService implements IActivityService {
   Future<Activity> createActivity(Activity activity) async {
     var activityData = FirestoreActivityAdapter.toMap(activity);
     if (activityData != null) {
-      var activityDoc = _firestore.collection(FBQualifiers.ACT_COL);
-      await activityDoc.add(activityData);
+      var activityColRef = _firestore.collection(FBQualifiers.ACT_COL);
+      var docRef = await activityColRef.add(activityData);
       return FirestoreActivityAdapter(
-        id: activityDoc.id,
+        id: docRef.documentID,
         data: activityData, 
         user: activity.user
       );

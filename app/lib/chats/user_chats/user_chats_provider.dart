@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/activities/activity_service.dart';
 import 'package:app/chats/chat_service.dart';
 import 'package:app/shared/models/activity.dart';
@@ -46,9 +48,15 @@ class UserChatsProvider extends ChangeNotifier {
   final IActivityService _activityService;
   final IProfileService _profileService;
 
+  StreamSubscription _activitiesSubscription;
   User _user;
 
-  UserChatsState state = UserChatsState.idle;
+  UserChatsState _state = UserChatsState.idle;
+  UserChatsState get state => _state;
+  set state(state) {
+    _state = state;
+    notifyListeners();
+  }
   List<Activity> activities;
 
 
@@ -61,22 +69,37 @@ class UserChatsProvider extends ChangeNotifier {
        _activityService = activityService;
 
 
-  /// Load the [activites], update the [state] and notify clients
-  init() async {
-    state = UserChatsState.inProgress;
-    notifyListeners();
-    try {
-      _user = await _profileService.getUser();
-      activities = await _communicationService.retrieveUserChats(_user);
-      activities.addAll(
-        await _activityService.retreiveActivitiesUser(user: _user)
-      );
-      state = UserChatsState.loaded;
-    } catch (_) {
-      state = UserChatsState.error;
-    }
-    notifyListeners();
+  @override
+  dispose() {
+    _activitiesSubscription?.cancel();
+    super.dispose();
   }
+
+
+   /// Load the [activites], update the [state] and notify clients
+  /// 
+  /// It listen the stream returned by the [_communicationService.retrieveUserChats]
+  /// method and update the state and update the clients each time a new
+  /// list of activities is inserted inside the stream
+  /// 
+  /// Note: the setter of the [state] property automatically notify listeners
+   init() async {
+     state = UserChatsState.inProgress;
+     try {
+       _user = await _profileService.getUser();
+     } catch (_) {
+       state = UserChatsState.error;
+     }
+    _activitiesSubscription = _communicationService.retrieveUserChats(_user)
+      .listen((newActivities) {
+        activities = newActivities;
+        state = UserChatsState.loaded;
+      });
+    _activitiesSubscription.onError((e) {
+      state = UserChatsState.error;
+    });
+   }
+
 
 
   /// Request a participation to the [activity] for the current connected user
