@@ -42,3 +42,4 @@ android/key.properties
 test/.test_coverage.dart
 
 pubspec.lock
+.scannerwork/

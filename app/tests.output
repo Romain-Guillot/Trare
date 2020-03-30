@@ -1,0 +1,29 @@
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":28147,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"suite":{"id":2,"platform":"vm","path":"/home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"suite","time":11}
+{"test":{"id":3,"name":"loading /home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":11}
+{"count":2,"type":"allSuites","time":12}
+{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":11738}
+{"group":{"id":4,"suiteID":2,"parentID":null,"name":null,"metadata":{"skip":false,"skipReason":null},"testCount":4,"line":null,"column":null,"url":null},"type":"group","time":11746}
+{"group":{"id":5,"suiteID":2,"parentID":4,"name":"ActivityExploreProvider","metadata":{"skip":false,"skipReason":null},"testCount":4,"line":12,"column":3,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"group","time":11747}
+{"test":{"id":6,"name":"ActivityExploreProvider Initial state","suiteID":2,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":16,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"testStart","time":11747}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":11756}
+{"group":{"id":7,"suiteID":0,"parentID":null,"name":null,"metadata":{"skip":false,"skipReason":null},"testCount":4,"line":null,"column":null,"url":null},"type":"group","time":11756}
+{"group":{"id":8,"suiteID":0,"parentID":7,"name":"ActivityUserProvider","metadata":{"skip":false,"skipReason":null},"testCount":4,"line":12,"column":3,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"group","time":11757}
+{"test":{"id":9,"name":"ActivityUserProvider Initial state","suiteID":0,"groupIDs":[7,8],"metadata":{"skip":false,"skipReason":null},"line":16,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"testStart","time":11757}
+{"testID":6,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11772}
+{"test":{"id":10,"name":"ActivityExploreProvider Activities returned normally","suiteID":2,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":32,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"testStart","time":11772}
+{"testID":9,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11780}
+{"testID":10,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11781}
+{"test":{"id":11,"name":"ActivityUserProvider Activities normally returned","suiteID":0,"groupIDs":[7,8],"metadata":{"skip":false,"skipReason":null},"line":30,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"testStart","time":11781}
+{"test":{"id":12,"name":"ActivityExploreProvider Database error occured caused by IActivityService","suiteID":2,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":61,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"testStart","time":11781}
+{"testID":12,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11787}
+{"test":{"id":13,"name":"ActivityExploreProvider Database error occured caused by ILocationService","suiteID":2,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":87,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_explore_provider_test.dart"},"type":"testStart","time":11788}
+{"testID":11,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11790}
+{"test":{"id":14,"name":"ActivityUserProvider Database error occured caused by IActivityService","suiteID":0,"groupIDs":[7,8],"metadata":{"skip":false,"skipReason":null},"line":57,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"testStart","time":11790}
+{"testID":13,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11796}
+{"testID":14,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11797}
+{"test":{"id":15,"name":"ActivityUserProvider Database error occured caused by IProfileService","suiteID":0,"groupIDs":[7,8],"metadata":{"skip":false,"skipReason":null},"line":83,"column":5,"url":"file:///home/ob/Documents/uqac/genie_logiciel/project/UQAC-GL-Projet/app/test/units/activity_user_provider_test.dart"},"type":"testStart","time":11804}
+{"testID":15,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":11808}
+{"success":true,"type":"done","time":11833}
