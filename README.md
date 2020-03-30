@@ -3,6 +3,8 @@
 
 Trare is a social network application for connecting travellers who want to do activities with other people (have a drink, go hiking, play a board game, etc).
 
+**⚠️ Consult [the wiki](https://github.com/Romain-Guillot/Trare/wiki) to learn more about the architecture, features, tests, ...**
+
 
 ## Where are we now?
 - [x] User account : sign in, sign out, edit profile, delete profile, visualization
