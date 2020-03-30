@@ -35,15 +35,15 @@ import 'package:provider/provider.dart';
 /// Depending on the [ParticipantsProvider] state, tho following widget will
 /// be displayed :
 ///   - participants and interested users are loaded : two cases :
-///       - the connected user is a participant or the creator : [ActivityCommunicationLayout]
+///       - the connected user is a participant or the creator : [ChatTabLayout]
 ///       - the connected user is just interested : [ParticipationRequestNotAccepted]
 ///   - loading : [LoadingWidget]
 ///   - error or idle : [ErrorWidgetWithReload]
-class ActivityCommunicationPage extends StatelessWidget {
+class ChatPage extends StatelessWidget {
 
   final Activity activity;
 
-  ActivityCommunicationPage({
+  ChatPage({
     Key key, 
     @required this.activity
   }) : super(key: key);
@@ -78,7 +78,7 @@ class ActivityCommunicationPage extends StatelessWidget {
                     switch (commProvider.userGroup) {
                       case UserGroup.participant:
                       case UserGroup.creator:
-                        return ActivityCommunicationLayout(
+                        return ChatTabLayout(
                           activityCommunication: commProvider.activityCommunication
                         );
                       
@@ -113,14 +113,16 @@ class ActivityCommunicationPage extends StatelessWidget {
 
 
 
-/// 
+/// Display the chat messages and the chat detail with tabs
 ///
-///
-class ActivityCommunicationLayout extends StatelessWidget {
+/// 2 tabs :
+///   - [MessagesPage] 
+///   - [ChatParticipantsPage]
+class ChatTabLayout extends StatelessWidget {
 
   final ActivityCommunication activityCommunication;
 
-  ActivityCommunicationLayout({
+  ChatTabLayout({
     Key key, 
     @required this.activityCommunication
   }) : super(key: key);
@@ -186,9 +188,12 @@ class ActivityCommunicationLayout extends StatelessWidget {
 
 
 
+/// Widget diaplyed to inform the user that his participation request is not
+/// yet accepted
 ///
-///
-///
+/// It just display the [ItemActivity] of the [activity] and an [InfoCardWidget]
+/// to display a message to inform the user that the creator of the acivity
+/// has to accept his request to see the activity chat
 class ParticipationRequestNotAccepted extends StatelessWidget {
 
   final Activity activity;

@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 /// - error or idle : [ErrorWidgetWithReload]
 /// 
 /// When the user will clicked on an activity item, it will open the 
-/// [ActivityCommunicationPage] associated to this activity
+/// [ChatPage] associated to this activity
 class UserChatsPage extends StatelessWidget {
   
   @override
@@ -70,7 +70,7 @@ class UserChatsPage extends StatelessWidget {
 
   openChat(context, activity) {
     Navigator.push(context, MaterialPageRoute(
-      builder: (context) => ActivityCommunicationPage(activity: activity),
+      builder: (context) => ChatPage(activity: activity),
     ));
   }
 }

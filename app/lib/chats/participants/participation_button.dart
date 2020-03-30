@@ -65,7 +65,7 @@ class ParticipationButton extends StatelessWidget {
 
   openChat(context, activity) {
     Navigator.push(context, MaterialPageRoute (
-      builder: (context) => ActivityCommunicationPage(activity: activity),
+      builder: (context) => ChatPage(activity: activity),
     ));
   }
 
