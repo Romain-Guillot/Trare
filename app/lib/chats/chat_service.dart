@@ -202,7 +202,8 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
       return FirestoreActivityAdapter(id: docID, data: data, user: user);
     }
 
-    _firestore.collection(FBQualifiers.ACT_COL)
+    _firestore
+    .collection(FBQualifiers.ACT_COL)
     .where(FBQualifiers.ACT_USER, isEqualTo: user.uid).snapshots()
     .listen((querySnap) async {
       guestActivities = [];
