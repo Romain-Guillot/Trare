@@ -23,9 +23,22 @@ import 'package:provider/provider.dart';
 
 
 
+/// Display the chat associated to the [activity]
+/// 
+/// It will display either a chat, of a widget to indicate that the user
+/// participation is not yet validated (or error / loading widget)
 ///
-///
-///
+/// The widget root is a [MultiProvider] to declare the following providers :
+///   - [ParticipantsProvider] to get the praticipants / requests
+///   - [MessagesProvider] to get the messages
+/// 
+/// Depending on the [ParticipantsProvider] state, tho following widget will
+/// be displayed :
+///   - participants and interested users are loaded : two cases :
+///       - the connected user is a participant or the creator : [ActivityCommunicationLayout]
+///       - the connected user is just interested : [ParticipationRequestNotAccepted]
+///   - loading : [LoadingWidget]
+///   - error or idle : [ErrorWidgetWithReload]
 class ActivityCommunicationPage extends StatelessWidget {
 
   final Activity activity;
@@ -100,7 +113,7 @@ class ActivityCommunicationPage extends StatelessWidget {
 
 
 
-///
+/// 
 ///
 ///
 class ActivityCommunicationLayout extends StatelessWidget {
