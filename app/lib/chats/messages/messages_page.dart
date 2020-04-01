@@ -14,6 +14,7 @@ import 'package:bubble/bubble.dart';
 class MessagesPage extends StatelessWidget {
   final ActivityCommunication activityCommunication;
   Activity get activity => activityCommunication.activity;
+
   MessagesPage({
     Key key,
     @required this.activityCommunication
@@ -31,21 +32,20 @@ class MessagesPage extends StatelessWidget {
      var messages = provider.messages;
      
      void sendMessage(String content) {
-
-    if(content.trim() != '') {
+      if(content.trim() != '') {
         var newMessage = new Message(
           content: content, 
           publicationDate: DateTime.now(),
           id: provider.activity.id,
           user: provider.user,
-        );
+         );
         provider.addMessage(newMessage);
         textEditingController.clear();
-    } else {
+      } else {
        Fluttertoast.showToast(msg: 'Nothing to send');
-    }
+      }
 
-  }
+     }
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -93,7 +93,7 @@ class MessagesPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.send),
                       onPressed: () => sendMessage(textEditingController.text),
-                      color: Colors.greenAccent,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     color: Colors.white,
                   ),
@@ -124,9 +124,11 @@ class MessagesPage extends StatelessWidget {
 
       String formattedDate = "";
       DateTime now = DateTime.now();
-      var diffMinute = now.difference(message.publicationDate).inMinutes;
-      if(diffMinute >= 15) {
-        formattedDate = DateFormat(' d MMM, kk:mm').format(message.publicationDate);
+      var diffMinute = now.difference(message.publicationDate).inHours;
+      if(diffMinute >= 24) {
+        formattedDate = DateFormat(' d MMM').format(message.publicationDate);
+      } else {
+        formattedDate = DateFormat('kk:mm').format(message.publicationDate);
       }
     return Column(
       children: <Widget>[

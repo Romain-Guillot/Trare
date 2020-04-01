@@ -55,7 +55,7 @@ class ParticipantsProvider extends ChangeNotifier {
   StreamSubscription _streamComm;
   User _user;
 
-  User get user => _user;
+  
 
   PaticipantsProviderState state = PaticipantsProviderState.idle;
   UserGroup userGroup =  UserGroup.unknown;

@@ -146,7 +146,7 @@ class ActivityCommunicationLayout extends StatelessWidget {
               children: <Widget>[
                 MessagesPage(
                   activityCommunication: activityCommunication,
-                ), // replace with your widget
+                ), 
                 ActivityCommunicationDetails(
                   activityCommunication: activityCommunication,
                 ),

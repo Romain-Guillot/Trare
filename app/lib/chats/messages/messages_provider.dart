@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 ///
 /// It concerns particularly the state of the loading of the [ActivityCommunication]
 /// instance
-enum MessagesState {
+enum MessagesProviderState {
   /// Nothing happen, the [ActivityCommunication] is not in loading or loded
   idle,
 
@@ -43,20 +43,23 @@ class MessagesProvider extends ChangeNotifier {
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
   IProfileService _profileService;
-  User user;
+  User _user;
+
+  User get user => _user;
 
   
-  MessagesState state = MessagesState.idle;
+  MessagesProviderState state = MessagesProviderState.inProgress;
   Stream<List<Message>> messages;
+  List<Message> listMessages;
   Activity activity;
-  ActivityCommunication activityCommunication;
+  //ActivityCommunication activityCommunication;
   
   
 
   MessagesProvider({
     @required this.activity,
     @required IActivityCommunicationService communicationService,
-    @required IProfileService profileService,
+    @required IProfileService profileService
   }) :_communicationService = communicationService,
       _profileService = profileService;
       
@@ -69,23 +72,27 @@ class MessagesProvider extends ChangeNotifier {
 
   /// Init the listeners (communication system and messages)
   init() async {
-    state = MessagesState.inProgress;
+    state = MessagesProviderState.inProgress;
     notifyListeners();
     try{
-      user = await _profileService.getUser();
+      _user = await _profileService.getUser();
     } catch (_) {}
-    _streamMessages = _communicationService.retrieveMessages(activity)
-                .listen((listMessage) {
-                    this.activityCommunication = activityCommunication;
+    
+     _streamMessages = _communicationService.retrieveMessages(activity)
+                .listen((listMessage) { 
+                    this.listMessages = listMessage;
                     notifyListeners();
                 });
-    _streamMessages.onError((e) {
-      state = MessagesState.error;
-    });
+    
     if(_streamMessages != null){
       messages = _communicationService.retrieveMessages(activity);
-      state = MessagesState.loadedMessages;
+      state = MessagesProviderState.loadedMessages;
+      notifyListeners();
     }
+    /*_streamMessages.onError((e) {
+      state = MessagesProviderState.error;
+    });*/
+    
   }
 
  /// this function gives the new [message] to the service class that have to map the it in
@@ -99,7 +106,7 @@ class MessagesProvider extends ChangeNotifier {
       var message = await _communicationService.addMessage(activity, newMessage);
       return message;
     } catch(_) {
-      state = MessagesState.error;
+      state = MessagesProviderState.error;
       return null;
     }
   }
