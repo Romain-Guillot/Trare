@@ -47,11 +47,15 @@ class Message {
   DateTime publicationDate;
 
   Message({
-    this.id,
-    this.user,
+    @required this.id,
+    @required this.user,
     @required this.content,
     @required this.publicationDate,
   });
 
-  void setUser(User user) {this.user = user;}
+  Message.create({
+    @required this.user,
+    @required this.content,
+    @required this.publicationDate,
+  });
 }

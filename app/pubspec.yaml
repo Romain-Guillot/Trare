@@ -40,7 +40,6 @@ dependencies:
   permission_handler: ^4.4.0+hotfix.2
   badges: ^1.1.1
   bubble: ^1.1.9+1
-  fluttertoast: ^4.0.1
 
 dev_dependencies:
   mockito: ^4.1.1

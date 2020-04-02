@@ -125,7 +125,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
 
   Stream<List<Message>> retrieveMessages(Activity activity) {
-    var messagesStreamController = StreamController<List<Message>>();
+    var messagesStreamController = StreamController<List<Message>>.broadcast();
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id)
                                 .collection(FBQualifiers.MSG_COL)

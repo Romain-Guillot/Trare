@@ -122,11 +122,10 @@ class ChatPage extends StatelessWidget {
 class ChatTabLayout extends StatelessWidget {
 
   final ActivityCommunication activityCommunication;
-  final MessagesProvider messagesProvider;
 
   ChatTabLayout({
     Key key, 
-    @required this.activityCommunication, this.messagesProvider
+    @required this.activityCommunication
   }) : super(key: key);
 
   @override
@@ -154,9 +153,7 @@ class ChatTabLayout extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: <Widget>[
-                MessagesPage(
-                  activityCommunication: activityCommunication,
-                ), 
+                MessagesPage(), 
                 ChatParticipantsPage(
                   activityCommunication: activityCommunication,
                 ),
