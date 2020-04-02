@@ -40,7 +40,7 @@ class MessagesPage extends StatelessWidget {
               ),
             ),
             SendMessageTextField(
-              onSend: (messageContent) async {
+              onSent: (messageContent) async {
                 return await onSend(context, messageContent);
               } 
             )
@@ -98,10 +98,9 @@ class MessagesList extends StatelessWidget {
 }
 
 
-/// widget that displays to lef the messages received by the current user
-/// with [grey color]
-/// display also the [publication_date] to the message if the difference
-/// between the [public_date] and the [current_date] is more than 15 minutes
+/// Display a message in a bubble
+/// 
+/// 
 class MessageItem extends StatelessWidget {
 
   final Message message;
@@ -133,15 +132,15 @@ class MessageItem extends StatelessWidget {
 
 
 /// TextField used to write message with a button to send it
-/// 
+/// call [onSent] method when the user click on the send button
 /// 
 class SendMessageTextField extends StatefulWidget {
 
-  final Future<bool> Function(String) onSend;
+  final Future<bool> Function(String) onSent;
 
   SendMessageTextField({
     Key key,
-    @required this.onSend,
+    @required this.onSent,
   }) : super(key: key);
 
   @override
@@ -177,7 +176,7 @@ class _SendMessageTextFieldState extends State<SendMessageTextField> {
           child: IconButton(
             color: !emptyMessage ? colorScheme.primary : Colors.grey,
             onPressed: () async {
-              var isSent = await widget.onSend(messageController.text);
+              var isSent = await widget.onSent(messageController.text);
               if (isSent)
                 messageController.clear();
             },

@@ -8,11 +8,20 @@ import 'package:app/user/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
-/// Contains two methods :
-/// 1 pour load les messages (déjà faite)
-/// 1 pour ajouter un message (à faire)
-///
-///
+/// Provider used to handle the messages of an the chat of the [activity]
+/// 
+/// The messages can be listen through the [messages] stream.
+/// A message can be add thanks to the [addMessage] method.
+/// 
+/// When creating, the Provider has to call the [init] method to initialized
+/// the stream of messages and the connected [user] so it is not necessary to
+/// call this method anywhere.
+/// 
+/// Note that the [messages] is a [Stream] of [List<Message], evrything there
+/// will be new messages added in the database, the stream will be updated
+/// automatically. 
+/// No need to call [notifyListener] as the messages can be read directly from
+/// the stream in real-time.
 class MessagesProvider extends ChangeNotifier {
 
   final IActivityCommunicationService _communicationService;
@@ -31,24 +40,26 @@ class MessagesProvider extends ChangeNotifier {
       _profileService = profileService;
       
 
-  /// Init the listeners (communication system and messages)
+  /// Retrieve the stream of messages from the communication service
+  /// 
+  /// Retrieve also the connected user, it can be used in particular to know
+  /// if a message is sent by the current user (to adapt the UI for example)
   init() async {
     messages = _communicationService.retrieveMessages(activity);
     try{
       user = await _profileService.getUser();   
-    } catch (_) {}
+    } catch (_) { }
   }
 
- /// this function gives the new [message] to the service class that have to map the it in
-  /// noSQL data  before to insert it  in the database
+
+  /// Add a new message in the [activity] chat
   /// 
   /// Returns the created [message] if succeed
   /// Returns null if an occured occured
-  Future<Message> addMessage( Message newMessage) async {
+  Future<Message> addMessage( Message message) async {
     try{
-      init();
-      var message = await _communicationService.addMessage(activity, newMessage);
-      return message;
+      Message result = await _communicationService.addMessage(activity, message);
+      return result;
     } catch(_) {
       return null;
     }
