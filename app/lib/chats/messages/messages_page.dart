@@ -13,7 +13,11 @@ import 'package:bubble/bubble.dart';
 
 
 /// Page to display the messages, or if not avaible a loding / error widget
-///
+/// 
+/// Three cases
+///   * error
+///   * no data yet (loading in progress)
+///   * list of messages available
 ///
 class MessagesPage extends StatelessWidget {
 

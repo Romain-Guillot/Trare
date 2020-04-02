@@ -6,6 +6,7 @@ import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/models/user.dart';
 import 'package:app/user/profile_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 
 /// Provider used to handle the messages of an the chat of the [activity]
@@ -28,7 +29,7 @@ class MessagesProvider extends ChangeNotifier {
   final IProfileService _profileService;
 
   User user;
-  Stream<List<Message>> messages;
+  BehaviorSubject<List<Message>> messages;
   Activity activity;
   
 

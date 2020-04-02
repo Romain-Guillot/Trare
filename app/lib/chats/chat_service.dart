@@ -9,6 +9,7 @@ import 'package:app/user/profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
 
 
@@ -84,7 +85,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
   @override
   Stream<ActivityCommunication> retreiveActivityCommunication(Activity activity) {
-    var streamController = StreamController<ActivityCommunication>();
+    var streamController = StreamController<ActivityCommunication>.broadcast();
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id);
 
@@ -125,7 +126,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
 
   Stream<List<Message>> retrieveMessages(Activity activity) {
-    var messagesStreamController = StreamController<List<Message>>.broadcast();
+    var messagesStreamController = BehaviorSubject<List<Message>>();
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id)
                                 .collection(FBQualifiers.MSG_COL)
