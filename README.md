@@ -1,4 +1,6 @@
 ![Coverage](app/coverage/coverage_badge.svg) [![Codemagic build status](https://api.codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/status_badge.svg)](https://codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/latest_build)
+
+![](res/img/logo.png)
 # Trare
 
 Trare is a social network application for connecting travellers who want to do activities with other people (have a drink, go hiking, play a board game, etc).
@@ -16,38 +18,38 @@ Trare is a social network application for connecting travellers who want to do a
 <table style="border: none;">
 <tr><td>
 
-![](documents/src/screenR2.5.jpg)
+![](res/img/screenR2.5.jpg)
 </td><td>
 
-![](documents/src/screenR2.4.jpg)</td>
+![](res/img/screenR2.4.jpg)</td>
 
 <td>
 
-![](documents/src/screenR2.3.jpg)</td></tr>
+![](res/img/screenR2.3.jpg)</td></tr>
 <tr><td>
 
-![](documents/src/screenR2.6.jpg)
+![](res/img/screenR2.6.jpg)
 </td><td>
 
-![](documents/src/screenR2.2.jpg)</td>
+![](res/img/screenR2.2.jpg)</td>
 
 <td>
 
-![](documents/src/screenR2.1.jpg)</td></tr>
+![](res/img/screenR2.1.jpg)</td></tr>
 <tr><td>
 
-![](documents/src/screen_5.3.jpg)
+![](res/img/screen_5.3.jpg)
 </td><td>
 
-![](documents/src/screen_5.2.jpg)</td>
+![](res/img/screen_5.2.jpg)</td>
 
 <td>
 
-![](documents/src/screenR2.7.jpg)</td>
+![](res/img/screenR2.7.jpg)</td>
 </td></tr>
 <tr><td>
 
-![](documents/src/screenR2.8.jpg)</td><td>
+![](res/img/screenR2.8.jpg)</td><td>
 
 </td>
 
