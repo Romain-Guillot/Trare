@@ -28,14 +28,13 @@ class Activity {
 
 
   Activity({
-    @required this.id,
     @required this.title,
     @required this.user,
     @required this.description,
     @required this.createdDate,
     @required this.beginDate,
     @required this.endDate,
-    @required this.location,
+    @required this.location, String id,
   }); 
 
   Activity.create({

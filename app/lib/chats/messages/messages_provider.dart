@@ -3,16 +3,19 @@ import 'dart:async';
 import 'package:app/chats/chat_service.dart';
 import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
+import 'package:app/shared/models/user.dart';
+import 'package:app/user/profile_service.dart';
 import 'package:flutter/widgets.dart';
 
 
 
-/// Gère le chat d'une activité
-/// 
-/// State :
-/// l'activité courrante
-/// les messages du chats (mient à jour en temps réel)
-enum MessagesState {
+/// Represent the current state of the [MessagesProvider]
+///
+/// It concerns particularly the state of the loading of the [ActivityCommunication]
+/// instance
+enum MessagesProviderState {
+  /// Nothing happen, the [ActivityCommunication] is not in loading or loded
+  idle,
 
   /// The current [ActivityChat] is loaded and available
   loaded,
@@ -30,7 +33,7 @@ enum MessagesState {
 
 
 
-/// Contient 2 methodes :
+/// Contains two methods :
 /// 1 pour load les messages (déjà faite)
 /// 1 pour ajouter un message (à faire)
 ///
@@ -39,17 +42,27 @@ class MessagesProvider extends ChangeNotifier {
 
   IActivityCommunicationService _communicationService;
   StreamSubscription _streamMessages;
-  MessagesState state = MessagesState.inProgress;
+  IProfileService _profileService;
+  User _user;
 
-  Activity activity;
+  User get user => _user;
+
+  
+  MessagesProviderState state = MessagesProviderState.inProgress;
   Stream<List<Message>> messages;
-
+  List<Message> listMessages;
+  Activity activity;
+  //ActivityCommunication activityCommunication;
+  
+  
 
   MessagesProvider({
     @required this.activity,
-    @required IActivityCommunicationService communicationService
-  }) : this._communicationService = communicationService;
-
+    @required IActivityCommunicationService communicationService,
+    @required IProfileService profileService
+  }) :_communicationService = communicationService,
+      _profileService = profileService;
+      
 
   @override
   dispose() {
@@ -57,12 +70,29 @@ class MessagesProvider extends ChangeNotifier {
     super.dispose();
   }
 
-
-  init() {
-    messages = _communicationService.retrieveMessages(activity);
-    if(messages != null){
-      state = MessagesState.loadedMessages;
+  /// Init the listeners (communication system and messages)
+  init() async {
+    state = MessagesProviderState.inProgress;
+    notifyListeners();
+    try{
+      _user = await _profileService.getUser();
+    } catch (_) {}
+    
+     _streamMessages = _communicationService.retrieveMessages(activity)
+                .listen((listMessage) { 
+                    this.listMessages = listMessage;
+                    notifyListeners();
+                });
+    
+    if(_streamMessages != null){
+      messages = _communicationService.retrieveMessages(activity);
+      state = MessagesProviderState.loadedMessages;
+      notifyListeners();
     }
+    /*_streamMessages.onError((e) {
+      state = MessagesProviderState.error;
+    });*/
+    
   }
 
  /// this function gives the new [message] to the service class that have to map the it in
@@ -72,11 +102,11 @@ class MessagesProvider extends ChangeNotifier {
   /// Returns null if an occured occured
   Future<Message> addMessage( Message newMessage) async {
     try{
-      var message = await _communicationService.addMessage(activity, newMessage);
       init();
+      var message = await _communicationService.addMessage(activity, newMessage);
       return message;
     } catch(_) {
-      state = MessagesState.error;
+      state = MessagesProviderState.error;
       return null;
     }
   }

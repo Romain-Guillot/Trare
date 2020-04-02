@@ -62,7 +62,8 @@ class ChatPage extends StatelessWidget {
         ChangeNotifierProvider<MessagesProvider>(
           create: (_) => MessagesProvider(
             activity: activity,
-            communicationService: locator<IActivityCommunicationService>()
+            communicationService: locator<IActivityCommunicationService>(),
+            profileService: locator<IProfileService>(),
           )..init(),
         )
       ],
@@ -121,10 +122,11 @@ class ChatPage extends StatelessWidget {
 class ChatTabLayout extends StatelessWidget {
 
   final ActivityCommunication activityCommunication;
+  final MessagesProvider messagesProvider;
 
   ChatTabLayout({
     Key key, 
-    @required this.activityCommunication
+    @required this.activityCommunication, this.messagesProvider
   }) : super(key: key);
 
   @override
@@ -152,7 +154,9 @@ class ChatTabLayout extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: <Widget>[
-                MessagesPage(), // replace with your widget
+                MessagesPage(
+                  activityCommunication: activityCommunication,
+                ), 
                 ChatParticipantsPage(
                   activityCommunication: activityCommunication,
                 ),
