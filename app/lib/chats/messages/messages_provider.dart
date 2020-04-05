@@ -20,7 +20,12 @@ import 'package:rxdart/rxdart.dart';
 /// 
 /// Note that the [messages] is a [Stream] of [List<Message], evrything there
 /// will be new messages added in the database, the stream will be updated
-/// automatically. 
+/// automatically. The stream can have three states :
+///   - stream.hasError => the messages cannot be loaded
+///   - stream.hasData => the messages are correctly loaded
+///   - else, the messages are still in loading
+/// 
+/// 
 /// No need to call [notifyListener] as the messages can be read directly from
 /// the stream in real-time.
 class MessagesProvider extends ChangeNotifier {
@@ -50,6 +55,12 @@ class MessagesProvider extends ChangeNotifier {
     try{
       user = await _profileService.getUser();   
     } catch (_) { }
+  }
+
+  @override
+  void dispose() {
+    messages.close();
+    super.dispose();
   }
 
 

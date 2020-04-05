@@ -142,6 +142,8 @@ class Strings {
   static const String chatUnableToLoad = "Unable to load chat";
   static const String participationNotYetAccepted = "The user who created the activity has to validate your participation request.";
   static const String participationNotYetAcceptedStayTuned = "Stay tuned !";
+  static const String messagesLoadingError = "Cannot load messages";
+
 
   // User chats
   static const String userChatsTitle = "Chats";

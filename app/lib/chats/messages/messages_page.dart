@@ -3,6 +3,7 @@ import 'package:app/shared/models/activity.dart';
 import 'package:app/shared/models/activity_communication.dart';
 import 'package:app/shared/res/dimens.dart';
 import 'package:app/shared/res/strings.dart';
+import 'package:app/shared/widgets/buttons.dart';
 import 'package:app/shared/widgets/error_widgets.dart';
 import 'package:app/shared/widgets/loading_widgets.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,27 @@ import 'package:bubble/bubble.dart';
 
 
 
-/// Page to display the messages, or if not avaible a loding / error widget
+/// Widget that displays the list of messages of an activity chat and let the
+/// user add new messages.
 /// 
-/// Three cases
-///   * error
-///   * no data yet (loading in progress)
-///   * list of messages available
-///
+/// The list messages are retrieve thanks to the [MessagesProvider]. This 
+/// provider has been previously initialized with the correct activity, so no
+/// need to any configuration of the provider here, just get back the messages
+/// or ask the provider to add a new message.
+/// 
+/// As it is specified in the documentation of the [MessagesProvider], we 
+/// dinstinguish 3 cases :
+///   - the messages are correctly loaded : no error in the stream and the stream
+///     contains data
+///   - the messages cannot be loaded : an error are push in the stream
+///   - the messages are still in loading : no data and no error pushed in the 
+///     stream
+/// 
+/// The messages are available through a stream, so the [StreamBuilder] widget
+/// is used to retrieve and display a widget based on the stream state :
+///   - if error : [ErrorWidgetWithReload]
+///   - if loading in progress : [LoadingWidget]
+///   - if messages loaded : [MessagesList] and [SendMessageTextField]
 class MessagesPage extends StatelessWidget {
 
   @override
@@ -29,8 +44,8 @@ class MessagesPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return ErrorWidgetWithReload(
-            message: "Cannot load messages",
-            onReload: () {},
+            message: Strings.messagesLoadingError,
+            onReload: () => messagesProvider.init(),
           );
         if (!snapshot.hasData)
           return LoadingWidget();
@@ -44,9 +59,7 @@ class MessagesPage extends StatelessWidget {
               ),
             ),
             SendMessageTextField(
-              onSent: (messageContent) async {
-                return await onSend(context, messageContent);
-              } 
+              onSent: (message) async => await _onSend(context, message)
             )
           ],
         );
@@ -54,29 +67,34 @@ class MessagesPage extends StatelessWidget {
     );
   }
 
-  Future<bool> onSend(BuildContext context, String content) async{
+  /// Function used to ask the provider to send a new message in the activity
+  /// chat. This message contain the message [content].
+  Future<bool> _onSend(BuildContext context, String content) async{
     var messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+    Message createdMessage;
     if (content.isNotEmpty) {
       var newMessage = Message.create(
         content: content, 
         publicationDate: DateTime.now(),
         user: messagesProvider.user,
       );
-      var res = await messagesProvider.addMessage(newMessage);
-      return res != null;
+      createdMessage = await messagesProvider.addMessage(newMessage);
     }
-    return false;
+    return createdMessage != null;
   }
 }
 
 
-/// Display the list of messages
+
+/// Display the list of [messages] of the [activity]
 ///
-///
-class MessagesList extends StatelessWidget {
+/// Simply build a list view (through the builder constructor to have an
+/// optimized list view with recycled items), the list view is composed of
+/// [MessageItem] that display the message bubble.
+class MessagesList extends StatefulWidget {
 
   final Activity activity;
-  final List<Message> messages;
+  final Iterable<Message> messages;
 
   MessagesList({
     Key key,
@@ -85,13 +103,23 @@ class MessagesList extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _MessagesListState createState() => _MessagesListState();
+}
+
+class _MessagesListState extends State<MessagesList> {
+
+  final ScrollController scrollController = ScrollController();
+  
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(10.0),
-      itemCount: messages.length,
+      controller: scrollController,
+      padding: EdgeInsets.symmetric(horizontal: Dimens.screenPaddingValue),
+      reverse: true,
+      itemCount: widget.messages.length,
       itemBuilder: (_, index) {
-        var message = messages[index];
-        var owner = message.user.uid == activity.user.uid;
+        final message = widget.messages.elementAt(index);
+        final owner = message.user.uid == widget.activity.user.uid;
         return MessageItem(
           message: message,
           owner: owner,
@@ -102,9 +130,9 @@ class MessagesList extends StatelessWidget {
 }
 
 
-/// Display a message in a bubble
-/// 
-/// 
+
+/// Display a [message] in a bubble with a specific style based on if the author
+/// of the message if the current connect user ([owner] property). 
 class MessageItem extends StatelessWidget {
 
   final Message message;
@@ -118,7 +146,7 @@ class MessageItem extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    var colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Bubble(
       style: BubbleStyle(
         nip: owner ? BubbleNip.rightTop : BubbleNip.leftTop,
@@ -136,8 +164,13 @@ class MessageItem extends StatelessWidget {
 
 
 /// TextField used to write message with a button to send it
-/// call [onSent] method when the user click on the send button
 /// 
+/// The [onSent] method is called when the user click on the "send" button. This 
+/// method has to return true is the operation succeed, false else. So if the 
+/// operation succeed, the text field is clear, if not nothing happened and the 
+/// user can retry to send the message.
+/// Of course it is an asynchronous operation, so during the operation process,
+/// the "send" button is disable to prevent same message sent multiple times.
 class SendMessageTextField extends StatefulWidget {
 
   final Future<bool> Function(String) onSent;
@@ -155,6 +188,7 @@ class _SendMessageTextFieldState extends State<SendMessageTextField> {
 
   final TextEditingController messageController = TextEditingController();
   bool emptyMessage = true;
+  bool sendingInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -176,15 +210,22 @@ class _SendMessageTextFieldState extends State<SendMessageTextField> {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 8.0),
-          child: IconButton(
-            color: !emptyMessage ? colorScheme.primary : Colors.grey,
-            onPressed: () async {
+          margin: EdgeInsets.only(
+            left: Dimens.screenPaddingValue,
+            right: Dimens.smallSpacing // just to add little spacing between the screen and the button
+          ),
+          child: Button(
+            color: (!emptyMessage || sendingInProgress)
+                      ? colorScheme.primary 
+                      : Colors.grey,
+            onPressed: sendingInProgress ? null : () async {
+              setState(() => sendingInProgress = true);
               var isSent = await widget.onSent(messageController.text);
               if (isSent)
                 messageController.clear();
+              setState(() => sendingInProgress = false);
             },
-            icon: Icon(Icons.send),
+            child: Icon(Icons.send),
           ),
         )
       ],

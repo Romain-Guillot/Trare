@@ -124,19 +124,23 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     return streamController.stream;
   }
 
-
+  /// See https://medium.com/flutter-community/reactive-programming-streams-bloc-6f0d2bd2d248
+  /// to know the difference between a traditionnal [StreamController] and a
+  /// [BehaviorSubject], basically :
+  ///     > the BehaviorSubject also sends the very last event that was emitted 
+  ///     > to the listener that just subscribed.
   Stream<List<Message>> retrieveMessages(Activity activity) {
     var messagesStreamController = BehaviorSubject<List<Message>>();
     var activityDoc = _firestore.collection(FBQualifiers.ACT_COL)
                                 .document(activity.id)
                                 .collection(FBQualifiers.MSG_COL)
-                                .orderBy("publication_date", descending: false);
+                                .orderBy(FBQualifiers.MSG_DATE, descending: true);
     
     activityDoc.snapshots().listen((querySnap) async {
       var messages = <Message>[];
       for (var doc in querySnap.documents) {
         try {
-           var user = await _profileService.getUser(userUID: doc["user"]);
+           var user = await _profileService.getUser(userUID: doc[FBQualifiers.MSG_USER]);
            var message = _FirestoreMessageAdapter(data: doc.data, user: user);
            messages.add(message);
         } catch(e) {print(e);}
@@ -149,7 +153,7 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
 
   @override
   Future<Message> addMessage(Activity activity, Message message) async {
-    var messageData = _FirestoreMessageAdapter.toMapMessageIntoNoSQL(message);
+    var messageData = _FirestoreMessageAdapter.toMap(message);
 
     if (messageData != null) {
       var messageCol = _firestore.collection(FBQualifiers.ACT_COL)
@@ -243,7 +247,6 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
   }
 
 
-
   @override
   Future requestParticipation(User user, Activity activity) async {
     var batch = _firestore.batch();
@@ -260,6 +263,8 @@ class FirestoreActivityCommunicationService implements IActivityCommunicationSer
     batch.commit();
   }
 }
+
+
 
 /// Adpater used to adapt noSQL data ([Map]) to [Message]
 ///
@@ -286,7 +291,7 @@ class _FirestoreMessageAdapter extends Message {
   }
 
   /// Method used to adapt ([Mesage]) to noSQL data [Map]
-  static Map<String, Object> toMapMessageIntoNoSQL(Message message) => {
+  static Map<String, Object> toMap(Message message) => {
     FBQualifiers.MSG_DATE: Timestamp.fromDate(DateTime.now()),
     FBQualifiers.MSG_CONTENT: message.content,
     FBQualifiers.MSG_USER: message.user.uid,
