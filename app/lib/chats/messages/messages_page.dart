@@ -23,8 +23,8 @@ import 'package:bubble/bubble.dart';
 /// 
 /// As it is specified in the documentation of the [MessagesProvider], we 
 /// dinstinguish 3 cases :
-///   - the messages are correctly loaded : no error in the stream and the stream
-///     contains data
+///   - the messages are correctly loaded : no error in the stream and the 
+///     stream contains data
 ///   - the messages cannot be loaded : an error are push in the stream
 ///   - the messages are still in loading : no data and no error pushed in the 
 ///     stream
@@ -35,6 +35,8 @@ import 'package:bubble/bubble.dart';
 ///   - if loading in progress : [LoadingWidget]
 ///   - if messages loaded : [MessagesList] and [SendMessageTextField]
 class MessagesPage extends StatelessWidget {
+
+  MessagesPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +120,8 @@ class _MessagesListState extends State<MessagesList> {
       reverse: true,
       itemCount: widget.messages.length,
       itemBuilder: (_, index) {
-        final message = widget.messages.elementAt(index);
-        final owner = message.user.uid == widget.activity.user.uid;
+        var message = widget.messages.elementAt(index);
+        var owner = message.user.uid == widget.activity.user.uid;
         return MessageItem(
           message: message,
           owner: owner,
@@ -146,7 +148,7 @@ class MessageItem extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = Theme.of(context).colorScheme;
     return Bubble(
       style: BubbleStyle(
         nip: owner ? BubbleNip.rightTop : BubbleNip.leftTop,
@@ -165,7 +167,7 @@ class MessageItem extends StatelessWidget {
 
 /// TextField used to write message with a button to send it
 /// 
-/// The [onSent] method is called when the user click on the "send" button. This 
+/// The [onSent] method is called when the user click on the "send" button. This
 /// method has to return true is the operation succeed, false else. So if the 
 /// operation succeed, the text field is clear, if not nothing happened and the 
 /// user can retry to send the message.
