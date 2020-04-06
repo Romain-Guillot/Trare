@@ -32,13 +32,13 @@ Si vous avez des remarques, suggestions, ou tout autres retours n'hésitez pas �
 Bienvenue sur le wiki de **Trare**.
 
 
-- ⬆️ [README](https://github.com/Romain-Guillot/Trare/blob/master/README.md)
+- <span class="updated">[README](https://github.com/Romain-Guillot/Trare/blob/master/README.md)</span>
 - [CONTRIBUTING](https://github.com/Romain-Guillot/Trare/blob/master/CONTRIBUTING.md)
-- 🆕 [LICENSE](https://github.com/Romain-Guillot/Trare/blob/master/LICENSE)
+- <span class="new">[LICENSE](https://github.com/Romain-Guillot/Trare/blob/master/LICENSE)</span>
 
 #### Architecture
-- ⬆️ [Client app](https://github.com/Romain-Guillot/Trare/wiki/Architecture-:-client-side)
-- ⬆️ [Modèles](https://github.com/Romain-Guillot/Trare/wiki/Architecture-:-Modèles)
+- <span class="updated">[Client app](https://github.com/Romain-Guillot/Trare/wiki/Architecture-:-client-side)
+- <span class="updated">[Modèles](https://github.com/Romain-Guillot/Trare/wiki/Architecture-:-Modèles)</span>
 - [Serveur](https://github.com/Romain-Guillot/Trare/wiki/Architecture-:-server-side)
 
 
@@ -49,7 +49,7 @@ Bienvenue sur le wiki de **Trare**.
 - [Processus de travail](https://github.com/Romain-Guillot/Trare/wiki/Processus-de-travail)
 - [Déploiement](https://github.com/Romain-Guillot/Trare/wiki/Déploiement)
 - [Tests (unit, integration, UI)](https://github.com/Romain-Guillot/Trare/wiki/Tests-(unit,-integration,-UI))
-- 🆕 [Analyse de qualité](https://github.com/Romain-Guillot/Trare/wiki/Analyse-de-qualité)
+- <span class="new">[Analyse de qualité](https://github.com/Romain-Guillot/Trare/wiki/Analyse-de-qualité)</span>
 
 
 
@@ -60,7 +60,7 @@ Bienvenue sur le wiki de **Trare**.
 - [Explore](https://github.com/Romain-Guillot/Trare/wiki/Fonctionnalité-:-Explore)
 - [Création d'une activité](https://github.com/Romain-Guillot/Trare/wiki/Fonctionnalité-:-Création-d'une-activité)
 - [Visualisation des activités créées par l'utilisateur](https://github.com/Romain-Guillot/Trare/wiki/Fonctionnalité-:-Visualisation-des-activités-créées-par-l'utilisateur)
-- 🆕 [Système de communication associé à une activité](https://github.com/Romain-Guillot/Trare/wiki/Fonctionnalité-:-Système-de-communication-associé-à-une-activité)
+- <span class="new">[Système de communication associé à une activité](https://github.com/Romain-Guillot/Trare/wiki/Fonctionnalité-:-Système-de-communication-associé-à-une-activité)</span>
 
 
 
@@ -72,10 +72,113 @@ Bienvenue sur le wiki de **Trare**.
 - [Sprint#4](https://github.com/Romain-Guillot/Trare/wiki/Sprint%234): explore homepage, R1, codemagic (CI/CD)
 - [Sprint#5](https://github.com/Romain-Guillot/Trare/wiki/Sprint%235): form to create activity
 - [Sprint#6](https://github.com/Romain-Guillot/Trare/wiki/Sprint%236): user activities page, user public page, installation guide
-- 🆕 [Sprint#7](https://github.com/Romain-Guillot/Trare/wiki/Sprint%237): activity participants, chats
+- <span class="new">[Sprint#7](https://github.com/Romain-Guillot/Trare/wiki/Sprint%237): activity participants, chats</span>
 
 
 
+@import "wiki/README.md"
+
+@import "wiki/CONTRIBUTING.md"
+
+
+# License
+```
+MIT License
+
+Copyright (c) 2020 RomainGuillot
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+```
+
+# Architecture : client side
+@import "wiki/Architecture-:-client-side.md"
+
+# Architecture : Modèles
+@import "wiki/Architecture-:-Modèles.md"
+
+# Architecture : server side
+@import "wiki/Architecture-:-server-side.md"
+
+# Description de l'application
+@import "wiki/Description-de-l'application.md"
 
 # Processus de travail
 @import "wiki/Processus-de-travail.md"
+
+# Déploiement
+@import "wiki/Déploiement.md"
+
+# Tests (unit, integration, UI)
+@import "wiki/Tests-(unit,-integration,-UI).md"
+
+# Analyse de qualité
+@import "wiki/Analyse-de-qualité.md"
+
+# Authentification
+@import "wiki/Fonctionnalité-:-Authentification.md"
+
+# Profil utilisateur
+@import "wiki/Fonctionnalité-:-Profil-utilisateur.md"
+
+# Explore
+@import "wiki/Fonctionnalité-:-Explore.md"
+
+# Création d'une activité
+@import "wiki/Fonctionnalité-:-Création-d'une-activité.md"
+
+# Visualisation des activités créées par l'utilisateur
+@import "wiki/Fonctionnalité-:-Visualisation-des-activités-créées-par-l'utilisateur.md"
+
+# Système de communication associé à une activité
+@import "wiki/Fonctionnalité-:-Système-de-communication-associé-à-une-activité.md"
+
+# Sprint#1
+@import "wiki/Sprint#1.md"
+
+# Sprint#2
+@import "wiki/Sprint#2.md"
+
+# Sprint#3
+@import "wiki/Sprint#3.md"
+
+# Sprint#4
+@import "wiki/Sprint#4.md"
+
+# Sprint#5
+@import "wiki/Sprint#5.md"
+
+# Sprint#6
+@import "wiki/Sprint#6.md"
+
+# Sprint#7
+@import "wiki/Sprint#7.md"
+
+
+
+
+
+
+
+
+
+
+
+
+'Tests-(unit,-integration,-UI).md'
