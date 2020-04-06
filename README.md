@@ -12,56 +12,16 @@ Trare is a social network application for connecting travellers who want to do a
 - [x] User account : sign in, sign out, edit profile, delete profile, visualization
 - [x] Explore activities
 - [x] View an activity
-- [x] Add new activities
-- [x] System for connecting users (activity chats, "I'm interested" butto, etc)
+- [x] Add an activity
+- [x] System for connecting users : activity chats, requests, details, etc
 
-<table style="border: none;">
-<tr><td>
-
-![](res/img/screenR2.5.jpg)
-</td><td>
-
-![](res/img/screenR2.4.jpg)</td>
-
-<td>
-
-![](res/img/screenR2.3.jpg)</td></tr>
-<tr><td>
-
-![](res/img/screenR2.6.jpg)
-</td><td>
-
-![](res/img/screenR2.2.jpg)</td>
-
-<td>
-
-![](res/img/screenR2.1.jpg)</td></tr>
-<tr><td>
-
-![](res/img/screen_5.3.jpg)
-</td><td>
-
-![](res/img/screen_5.2.jpg)</td>
-
-<td>
-
-![](res/img/screenR2.7.jpg)</td>
-</td></tr>
-<tr><td>
-
-![](res/img/screenR2.8.jpg)</td><td>
-
-</td>
-
-<td>
-
-</td>
-</td></tr>
-</table>
-</div>
+![](res/img/screens1.png)
+![](res/img/screens2.png)
+![](res/img/screens3.png)
+![](res/img/screens4.png)
 
 ## What's next ?
-![](documents/src/use_case.png)
+![](res/img/use_case.png)
 
 **All major planned features have been implemented. See the [issues](https://github.com/Romain-Guillot/Trare/issues) to be aware of the next minor enhancements planned.**
 
