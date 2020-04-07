@@ -1,6 +1,6 @@
 ![Coverage](app/coverage/coverage_badge.svg) [![Codemagic build status](https://api.codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/status_badge.svg)](https://codemagic.io/apps/5e2cc389b9213d44afe0ca6b/5e2cc389b9213d44afe0ca6a/latest_build)
 
-![](res/img/logo.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/logo.png)
 # Trare
 
 Trare is a social network application for connecting travellers who want to do activities with other people (have a drink, go hiking, play a board game, etc).
@@ -15,13 +15,13 @@ Trare is a social network application for connecting travellers who want to do a
 - [x] Add an activity
 - [x] System for connecting users : activity chats, requests, details, etc
 
-![](res/img/screens1.png)
-![](res/img/screens2.png)
-![](res/img/screens3.png)
-![](res/img/screens4.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/screens1.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/screens2.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/screens3.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/screens4.png)
 
 ## What's next ?
-![](res/img/use_case.png)
+![](https://raw.githubusercontent.com/Romain-Guillot/Trare/master/res/img/use_case.png)
 
 **All major planned features have been implemented. See the [issues](https://github.com/Romain-Guillot/Trare/issues) to be aware of the next minor enhancements planned.**
 
