@@ -5,7 +5,8 @@
 
 Ce rapport reprend la structure du rapport précédent, en y ajoutant le document concernant **l'analyse de qualité**.
 
-Nous utilisons désormais **[le Github Wiki de l'application](https://github.com/Romain-Guillot/Trare/wiki)** pour éditer tous nos documents (techniques, spécifications, etc.). La lecture et la navigation entre les différents documents y sont bien plus aisées que sur un rapport PDF (bien que nous nous efforçons de produire un rendu de qualité à chaque fois !). Ce rapport est généré à partir du wiki de l'application, donc tous les éléments du wiki se trouvent aussi ici (et inversement, à l'exception de cette brève introduction).
+Nous utilisons désormais **[le Github Wiki de l'application](https://github.com/Romain-Guillot/Trare/wiki)** pour éditer tous nos documents (techniques, spécifications, etc.). La lecture et la navigation entre les différents documents y sont bien plus aisées que sur un rapport PDF (bien que nous nous efforçons de produire un rendu de qualité à chaque fois !). Ce rapport est généré à partir du wiki de l'application, donc tous les éléments du wiki se trouvent aussi ici (et inversement, à l'exception de cette brève introduction).  
+**PS: le sommaire de ce document met en évidences les élements ajoutés / grandement modifiés.**
 
 ## Liens utiles
 - [Repository de l'application (Github)](https://github.com/Romain-Guillot/Trare)
@@ -14,7 +15,7 @@ Nous utilisons désormais **[le Github Wiki de l'application](https://github.com
 ## Coordonnées
 Si vous avez des remarques, suggestions, ou tout autres retours n'hésitez pas à nous contacter :
 - [**Romain Guillot** - romain.guillot1@uqac.ca](mailto:romain.guillot1@uqac.ca)
-- [**Mamadou Diouldé Diallo** - ]()
+- [**Mamadou Diouldé Diallo** - mamadou-dioulde.diallo1@uqac.ca](mailto:mamadou-dioulde.diallo1@uqac.ca)
 
 
 ## Changelog du rapport (depuis la R2)
@@ -46,7 +47,7 @@ Bienvenue sur le wiki de **Trare**.
 #### Documents utiles
 
 - [Description de l'application](https://github.com/Romain-Guillot/Trare/wiki/Description-de-l'application)
-- [Processus de travail](https://github.com/Romain-Guillot/Trare/wiki/Processus-de-travail)
+- <span class="updated">[Processus de travail](https://github.com/Romain-Guillot/Trare/wiki/Processus-de-travail)</span>
 - [Déploiement](https://github.com/Romain-Guillot/Trare/wiki/Déploiement)
 - [Tests (unit, integration, UI)](https://github.com/Romain-Guillot/Trare/wiki/Tests-(unit,-integration,-UI))
 - <span class="new">[Analyse de qualité](https://github.com/Romain-Guillot/Trare/wiki/Analyse-de-qualité)</span>
