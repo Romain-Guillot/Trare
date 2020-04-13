@@ -5,8 +5,8 @@
 
 Ce rapport reprend la structure du rapport précédent, en y ajoutant le document concernant **l'analyse de qualité**.
 
-Nous utilisons désormais **[le Github Wiki de l'application](https://github.com/Romain-Guillot/Trare/wiki)** pour éditer tous nos documents (techniques, spécifications, etc.). La lecture et la navigation entre les différents documents y sont bien plus aisées que sur un rapport PDF (bien que nous nous efforçons de produire un rendu de qualité à chaque fois !). Ce rapport est généré à partir du wiki de l'application, donc tous les éléments du wiki se trouvent aussi ici (et inversement, à l'exception de cette brève introduction).  
-**PS: le sommaire de ce document met en évidences les élements ajoutés / grandement modifiés.**
+Nous utilisons désormais **[le Github Wiki de l'application](https://github.com/Romain-Guillot/Trare/wiki)** pour éditer tous nos documents (techniques, spécifications, etc.). La lecture et la navigation entre les différents documents y sont bien plus aisées que sur un rapport PDF (bien que nous nous efforçons de produire un rendu de qualité à chaque fois !). Ce rapport est généré à partir du wiki de l'application, donc tous les éléments du wiki se trouvent aussi ici (et inversement, à l'exception de cette brève introduction et de la conclusion du projet).  
+**PS: le sommaire de ce document met en évidences les élements ajoutés et grandement modifiés.**
 
 ## Liens utiles
 - [Repository de l'application (Github)](https://github.com/Romain-Guillot/Trare)
@@ -30,9 +30,7 @@ Si vous avez des remarques, suggestions, ou tout autres retours n'hésitez pas �
 
 ## Sommaire
 
-Bienvenue sur le wiki de **Trare**.
-
-
+- <span class="new">Conclusion du projet</span>
 - <span class="updated">[README](https://github.com/Romain-Guillot/Trare/blob/master/README.md)</span>
 - [CONTRIBUTING](https://github.com/Romain-Guillot/Trare/blob/master/CONTRIBUTING.md)
 - <span class="new">[LICENSE](https://github.com/Romain-Guillot/Trare/blob/master/LICENSE)</span>
@@ -75,6 +73,14 @@ Bienvenue sur le wiki de **Trare**.
 - [Sprint#6](https://github.com/Romain-Guillot/Trare/wiki/Sprint%236): user activities page, user public page, installation guide
 - <span class="new">[Sprint#7](https://github.com/Romain-Guillot/Trare/wiki/Sprint%237): activity participants, chats</span>
 
+
+# Conclusion du projet
+
+Déjà, nous aurions bien aimé pouvoir finir tous les cas d'utilisations définis en début de projet (notamment la modérations) et apporter quelques améliorations / résoudre certains bugs dans le but de rendre le projet publique.
+
+Si c'était à refaire, nous aurions plutôt gérer le côté serveur nous même au lieu d'utiliser une solution serverless. Nous aurions pu par exemple utiliser une technologie comme Node.js pour en apprendre plus sur le deploiement côté serveur (microservices, Docker, load balancing, etc.).
+
+Pour ce qui est du reste, nous n'avons pas de regret, nous sommes très content de ce que nous avons accomplis, nous avons pu acquérir de nombreuses connaissances concernant le developpement d'application mobile et du génie lociel en général !
 
 
 @import "wiki/README.md"
